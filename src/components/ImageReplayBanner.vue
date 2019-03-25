@@ -1,27 +1,29 @@
 <template>
-  <div id="image-banner" data-ride="carousel" class="carousel slide">
-    <ol class="carousel-indicators">
-      <li
-        v-for="(item,key) in getData"
-        :key="key"
-        data-target="#image-banner"
-        :data-slide-to="key"
-        v-active="key"
-      ></li>
-    </ol>
-    <div role="listbox" class="carousel-inner">
-      <div v-for="(item,key) in getData" :key="key" class="item" v-active="key">
-        <a href>
-          <img :src="item.thumbnail">
-        </a>
+  <div>
+    <div id="image-banner" data-ride="carousel" class="carousel slide">
+      <ol class="carousel-indicators">
+        <li
+          v-for="(item,key) in getData"
+          :key="key"
+          data-target="#image-banner"
+          :data-slide-to="key"
+          v-active="key"
+        ></li>
+      </ol>
+      <div role="listbox" class="carousel-inner">
+        <div v-for="(item,key) in getData" :key="key" class="item" v-active="key">
+          <router-link :to="{path:'/writes',query:{id:item.id}}">
+            <img :src="item.thumbnail">
+          </router-link>
+        </div>
       </div>
+      <a href="#image-banner" role="button" data-slide="prev" class="left carousel-control">
+        <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a href="#image-banner" role="button" data-slide="next" class="right carousel-control">
+        <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
+      </a>
     </div>
-    <a href="#image-banner" role="button" data-slide="prev" class="left carousel-control">
-      <span aria-hidden="true" class="glyphicon glyphicon-chevron-left"></span>
-    </a>
-    <a href="#image-banner" role="button" data-slide="next" class="right carousel-control">
-      <span aria-hidden="true" class="glyphicon glyphicon-chevron-right"></span>
-    </a>
   </div>
 </template>
 
@@ -30,6 +32,8 @@
 <script>
 // axios请求模块
 import axios from "axios";
+//url地址解析模块
+import urlLib from "url";
 // 全局配置模块
 import global from "../VueGlobal";
 
@@ -37,14 +41,15 @@ export default {
   name: "ImageReplayBanner",
   data: function() {
     return {
-      getData: [0]
+      getData: [0],
+      urlLib
     };
   },
   directives: {
     active: {
-      inserted: function(el,binding) {
-        if(binding.value == 0){
-          el.classList.add('active');
+      inserted: function(el, binding) {
+        if (binding.value == 0) {
+          el.classList.add("active");
         }
       }
     }
@@ -65,5 +70,8 @@ img {
   display: block;
   width: 100%;
   height: auto;
+}
+ol li {
+  margin: 0 2px !important;
 }
 </style>

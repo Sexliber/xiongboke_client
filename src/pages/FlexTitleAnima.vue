@@ -42,14 +42,16 @@
       <!-- 最新文章<=S -->
       <div :id="navName[0].en" v-offsettop class="padding1">
         <div class="container-fluid padding1">
-          <div class="title-class">
-            <div class="overlay"></div>
-            <h3 class="zh">最新文章</h3>
-            <h5 class="en">New Writes</h5>
-          </div>
+          <router-link :to="{path:'search'}">
+            <div class="title-class">
+              <div class="overlay"></div>
+              <h3 class="zh" v-text="navName[0].zh"></h3>
+              <h5 class="en" v-text="navName[0].en.toUpperCase()"></h5>
+            </div>
+          </router-link>
         </div>
         <div class="container-fluid">
-          <transition-group tag="div" class="row">
+          <transition-group appear tag="div" class="row">
             <div v-for="(item,key) in writesArr" :key="key" class="col-md-4 col-sm-6 padding1">
               <writes :writes-data="item"/>
             </div>
@@ -57,28 +59,47 @@
         </div>
       </div>
       <!-- 最新文章<=E -->
+      <!-- 实用软件<=S -->
       <div :id="navName[1].en" v-offsettop class="padding1 v100">
+        <!-- 标题<=S -->
         <div class="container-fluid padding1">
           <div class="row">
-            <div class="title-class">
-              <div class="overlay"></div>
-              <h3 class="zh">实用软件</h3>
-              <h5 class="en">Nice Softs</h5>
-            </div>
+            <router-link :to="{path:'search',query:{class:'softs'}}">
+              <div class="title-class">
+                <div class="overlay"></div>
+                <h3 class="zh" v-text="navName[1].zh"></h3>
+                <h5 class="en" v-text="navName[1].en.toUpperCase()"></h5>
+              </div>
+            </router-link>
           </div>
         </div>
+        <!-- 标题=>E-->
+        <!-- 内容<=S -->
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-8">
-              <div class="padding1">
+              <transition>
                 <!-- 轮播图组件 -->
-                <image-replay-banner/>
-              </div>
+                <image-replay-banner class="padding1"/>
+              </transition>
+              <!-- 软件模块数据<=S -->
+              <transition-group tag="div">
+                <div v-for="(item,key) in softsArr" :key="key" class="padding1">
+                  <softs :data-softs="item"/>
+                </div>
+              </transition-group>
+              <!-- 软件模块数据=>E -->
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-4">
+              <!-- 标签菜单<=S -->
+              <tags-mean/>
+              <!-- 标签菜单=>E -->
+            </div>
           </div>
         </div>
+        <!-- 内容=>E -->
       </div>
+      <!-- 实用软件=>E -->
       <div :id="navName[2].en" v-offsettop class="v100"></div>
       <div :id="navName[3].en" v-offsettop class="v100"></div>
       <div :id="navName[4].en" v-offsettop class="v100"></div>
@@ -93,6 +114,8 @@
 // 引入组件<=S
 import Writes from "../components/Writes";
 import ImageReplayBanner from "../components/ImageReplayBanner";
+import Softs from "../components/Softs";
+import TagsMean from "../components/TagsMean";
 // 引入组件=>E
 
 // axios请求工具
@@ -255,7 +278,9 @@ export default {
   // 组件注册
   components: {
     Writes,
-    ImageReplayBanner
+    ImageReplayBanner,
+    Softs,
+    TagsMean
   },
   // 该组件data对象加载完毕后开始请求数据
   created() {
@@ -465,6 +490,7 @@ var resetClassEleTop = function(el) {
   margin: 0;
   overflow: visible;
   height: auto;
+  background-color: #eee;
 }
 
 .content-container > div {
