@@ -92,8 +92,15 @@
             </div>
             <div class="col-md-4">
               <!-- 标签菜单<=S -->
-              <tags-mean/>
+              <div class="padding1">
+                <tags-mean/>
+              </div>
               <!-- 标签菜单=>E -->
+              <!-- 推荐菜单<=S -->
+              <div class="padding1">
+                <recommend/>
+              </div>
+              <!-- 推荐菜单=>E -->
             </div>
           </div>
         </div>
@@ -116,6 +123,7 @@ import Writes from "../components/Writes";
 import ImageReplayBanner from "../components/ImageReplayBanner";
 import Softs from "../components/Softs";
 import TagsMean from "../components/TagsMean";
+import Recommend from "../components/Recommend";
 // 引入组件=>E
 
 // axios请求工具
@@ -280,7 +288,8 @@ export default {
     Writes,
     ImageReplayBanner,
     Softs,
-    TagsMean
+    TagsMean,
+    Recommend
   },
   // 该组件data对象加载完毕后开始请求数据
   created() {

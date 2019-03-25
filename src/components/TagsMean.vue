@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mean-bar right-bar padding1">
+    <div class="mean-bar right-bar">
       <div class="bg-white">
         <div class="title white">
           <i class="fa fa-list-ul" aria-hidden="true"></i>
@@ -102,6 +102,10 @@ export default {
   padding: 20px;
   margin: -1px -1px 1px -1px;
   border: 1px solid #ddd;
+  font-weight: 600;
+}
+.right-bar .title span{
+  margin-left: 10px;
 }
 .right-bar .list {
   padding: 20px;
@@ -117,7 +121,8 @@ export default {
   margin: -1px 0 0 -1px;
 }
 .mean-bar li:hover {
-  border-color: rgba(0,0,0,0)
+  border-color: rgba(0,0,0,0);
+  background-color: #ffc815;
 }
 .mean-bar li a {
   display: block;
@@ -127,6 +132,9 @@ export default {
   height: 100%;
   width: 100%;
   color: rgb(51, 51, 51);
+}
+.mean-bar li:hover a{
+  color: #fff;
 }
 </style>
 

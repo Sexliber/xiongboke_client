@@ -4,7 +4,7 @@
       <h1>我的个性</h1>
       <p>我的姓名</p>
       <p>我的资料</p>
-      <img src="../assets/images/homepage/advert-bg-1.jpg" alt>
+      <router-view></router-view>
     </vue-scroll>
   </div>
 </template>
