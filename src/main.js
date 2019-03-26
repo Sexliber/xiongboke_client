@@ -50,6 +50,27 @@ Vue.filter('textLength',
       return value.substring(0, length) + '...';
     }
   });
+//过滤器,时间修饰
+Vue.filter('dateMod', function (value) {
+  let oldDate = new Date(value);
+  let newDate = new Date();
+  let dif = newDate - oldDate;
+  if (dif / 1000 / 60 / 60 / 24 / 30 > 1) {
+    return `${parseInt(dif / 1000 / 60 / 60 / 24 / 30)}个月前`;
+  } else {
+    if (dif / 1000 / 60 / 60 / 24 > 1) {
+      return `${parseInt(dif / 1000 / 60 / 60 / 24)}天前`;
+    } else {
+      if (dif / 1000 / 60 / 60 > 1) {
+        return `${parseInt(dif / 1000 / 60 / 60)}个小时之前`;
+      } else {
+        if (dif / 1000 / 60 > 1) {
+          return `${parseInt(dif / 1000 / 60)}分钟以前`;
+        }
+      }
+    }
+  }
+});
 // Vue全局配置=>E
 
 // 引入并且渲染App视图<=S
