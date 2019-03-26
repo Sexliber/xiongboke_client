@@ -2,7 +2,7 @@
   <div class="bg-white softs">
     <div class="col-sm-4 col-xs-6">
       <div class="pic">
-        <router-link :to="routerLink">
+        <router-link :to="{path:'writes',query:{id:DataSofts.id}}">
           <img :src="DataSofts.thumbnail">
           <p class="tag white bg-black" v-text="DataSofts.tag">
             <!-- 标签名 -->
@@ -32,7 +32,7 @@
             <!-- 浏览数量 -->
           </span>
         </div>
-        <router-link :to="routerLink" class="more hidden-xs white bg-black">
+        <router-link :to="{path:'writes',query:{id:DataSofts.id}}" class="more hidden-xs white bg-black">
           <span class="fa fa-eye clearboth">
             <span>查看更多</span>
           </span>
@@ -45,22 +45,8 @@
 
 
 <script>
-// url解析工具
-import urlLib from "url";
-
 export default {
   name: "Softs",
-  data() {
-    return {
-      urlLib,
-      routerLink: {
-        path: "writes",
-        query: {
-          id: this.DataSofts.id
-        }
-      }
-    };
-  },
   props: ["DataSofts"]
 };
 </script>
@@ -169,10 +155,11 @@ export default {
   width: 100%;
   transition: all 100ms linear;
 }
-.softs .info .more > span:hover::before{
-    width: 30%;
-}.softs .info .more > span:hover span{
-    width: 70%;
+.softs .info .more > span:hover::before {
+  width: 30%;
+}
+.softs .info .more > span:hover span {
+  width: 70%;
 }
 </style>
 

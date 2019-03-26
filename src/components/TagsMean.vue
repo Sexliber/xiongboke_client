@@ -101,7 +101,6 @@ export default {
   background-color: #404040;
   padding: 20px;
   margin: -1px -1px 1px -1px;
-  border: 1px solid #ddd;
   font-weight: 600;
 }
 .right-bar .title span{

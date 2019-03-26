@@ -10,7 +10,7 @@
           <ul>
             <li v-for="(item,key) in getData" :key="key">
               <i aria-hidden="true" class="fa fa-link"></i>
-              <router-link :to="{ptah:'writes',query:{id:item.id}}" v-text="item.title" class="darkgray link"/>
+              <router-link :to="{path:'/writes',query:{id:item.id}}" v-text="item.title" class="darkgray link"/>
             </li>
           </ul>
         </div>
@@ -52,7 +52,6 @@ export default {
   background-color: #404040;
   padding: 20px;
   margin: -1px -1px 1px -1px;
-  border: 1px solid #ddd;
   font-weight: 600;
 }
 .right-bar .title span{

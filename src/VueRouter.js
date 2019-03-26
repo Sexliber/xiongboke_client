@@ -1,7 +1,8 @@
 // 组件引入<=S
 import HomePage from "./pages/HomePage";
-import divC from "./pages/DivC";
 import HeadReplayBanner from "./components/HeadReplayBanner";
+import divC from "./pages/DivC";
+import Writes from "./pages/Writes";
 // 组件引入=>E
 
 // 引入路由器模块
@@ -14,6 +15,7 @@ export default new VueRouter({
         { path: "/", component: HomePage },
         {
             path: "/contact", component: divC, children: [{ path: "laji", component: HeadReplayBanner }]
-        }
+        },
+        { path: "/writes", component: Writes }
     ]
 });

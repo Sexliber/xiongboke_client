@@ -52,7 +52,7 @@
         </div>
         <div class="container-fluid">
           <transition-group appear tag="div" class="row">
-            <div v-for="(item,key) in writesArr" :key="key" class="col-md-4 col-sm-6 padding1">
+            <div v-for="(item,key) in writesArr" :key="key" class="col-md-3 col-sm-4 col-xs-6 padding1">
               <writes :writes-data="item"/>
             </div>
           </transition-group>
@@ -82,25 +82,38 @@
                 <!-- 轮播图组件 -->
                 <image-replay-banner class="padding1"/>
               </transition>
-              <!-- 软件模块数据<=S -->
+              <!-- 软件<=S -->
               <transition-group tag="div">
                 <div v-for="(item,key) in softsArr" :key="key" class="padding1">
                   <softs :data-softs="item"/>
                 </div>
               </transition-group>
-              <!-- 软件模块数据=>E -->
+              <!-- 软件=>E -->
             </div>
             <div class="col-md-4">
-              <!-- 标签菜单<=S -->
-              <div class="padding1">
-                <tags-mean/>
+              <div class="row">
+                <!-- 标签菜单<=S -->
+                <transition>
+                  <div class="col-sm-6 col-md-12 padding1">
+                    <tags-mean/>
+                  </div>
+                </transition>
+                <!-- 标签菜单=>E -->
+                <!-- 推荐菜单<=S -->
+                <transition>
+                  <div class="col-sm-6 col-md-12 padding1">
+                    <recommend/>
+                  </div>
+                </transition>
+                <!-- 推荐菜单=>E -->
+                <!-- 优选内容<=S -->
+                <transition>
+                  <div class="col-sm-6 col-md-12 padding1">
+                    <optimi/>
+                  </div>
+                </transition>
+                <!-- 优选内容=>E -->
               </div>
-              <!-- 标签菜单=>E -->
-              <!-- 推荐菜单<=S -->
-              <div class="padding1">
-                <recommend/>
-              </div>
-              <!-- 推荐菜单=>E -->
             </div>
           </div>
         </div>
@@ -124,6 +137,7 @@ import ImageReplayBanner from "../components/ImageReplayBanner";
 import Softs from "../components/Softs";
 import TagsMean from "../components/TagsMean";
 import Recommend from "../components/Recommend";
+import Optimi from "../components/Optimi";
 // 引入组件=>E
 
 // axios请求工具
@@ -289,11 +303,13 @@ export default {
     ImageReplayBanner,
     Softs,
     TagsMean,
-    Recommend
+    Recommend,
+    Optimi
   },
   // 该组件data对象加载完毕后开始请求数据
   created() {
     // 请求最新文章数据
+    // 需要的列名参数:id,tag,thumbnail,title,date,visitors,comments,assists,chathead,username
     axios.get(global.webRoot + "virtualData/data-demo.json").then(response => {
       this.writesArr = response.data;
     });
