@@ -22,8 +22,9 @@
       <div class="info clearboth">
         <div class="date">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
-          <span v-text="DataSofts.date">
+          <span>
             <!-- 日期 -->
+            {{DataSofts.date | dateMod}}
           </span>
         </div>
         <div class="visitors">
@@ -46,7 +47,7 @@
 
 <script>
 export default {
-  name: "Softs",
+  name: "WritesBanner",
   props: ["DataSofts"]
 };
 </script>

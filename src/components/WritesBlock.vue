@@ -30,7 +30,7 @@
           <img class="chathead" :src="WritesData.chathead"/>
           <span class="white" v-text="WritesData.username"/>
           <span class="date">
-            <span v-cloak>{{WritesData.date}}</span>
+            <span v-cloak>{{WritesData.date | dateMod}}</span>
           </span>
         </div>
       </div>
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-  name: "Writes",
+  name: "WritesBlock",
   props: ["WritesData"]
 };
 </script>

@@ -18,7 +18,7 @@
           <h1>New Works</h1>
           <p>Here are some of my works.</p>
           <p>
-            <a :href="webRoot" class="btn btn-large">最新作品</a>
+            <router-link :to="{path:'/designs'}" class="btn btn-large">最新作品</router-link>
           </p>
         </div>
       </div>
@@ -31,7 +31,7 @@
           <h1>Soft and Tools</h1>
           <p>Here are some of my soft and tools.</p>
           <p>
-            <a :href="webRoot" class="btn btn-large">工具软件</a>
+            <router-link :to="{path:'/softs'}" class="btn btn-large">工具软件</router-link>
           </p>
         </div>
       </div>
@@ -44,7 +44,7 @@
           <h1>Code Record</h1>
           <p>There is my code.</p>
           <p>
-            <a :href="webRoot" class="btn btn-large">代码审计</a>
+            <router-link :to="{path:'/codes'}" class="btn btn-large">代码审计</router-link>
           </p>
         </div>
       </div>
@@ -57,7 +57,7 @@
           <h1>Cartoons</h1>
           <p>Here are some of movie and cartoons.</p>
           <p>
-            <a :href="webRoot" class="btn btn-large">影视动漫</a>
+            <router-link :to="{path:'/cartoon'}" class="btn btn-large">影视动漫</router-link>
           </p>
         </div>
       </div>
@@ -93,8 +93,6 @@ export default {
   name: "HeadReplayBanner",
   data() {
     return {
-      //网站根目录
-      webRoot: global.webRoot,
       // banner文字动画类控制
       isClass: false,
       interval: null

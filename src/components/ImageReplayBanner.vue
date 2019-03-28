@@ -30,19 +30,12 @@
 
 
 <script>
-// axios请求模块
-import axios from "axios";
-//url地址解析模块
-import urlLib from "url";
-// 全局配置模块
-import global from "../VueGlobal";
 
 export default {
   name: "ImageReplayBanner",
   data: function() {
     return {
-      getData: [0],
-      urlLib
+      getData: [0]
     };
   },
   directives: {
@@ -56,7 +49,7 @@ export default {
   },
   created() {
     // 请求热门软件数据
-    axios.get(global.webRoot + "virtualData/hot-demo.json").then(response => {
+    this.axios.get("virtualData/hot-demo.json").then(response => {
       this.getData = response.data;
     });
   }

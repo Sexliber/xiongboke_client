@@ -1,8 +1,8 @@
 // 组件引入<=S
 import HomePage from "./pages/HomePage";
 import HeadReplayBanner from "./components/HeadReplayBanner";
-import divC from "./pages/DivC";
 import Writes from "./pages/Writes";
+import divC from "./pages/DivC";
 // 组件引入=>E
 
 // 引入路由器模块

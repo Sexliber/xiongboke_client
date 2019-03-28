@@ -1,8 +1,16 @@
 // 引入babel-polyfill模块
 import 'babel-polyfill';
 
+// 引入全局模块
+import global from './VueGlobal';
+
 // 引入Vue模块
 import Vue from 'vue';
+
+// 引入axios请求模块并配置到Vue全局属性
+import axios from 'axios';
+axios.defaults.baseURL = global.BASE_URL;
+Vue.prototype.axios = axios;
 
 // 引入Vuescroll模块并且全局配置参数<=S
 import vuescroll from 'vuescroll';

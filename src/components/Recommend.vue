@@ -22,10 +22,6 @@
 
 
 <script>
-// 请求模块
-import axios from "axios";
-//全局模块
-import global from "../VueGlobal";
 
 export default {
   name: "Recommend",
@@ -35,7 +31,7 @@ export default {
     };
   },
   created() {
-    axios.get(global.webRoot + "virtualData/recom-demo.json").then(response => {
+    this.axios.get("virtualData/recom-demo.json").then(response => {
       this.getData = response.data;
     });
   }

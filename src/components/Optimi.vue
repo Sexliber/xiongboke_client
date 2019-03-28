@@ -44,8 +44,6 @@
 
 
 <script>
-import axios from "axios";
-import global from "../VueGlobal";
 export default {
   name: "Optimi",
   data: function() {
@@ -64,7 +62,7 @@ export default {
     }
   },
   created() {
-    axios.get(global.webRoot + "virtualData/hot-demo.json").then(response => {
+    this.axios.get("virtualData/hot-demo.json").then(response => {
       this.getData = response.data;
       let i = 0;
       for (i in response.data) {

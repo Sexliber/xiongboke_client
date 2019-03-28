@@ -87,11 +87,10 @@
 
 
 <script>
-import global from "../VueGlobal";
-
 export default {
   name: "PageHeader",
   data() {
+    
     return {
       //首选分类数据=>S
       links: [
@@ -435,7 +434,7 @@ header {
 }
 
 .mean-logo {
-  margin: 54px auto;
+  margin: 54px 70px;
   text-align: center;
 }
 
