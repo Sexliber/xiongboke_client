@@ -3,8 +3,10 @@
     <!-- 页头 -->
     <page-header/>
 
-    <!-- 路由器分支 -->
-    <router-view/>
+    <div class="content-container">
+      <!-- 路由器分支 -->
+      <router-view/>
+    </div>
 
     <!-- 页脚 -->
     <page-footer/>

@@ -2,7 +2,8 @@
 import HomePage from "./pages/HomePage";
 import HeadReplayBanner from "./components/HeadReplayBanner";
 import Writes from "./pages/Writes";
-import divC from "./pages/DivC";
+import PageNotFound from "./pages/404";
+import Contact from "./pages/Contact";
 // 组件引入=>E
 
 // 引入路由器模块
@@ -12,10 +13,16 @@ export default new VueRouter({
     mode: "history",
     base: __dirname,
     routes: [
+        // 首页
         { path: "/", component: HomePage },
+        // 我的信息
         {
-            path: "/contact", component: divC, children: [{ path: "laji", component: HeadReplayBanner }]
+            path: "/contact", component: Contact, children: [{ path: "laji", component: HeadReplayBanner }]
         },
-        { path: "/writes", component: Writes }
+        // 文章页面
+        { path: "/writes", component: Writes },
+        // 404页面
+        { path: "/404", component: PageNotFound },
+        { path: "*", redirect: "/404" }
     ]
 });

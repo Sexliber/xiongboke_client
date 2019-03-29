@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-text="$route.query.id"></h1>
+    <h1>404:page not found</h1>
   </div>
 </template>
 
@@ -8,10 +8,7 @@
 
 <script>
 export default {
-  name: "Writes",
-  data() {
-    return {};
-  }
+  name: "404"
 };
 </script>
 
@@ -20,5 +17,6 @@ export default {
 <style>
 * {
   margin: 0;
+  padding: 0;
 }
 </style>

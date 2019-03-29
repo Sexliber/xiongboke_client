@@ -33,7 +33,7 @@ ul, li {
 	list-style: none;
 }
 
-.padding1{
+.padding1 {
 	padding: 1;
 }
 
@@ -77,7 +77,7 @@ a:hover {
 	font-weight: 500;
 	overflow: hidden;
 	text-overflow: ellipsis;
-    word-break: break-all;
+	word-break: break-all;
 }
 
 .text {
@@ -127,7 +127,7 @@ a:hover {
 	background-color: rgba(0, 0, 0, .4)
 }
 
-.line1{
+.line1 {
 	overflow: hidden;
 	text-overflow: hidden;
 	word-wrap: break-word;
@@ -138,13 +138,54 @@ a:hover {
 	z-index: 99 !important;
 }
 
+/* 页面载入动画<=S */
+
+.loading {
+	position: relative;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.loading::before {
+	display: block;
+	position: absolute;
+	content: "";
+	z-index: 998;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	line-height: 100vh;
+	background-color: #383838;
+}
+
+.loading::after {
+	z-index: 999;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin: -24px -31px;
+	content: "\f1ce";
+	color: #ffc815;
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
+	width: 1.28571429em;
+	text-align: center;
+	font: normal normal normal 48px/1 FontAwesome;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* 页面载入动画=>E */
+
 /* ***内容盒子***<=S */
 
 .content-container {
 	position: relative;
 	width: calc(100% - 140px);
 	margin: auto;
-	overflow-x: hidden;
+	overflow: hidden;
 	height: 100vh;
 }
 

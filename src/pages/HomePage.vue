@@ -1,19 +1,15 @@
 <template>
-  <!-- 内容容器=>S -->
-  <div class="content-container">
-    <!-- vue-scroll滚动组件 -->
-    <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
-      <!-- 头部轮播组件 -->
-      <head-replay-banner/>
-      <!-- 响应式滚动内容页 -->
-      <flex-title-anima
-        :nav-name="navName"
-        :get-is-active="flexTitleAnimaIsActive"
-        :progress-bar-width="progressBarWidth"
-      />
-    </vue-scroll>
-  </div>
-  <!-- 内容容器=>E -->
+  <!-- vue-scroll滚动组件 -->
+  <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
+    <!-- 头部轮播组件 -->
+    <head-replay-banner/>
+    <!-- 响应式滚动内容页 -->
+    <flex-title-anima
+      :nav-name="navName"
+      :get-is-active="flexTitleAnimaIsActive"
+      :progress-bar-width="progressBarWidth"
+    />
+  </vue-scroll>
 </template>
 
 
