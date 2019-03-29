@@ -120,7 +120,7 @@
                 <!-- 网易云漫画<=S -->
                 <transition>
                   <div class="col-sm-6 col-md-12 padding1">
-                    <cloud-comics/>
+                    <tencent-comics/>
                   </div>
                 </transition>
                 <!-- 网易云漫画=>E -->
@@ -149,7 +149,7 @@ import WritesBanner from "../components/WritesBanner";
 import TagsMean from "../components/TagsMean";
 import Recommend from "../components/Recommend";
 import Optimi from "../components/Optimi";
-import CloudComics from "../components/CloudComics";
+import TencentComics from "../components/TencentComics";
 // 引入组件=>E
 
 // 内容块里面每个类元素距离的offsetTop值
@@ -312,7 +312,7 @@ export default {
     TagsMean,
     Recommend,
     Optimi,
-    CloudComics
+    TencentComics
   },
   // 该组件data对象加载完毕后开始请求数据
   created() {

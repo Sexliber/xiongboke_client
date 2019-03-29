@@ -57,9 +57,11 @@ export default {
       this.getData = response.data.commendComicList;
     });
 
-    this.axios.get("/cloudHeadline").then(response=>{
-      console.log(response.data.T1467284926140)
-    });
+    // 获取本地服务器
+    this.axios.get("/bendifuwuqi").then(response=>{
+      console.log(response)
+      console.log("请求完成");
+    })
   }
 };
 </script>
@@ -102,6 +104,11 @@ export default {
 }
 .comic:hover .border {
   display: block;
+}
+.pic{
+  height: 260px;
+  overflow: hidden;
+  background-color: #404040;
 }
 .content {
   background-color: #404040;
