@@ -98,32 +98,32 @@
               <div class="row">
                 <!-- 标签菜单<=S -->
                 <transition>
-                  <div class="col-sm-6 col-md-12 padding1">
+                  <div class="col-md-12 padding1">
                     <tags-mean/>
                   </div>
                 </transition>
                 <!-- 标签菜单=>E -->
-                <!-- 推荐菜单<=S -->
-                <transition>
-                  <div class="col-sm-6 col-md-12 padding1">
-                    <recommend/>
-                  </div>
-                </transition>
-                <!-- 推荐菜单=>E -->
                 <!-- 优选内容<=S -->
                 <transition>
-                  <div class="col-sm-6 col-md-12 padding1">
+                  <div class="col-md-12 padding1">
                     <optimi/>
                   </div>
                 </transition>
                 <!-- 优选内容=>E -->
-                <!-- 网易云漫画<=S -->
+                <!-- 腾讯漫画<=S -->
                 <transition>
-                  <div class="col-sm-6 col-md-12 padding1">
+                  <div class="col-md-12 padding1">
                     <tencent-comics/>
                   </div>
                 </transition>
-                <!-- 网易云漫画=>E -->
+                <!-- 腾讯漫画=>E -->
+                <!-- 网易云音乐<=S -->
+                <transition>
+                  <div class="col-md-12 padding1">
+                    <netease-music/>
+                  </div>
+                </transition>
+                <!-- 网易云音乐=>E -->
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ import WritesBlock from "../components/WritesBlock";
 import ImageReplayBanner from "../components/ImageReplayBanner";
 import WritesBanner from "../components/WritesBanner";
 import TagsMean from "../components/TagsMean";
-import Recommend from "../components/Recommend";
+import NeteaseMusic from "../components/NeteaseMusic";
 import Optimi from "../components/Optimi";
 import TencentComics from "../components/TencentComics";
 // 引入组件=>E
@@ -310,19 +310,18 @@ export default {
     ImageReplayBanner,
     WritesBanner,
     TagsMean,
-    Recommend,
+    NeteaseMusic,
     Optimi,
     TencentComics
   },
   // 该组件data对象加载完毕后开始请求数据
   created() {
     // 请求最新文章数据
-    // 需要的列名参数:id,tag,thumbnail,title,date,visitors,comments,assists,chathead,username
-    this.axios.get("virtualData/data-demo.json").then(response => {
+    this.axios.get("getPublicData").then(response => {
       this.writesArr = response.data;
     });
     //请求实用软件数据
-    this.axios.get("virtualData/data-demo.json").then(response => {
+    this.axios.get("getPublicData").then(response => {
       this.softsArr = response.data;
     });
   }

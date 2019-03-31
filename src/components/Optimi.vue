@@ -62,7 +62,7 @@ export default {
     }
   },
   created() {
-    this.axios.get("virtualData/hot-demo.json").then(response => {
+    this.axios.get("getPublicData").then(response => {
       this.getData = response.data;
       let i = 0;
       for (i in response.data) {

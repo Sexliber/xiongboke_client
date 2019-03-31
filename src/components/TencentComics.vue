@@ -14,7 +14,7 @@
               :href="'http://ac.qq.com/Comic/comicInfo/id/'+item.id"
               target="_blank"
             >
-              <li class="comic col-sm-6 col-xs-6">
+              <li class="comic col-sm-4 col-md-6 col-xs-6">
                 <div class="pic">
                   <img :src="item.pic" alt>
                 </div>
@@ -30,7 +30,9 @@
                     />
                   </div>
                 </div>
-                <div class="border"/>
+                <div class="border">
+                  <div></div>
+                </div>
               </li>
             </a>
           </ul>
@@ -53,15 +55,9 @@ export default {
   },
   created() {
     // 获取腾讯漫画数据,adpos为必须项,num为请求的数据长度
-    this.axios.get("/tencentComic/?adpos=1241&num=8").then(response => {
-      this.getData = response.data.commendComicList;
+    this.axios.get("tencentComic?num=12").then(response => {
+      this.getData = response.data;
     });
-
-    // 获取本地服务器
-    this.axios.get("/bendifuwuqi").then(response=>{
-      console.log(response)
-      console.log("请求完成");
-    })
   }
 };
 </script>
@@ -96,16 +92,15 @@ export default {
 }
 .comic .border {
   position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
+  padding: 1px;
+  top: 1px;left: 1px;right: 2px;bottom: 1px;
   border: 4px solid #ffc815;
   display: none;
 }
 .comic:hover .border {
   display: block;
 }
-.pic{
+.pic {
   height: 260px;
   overflow: hidden;
   background-color: #404040;

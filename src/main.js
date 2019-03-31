@@ -7,10 +7,16 @@ import global from './VueGlobal';
 // 引入Vue模块
 import Vue from 'vue';
 
+
+
+
 // 引入axios请求模块并配置到Vue全局属性
 import axios from 'axios';
 axios.defaults.baseURL = global.BASE_URL;
 Vue.prototype.axios = axios;
+
+
+
 
 // 引入Vuescroll模块并且全局配置参数<=S
 import vuescroll from 'vuescroll';
@@ -46,7 +52,10 @@ Vue.use(vuescroll, {
 });
 // 引入Vuescroll模块并且全局配置参数=>E
 
-// Vue全局配置<=S
+
+
+
+// Vue全局过滤器<=S
 // 过滤器,字数限制,去除换行符和空格
 Vue.filter('textLength',
   function (value, length) {
@@ -79,7 +88,24 @@ Vue.filter('dateMod', function (value) {
     }
   }
 });
-// Vue全局配置=>E
+// 过滤器,整数0占位到指定长度
+Vue.filter('numPlace', function (value, length) {
+  let mtp = 1;
+  let numPlace = "";
+  for (let i = 0; i < length; i++) {
+    if (parseInt(value) / mtp < 1) {
+      numPlace = 0 + numPlace;
+    } else {
+      numPlace = parseInt(value) % 10 + numPlace;
+    }
+    mtp *= 10;
+  }
+  return numPlace;
+});
+// Vue全局过滤器=>E
+
+
+
 
 // 引入并且渲染App视图<=S
 import App from './App';

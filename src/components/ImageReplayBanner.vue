@@ -49,7 +49,7 @@ export default {
   },
   created() {
     // 请求热门软件数据
-    this.axios.get("virtualData/hot-demo.json").then(response => {
+    this.axios.get("getPublicData").then(response => {
       this.getData = response.data;
     });
   }

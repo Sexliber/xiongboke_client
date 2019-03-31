@@ -154,12 +154,13 @@ export default {
   position: relative;
   left: 50%;
   margin-left: -5000px;
+  background-color: #404040;
 }
 
 .carousel-inner .pic img {
   display: block;
   z-index: -1;
-  height: 100%;
+  height: 110%;
   width: auto;
   margin: 0 auto;
 }
