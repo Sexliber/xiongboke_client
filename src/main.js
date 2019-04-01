@@ -90,15 +90,10 @@ Vue.filter('dateMod', function (value) {
 });
 // 过滤器,整数0占位到指定长度
 Vue.filter('numPlace', function (value, length) {
-  let mtp = 1;
-  let numPlace = "";
-  for (let i = 0; i < length; i++) {
-    if (parseInt(value) / mtp < 1) {
-      numPlace = 0 + numPlace;
-    } else {
-      numPlace = parseInt(value) % 10 + numPlace;
-    }
-    mtp *= 10;
+  let mtp = length - value.toString().length;
+  let numPlace = value.toString();
+  for (let i = 0; i < mtp; i++) {
+    numPlace = 0 + numPlace;
   }
   return numPlace;
 });

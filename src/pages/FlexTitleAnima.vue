@@ -244,7 +244,6 @@ export default {
       }
 
       //数组内容加减
-
       this.titleFlexClear = setInterval(() => {
         let flag = this.calc(this.word, word);
         if (flag) {
@@ -522,7 +521,6 @@ var resetClassEleTop = function(el) {
   margin: 0;
   overflow: visible;
   height: auto;
-  background-color: #eee;
 }
 
 .content-container > div {

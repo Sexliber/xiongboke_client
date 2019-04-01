@@ -2,7 +2,7 @@
   <div>
     <div class="optimi-bar right-bar">
       <div class="bg-white">
-        <div class="title white">
+        <div class="title white bg-black">
           <i aria-hidden="true" class="fa fa-list-ul"></i>
           <span>优选内容</span>
         </div>
@@ -84,9 +84,8 @@ export default {
   border: 1px solid #ddd;
 }
 .right-bar .title {
-  background-color: #404040;
   padding: 20px;
-  margin: -1px -1px 1px -1px;
+  margin: 0;
   font-weight: 600;
 }
 .right-bar .title span {

@@ -103,7 +103,7 @@ a:hover {
 }
 
 .bg-white {
-	background-color: #fff;
+	background-color: rgba(255,255,255,.95);
 }
 
 .bg-grayalpha {
@@ -111,7 +111,7 @@ a:hover {
 }
 
 .bg-black {
-	background-color: #333;
+	background-color: #222222;
 }
 
 .bg-yellow {
@@ -129,7 +129,7 @@ a:hover {
 
 .line1 {
 	overflow: hidden;
-	text-overflow: hidden;
+	text-overflow: ellipsis;
 	word-wrap: break-word;
 	white-space: nowrap;
 }

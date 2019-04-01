@@ -2,11 +2,11 @@
   <div>
     <div class="recom-bar right-bar">
       <div class="bg-white">
-        <div class="title white">
+        <div class="title white bg-black">
           <i aria-hidden="true" class="fa fa-list-ul"></i>
           <span>腾讯漫画</span>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid background" :style="{backgroundImage:`url(${background})`}">
           <ul class="row list">
             <a
               v-for="(item,key) in getData"
@@ -15,10 +15,10 @@
               target="_blank"
             >
               <li class="comic col-sm-4 col-md-6 col-xs-6">
-                <div class="pic">
+                <div class="pic bg-black">
                   <img :src="item.pic" alt>
                 </div>
-                <div class="content">
+                <div class="content bg-black">
                   <h3 class="title white line1" v-text="item.less_title"/>
                   <p class="intrd line1" v-text="item.intrd"/>
                   <div class="tag">
@@ -45,12 +45,14 @@
 
 
 <script>
+import global from "../VueGlobal";
+
 export default {
   name: "CloudComics",
   data: function() {
     return {
-      getData: [0],
-      tags: [0]
+      background:global.TencentComicBg,
+      getData: [0]
     };
   },
   created() {
@@ -69,9 +71,8 @@ export default {
   border: 1px solid #ddd;
 }
 .right-bar .title {
-  background-color: #404040;
   padding: 20px;
-  margin: -1px -1px 1px -1px;
+  margin: 0;
   font-weight: 600;
 }
 .right-bar .title span {
@@ -93,20 +94,15 @@ export default {
 .comic .border {
   position: absolute;
   padding: 1px;
-  top: 1px;left: 1px;right: 2px;bottom: 1px;
+  top: 1px;
+  left: 1px;
+  right: 2px;
+  bottom: 1px;
   border: 4px solid #ffc815;
   display: none;
 }
 .comic:hover .border {
   display: block;
-}
-.pic {
-  height: 260px;
-  overflow: hidden;
-  background-color: #404040;
-}
-.content {
-  background-color: #404040;
 }
 .content .title {
   background-color: transparent !important;

@@ -116,13 +116,12 @@ export default {
 
 
 <style scoped>
-header,
-footer {
+header {
   position: fixed;
   top: 0;
   height: 100vh;
   width: 70px;
-  background-color: #383838;
+  background-color: #222222;
 }
 
 header {

@@ -1,20 +1,24 @@
 <template>
   <!-- vue-scroll滚动组件 -->
   <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
-    <!-- 头部轮播组件 -->
-    <head-replay-banner/>
-    <!-- 响应式滚动内容页 -->
-    <flex-title-anima
-      :nav-name="navName"
-      :get-is-active="flexTitleAnimaIsActive"
-      :progress-bar-width="progressBarWidth"
-    />
+    <div class="background" :style="{backgroundImage:`url(${background})`}">
+      <!-- 头部轮播组件 -->
+      <head-replay-banner/>
+      <!-- 响应式滚动内容页 -->
+      <flex-title-anima
+        :nav-name="navName"
+        :get-is-active="flexTitleAnimaIsActive"
+        :progress-bar-width="progressBarWidth"
+      />
+    </div>
   </vue-scroll>
 </template>
 
 
 
 <script>
+// 全局配置
+import global from "../VueGlobal";
 //头部轮播组件
 import HeadReplayBanner from "../components/HeadReplayBanner";
 //响应式滚动标题栏
@@ -28,13 +32,15 @@ export default {
   // 组件私有数据
   data() {
     return {
+      // 背景图片地址
+      background: global.FullPageBg,
       // 响应式滚动标题导航栏命名
       navName: [
         { en: "writes", zh: "最新文章" },
         { en: "softs", zh: "实用软件" },
-        { en: "designs", zh: "最新设计" },
+        { en: "codes", zh: "代码审计" },
         { en: "pages", zh: "网页实例" },
-        { en: "codes", zh: "代码审计" }
+        { en: "designs", zh: "最新设计" }
       ],
       // 响应式浮动标题栏active类控制器
       flexTitleAnimaIsActive: [
@@ -122,3 +128,13 @@ export default {
 };
 </script>
 
+
+
+<style>
+.background {
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+</style>

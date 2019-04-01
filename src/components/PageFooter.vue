@@ -56,7 +56,7 @@ footer {
   position: fixed;
   width: 70px;
   height: 100%;
-  background: #404040;
+  background: #222222;
   border-left: 1px solid rgba(255, 255, 255, 0.21);
   top: 0;
   right: 0;

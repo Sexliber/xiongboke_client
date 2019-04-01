@@ -71,8 +71,8 @@ export default {
   position: absolute;
   left: 0;
   padding: 8px 0;
-  color: #404040;
-  background-color: #404040;
+  color: #222222;
+  background-color: #222222;
 }
 .softs .pic {
   position: relative;
