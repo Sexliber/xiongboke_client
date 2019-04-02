@@ -4,35 +4,24 @@
       <div class="bg-pic">
         <img :src="WritesData.thumbnail">
       </div>
-      <div class="content bg-white">
-        <div class="title darkgray">
-          <span v-text="WritesData.title"/>
-        </div>
-        <div class="tag lightgray">
-          <span v-cloak>{{WritesData.tag}}</span>
-        </div>
-        <div class="visitor lightgray">
-          <span class="click">
-            <i class="fa fa-eye" aria-hidden="true"></i>
-            <span v-text="WritesData.visitors"/>
-          </span>
-          <span class="comment">
-            <i class="fa fa-commenting-o" aria-hidden="true"></i>
-            <span v-text="WritesData.comments"/>
-          </span>
-          <span class="assist">
-            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-            <span v-text="WritesData.assists"/>
-          </span>
-        </div>
-        <hr>
-        <div class="info bg-black clearboth">
-          <img class="chathead" :src="WritesData.chathead"/>
-          <span class="white" v-text="WritesData.username"/>
-          <span class="date">
-            <span v-cloak>{{WritesData.date | dateMod}}</span>
-          </span>
-        </div>
+    </div>
+    <div class="content bg-white">
+      <div class="title darkgray">
+        <span v-text="WritesData.title"/>
+      </div>
+      <div class="visitor lightgray">
+        <span class="click">
+          <i class="fa fa-eye" aria-hidden="true"></i>
+          <span v-text="WritesData.visitors"/>
+        </span>
+        <span class="comment">
+          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+          <span v-text="WritesData.comments"/>
+        </span>
+        <span class="assist">
+          <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+          <span v-text="WritesData.assists"/>
+        </span>
       </div>
     </div>
   </router-link>
@@ -87,10 +76,15 @@ export default {
   font-size: 14px;
 }
 .title {
-  padding: 8px 12px 2px;
+  padding: 10px 15px 15px;
   font-size: 16px;
+  line-height: 27px;
+  text-align: left;
+  height: 66px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   overflow: hidden;
-  white-space: nowrap;
 }
 .visitor {
   padding-left: 10px;
@@ -104,9 +98,6 @@ export default {
 }
 i {
   margin-right: 4px;
-}
-hr {
-  margin: 0;
 }
 .chathead {
   height: 24px;

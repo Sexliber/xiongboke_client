@@ -34,7 +34,7 @@ ul, li {
 }
 
 .padding1 {
-	padding: 1;
+	padding: 1px !important;
 }
 
 .container-fluid {
@@ -87,11 +87,11 @@ a:hover {
 }
 
 .darkgray {
-	color: rgb(51, 51, 51);
+	color: #222222;
 }
 
 .lightgray {
-	color: rgb(102, 102, 102);
+	color: #404040;
 }
 
 .white {
@@ -103,7 +103,7 @@ a:hover {
 }
 
 .bg-white {
-	background-color: rgba(255,255,255,.95);
+	background-color: rgba(255,255,255,.9);
 }
 
 .bg-grayalpha {
@@ -111,7 +111,7 @@ a:hover {
 }
 
 .bg-black {
-	background-color: #222222;
+	background-color: rgba(17, 17, 17, .9);
 }
 
 .bg-yellow {

@@ -1,11 +1,11 @@
 # xiongboke
 
-## Project setup
+## 安装项目依赖
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 运行VUE项目开发环境
 ```
 yarn run serve
 ```

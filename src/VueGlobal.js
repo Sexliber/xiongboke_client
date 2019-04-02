@@ -7,9 +7,5 @@ export default {
     // 网站根目录
     BASE_URL: "http://www.xiongboke.com",
     // 整页背景
-    FullPageBg:"http://i2.hdslb.com/bfs/archive/40a1c8fe2941b607eec615a6697cff818298c2e7.jpg",
-    // 腾讯漫画组件背景
-    TencentComicBg:"http://b-ssl.duitang.com/uploads/item/201602/22/20160222133653_PATXJ.thumb.700_0.jpeg",
-    //网易云音乐组件背景
-    NeteaseMusicBg:"https://hbimg.huabanimg.com/007785503504b3e70108f0d35eac08c725ff8b2bdbe33-ivcNKV_fw658",
+    FullPageBg:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554179280430&di=f95b9060c536837614b87cff91f3c6a1&imgtype=0&src=http%3A%2F%2Fclubimg.club.vmall.com%2Fdata%2Fattachment%2Fforum%2F201811%2F21%2F093948xyt7oconm4aoui44.jpg"
 }

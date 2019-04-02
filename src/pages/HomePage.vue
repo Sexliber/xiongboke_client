@@ -32,7 +32,7 @@ export default {
   // 组件私有数据
   data() {
     return {
-      // 背景图片地址
+      // 背景图片
       background: global.FullPageBg,
       // 响应式滚动标题导航栏命名
       navName: [
@@ -130,11 +130,9 @@ export default {
 
 
 
-<style>
+<style scoped>
 .background {
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: center;
   background-size: cover;
+  background-attachment: fixed;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mean-bar right-bar">
-      <div class="bg-white">
+      <div>
         <div class="title white bg-black">
           <i class="fa fa-list-ul" aria-hidden="true"></i>
           <span>内容导航</span>
@@ -9,7 +9,7 @@
         <div class="list">
           <ul class="clearboth">
             <li v-for="(item,key) in itemList" :key="key">
-              <router-link :to="item.routerLink" v-text="item.title"/>
+              <router-link :to="item.routerLink" class="white" v-text="item.title"/>
             </li>
           </ul>
         </div>
@@ -94,19 +94,17 @@ export default {
 
 
 <style scoped>
-.bg-white {
-  border: 1px solid #ddd;
-}
 .right-bar .title {
   padding: 20px;
   margin: 0;
   font-weight: 600;
 }
-.right-bar .title span{
+.right-bar .title span {
   margin-left: 10px;
 }
 .right-bar .list {
   padding: 20px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.85));
 }
 .mean-bar ul {
   padding: 1px 0 0 1px;
@@ -119,7 +117,7 @@ export default {
   margin: -1px 0 0 -1px;
 }
 .mean-bar li:hover {
-  border-color: rgba(0,0,0,0);
+  border-color: rgba(0, 0, 0, 0);
   background-color: #ffc815;
 }
 .mean-bar li a {
@@ -129,9 +127,8 @@ export default {
   text-decoration: none;
   height: 100%;
   width: 100%;
-  color: rgb(51, 51, 51);
 }
-.mean-bar li:hover a{
+.mean-bar li:hover a {
   color: #fff;
 }
 </style>

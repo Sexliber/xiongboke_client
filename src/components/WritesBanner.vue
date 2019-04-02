@@ -33,7 +33,10 @@
             <!-- 浏览数量 -->
           </span>
         </div>
-        <router-link :to="{path:'writes',query:{id:DataSofts.id}}" class="more hidden-xs white bg-black">
+        <router-link
+          :to="{path:'writes',query:{id:DataSofts.id}}"
+          class="more hidden-xs white bg-black"
+        >
           <span class="fa fa-eye clearboth">
             <span>查看更多</span>
           </span>
@@ -55,6 +58,14 @@ export default {
 
 
 <style scoped>
+.fa {
+  margin-right: 4px;
+}
+.title {
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 600;
+}
 .softs {
   position: relative;
   padding: 24px 0;
@@ -99,18 +110,20 @@ export default {
   bottom: 24px;
 }
 .softs .text {
-  position: absolute;
-  top: 24px;
-  bottom: 31px;
-  text-overflow: ellipsis;
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: left;
+  height: 80px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   overflow: hidden;
 }
 .softs .info {
-  position: absolute;
-  bottom: 0;
+  position: relative;
   width: 100%;
   margin-bottom: -16px;
-  right: 0;
 }
 .softs .info .date,
 .softs .info .visitors {
@@ -161,6 +174,20 @@ export default {
 }
 .softs .info .more > span:hover span {
   width: 70%;
+}
+@media screen and (max-width: 500px) and (min-width: 0) {
+  .title {
+    white-space: normal;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    height: 62px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
 }
 </style>
 

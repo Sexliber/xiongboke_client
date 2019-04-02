@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="recom-bar right-bar">
-      <div class="bg-white">
+      <div>
         <div class="title white bg-black">
           <i aria-hidden="true" class="fa fa-list-ul"></i>
           <span>腾讯漫画</span>
         </div>
-        <div class="container-fluid background" :style="{backgroundImage:`url(${background})`}">
+        <div class="container-fluid">
           <ul class="row list">
             <a
               v-for="(item,key) in getData"
@@ -35,6 +35,7 @@
                 </div>
               </li>
             </a>
+            <div class="overlay"/>
           </ul>
         </div>
       </div>
@@ -51,7 +52,7 @@ export default {
   name: "CloudComics",
   data: function() {
     return {
-      background:global.TencentComicBg,
+      background: global.TencentComicBg,
       getData: [0]
     };
   },
@@ -67,9 +68,6 @@ export default {
 
 
 <style scoped>
-.bg-white {
-  border: 1px solid #ddd;
-}
 .right-bar .title {
   padding: 20px;
   margin: 0;
@@ -85,10 +83,12 @@ export default {
   color: #339999;
 }
 .right-bar .list {
+  position: relative;
   padding: 20px;
 }
 .comic {
   position: relative;
+  z-index: 2;
   padding: 2px;
 }
 .comic .border {
@@ -121,5 +121,8 @@ p {
 .tag span {
   padding: 4px 6px;
   margin-right: 4px;
+}
+.overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.85));
 }
 </style>

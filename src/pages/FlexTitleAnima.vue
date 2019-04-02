@@ -40,7 +40,7 @@
     <!-- 内容块<=S -->
     <div class="content-container">
       <!-- 最新文章<=S -->
-      <div :id="navName[0].en" v-offsettop class="padding1">
+      <div :id="navName[0].en" v-offsettop class="padding1 v100">
         <div class="container-fluid padding1">
           <router-link :to="{path:'search'}">
             <div class="title-class">
@@ -342,9 +342,6 @@ var resetClassEleTop = function(el) {
 
 <style scoped>
 /* 响应式浮动标题栏=>S */
-.padding1 {
-  padding: 1px;
-}
 
 .placeholder {
   position: relative;
@@ -534,6 +531,8 @@ var resetClassEleTop = function(el) {
 
 .content-container .v100 {
   min-height: 100vh;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .title-class {

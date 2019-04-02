@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="optimi-bar right-bar">
-      <div class="bg-white">
+      <div>
         <div class="title white bg-black">
           <i aria-hidden="true" class="fa fa-list-ul"></i>
           <span>优选内容</span>
@@ -17,10 +17,10 @@
               <router-link :to="{path:'/writes',query:{id:item.id}}">
                 <div class="word container-fluid">
                   <div class="row">
-                    <div class="title darkgray col-xs-10 col-sm-10">
+                    <div class="title white col-xs-10 col-sm-10">
                       <span v-text="item.title"/>
                     </div>
-                    <div class="date lightgray col-xs-2 col-sm-2">
+                    <div class="date white col-xs-2 col-sm-2">
                       <span v-cloak>{{item.date | dateMod}}</span>
                     </div>
                   </div>
@@ -80,9 +80,6 @@ export default {
 
 
 <style scoped>
-.bg-white {
-  border: 1px solid #ddd;
-}
 .right-bar .title {
   padding: 20px;
   margin: 0;
@@ -93,6 +90,7 @@ export default {
 }
 .right-bar .list {
   padding: 20px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.85));
 }
 .pic {
   position: relative;
@@ -111,7 +109,7 @@ export default {
 .content {
   position: relative;
   height: 100%;
-  background: linear-gradient(left, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+  background: linear-gradient(left, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
 }
 .content .title {
   background-color: transparent;
@@ -121,7 +119,7 @@ export default {
   font-weight: 500;
 }
 .content .date {
-  color: #888;
+  color: #ddd;
   padding-left: 20px;
 }
 .active .pic {

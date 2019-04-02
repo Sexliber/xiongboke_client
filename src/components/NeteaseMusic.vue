@@ -1,41 +1,37 @@
 <template>
   <div class="neteaseMusic">
     <div class="music-bar right-bar">
-      <div class="bg-white">
-        <div class="title white bg-black">
-          <i aria-hidden="true" class="fa fa-list-ul"></i>
-          <span>我的歌单</span>
-        </div>
-        <div class="list" :style="{backgroundImage:`url(${background})`}">
-          <vue-scroll>
-            <ul>
-              <li v-for="(item,key) in getData" :key="key" class="clearboth">
-                <a :href="`https://music.163.com/#/song?id=${item.id}`" target="_blank">
-                  <div class="row">
-                    <div class="ico col-sm-1 col-xs-1">
-                      <i class="fa fa-play-circle-o white" aria-hidden="true"></i>
-                      <span class="sernumber white" v-cloak>{{key+1 | numPlace(3)}}</span>
-                    </div>
-                    <div class="name col-sm-6 col-xs-6 line1 white">
-                      <span v-text="item.name"></span>
-                    </div>
-                    <div class="singer col-sm-3 col-xs-3 line1 white">
-                      <span v-text="item.singer"></span>
-                    </div>
-                    <div class="time white col-sm-2 col-xs-2">
-                      <span
-                        v-cloak
-                      >
-                      {{parseInt(item.time/60) | numPlace(2)}}:{{item.time%60 | numPlace(2)}}
-                      </span>
-                    </div>
+      <div class="title white bg-black">
+        <i aria-hidden="true" class="fa fa-list-ul"></i>
+        <span>我的歌单</span>
+      </div>
+      <div class="list">
+        <vue-scroll>
+          <ul>
+            <li v-for="(item,key) in getData" :key="key" class="clearboth">
+              <a :href="`https://music.163.com/#/song?id=${item.id}`" target="_blank">
+                <div class="row">
+                  <div class="ico col-sm-1 col-xs-1">
+                    <i class="fa fa-play-circle-o white" aria-hidden="true"></i>
+                    <span class="sernumber white" v-cloak>{{key+1 | numPlace(3)}}</span>
                   </div>
-                </a>
-              </li>
-            </ul>
-          </vue-scroll>
-          <div class="overlay"/>
-        </div>
+                  <div class="name col-sm-6 col-xs-6 line1 white">
+                    <span v-text="item.name"></span>
+                  </div>
+                  <div class="singer col-sm-3 col-xs-3 line1 white">
+                    <span v-text="item.singer"></span>
+                  </div>
+                  <div class="time white col-sm-2 col-xs-2">
+                    <span
+                      v-cloak
+                    >{{parseInt(item.time/60) | numPlace(2)}}:{{item.time%60 | numPlace(2)}}</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </vue-scroll>
+        <div class="overlay"/>
       </div>
     </div>
   </div>
@@ -87,9 +83,6 @@ export default {
 .list {
   height: 100%;
 }
-.bg-white {
-  border: 1px solid #ddd;
-}
 .right-bar .title {
   padding: 20px;
   margin: 0;
@@ -108,9 +101,6 @@ export default {
   overflow: hidden;
   position: relative;
   padding: 20px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: #404040;
 }
 .music-bar li {
   position: relative;
@@ -143,7 +133,7 @@ li:hover .sernumber {
   text-align: right;
   padding-right: 10px;
 }
-.__rail-is-vertical{
+.__rail-is-vertical {
   z-index: 6 !important;
 }
 </style>
