@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{path:'/writes',query:{id:WritesData.id}}">
+  <router-link :to="{path:`/writes/${WritesData.id}`}">
     <div class="write">
       <div class="bg-pic">
         <img :src="WritesData.thumbnail">

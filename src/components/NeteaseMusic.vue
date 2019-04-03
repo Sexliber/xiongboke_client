@@ -9,7 +9,7 @@
         <vue-scroll>
           <ul>
             <li v-for="(item,key) in getData" :key="key" class="clearboth">
-              <a :href="`https://music.163.com/#/song?id=${item.id}`" target="_blank">
+              <a :href="`https://music.163.com/#/song?id=${item.id}`" target="_blank" @click.prevent="excSong(key)">
                 <div class="row">
                   <div class="ico col-sm-1 col-xs-1">
                     <i class="fa fa-play-circle-o white" aria-hidden="true"></i>
@@ -41,6 +41,8 @@
 
 <script>
 import global from "../VueGlobal";
+// 引入音乐播放器数据广播站
+import MusicPlayer from "../model/MusicPlayer";
 
 export default {
   name: "NeteaseMusic",
@@ -48,16 +50,24 @@ export default {
     return {
       // 歌曲面板背景
       background: global.NeteaseMusicBg,
+      // 网易云歌单ID号
+      neteaseListId: 150994526,
       // 接收所有歌曲信息
       getData: [0]
     };
+  },
+  methods: {
+    // 将值传递给音乐播放器数据广播站
+    excSong(key){
+      MusicPlayer.$emit('songId',this.getData[key]);
+    }
   },
   created() {
     this.axios
       .get("neteaseMusic", {
         params: {
           // 网易云歌单id号
-          id: 150994526
+          id: this.neteaseListId
         }
       })
       .then(response => {

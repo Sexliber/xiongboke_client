@@ -3,6 +3,9 @@
     <!-- 页头 -->
     <page-header/>
 
+    <!-- 音乐播放器 -->
+    <music-player/>
+
     <div class="content-container">
       <!-- 路由器分支 -->
       <router-view/>
@@ -18,6 +21,8 @@
 import PageHeader from "./components/PageHeader";
 // 页脚模块
 import PageFooter from "./components/PageFooter";
+// 音乐播放器
+import MusicPlayer from "./components/MusicPlayer";
 
 // 路由管理块<=S
 import Vue from "vue";
@@ -32,7 +37,8 @@ export default {
   name: "app",
   components: {
     PageHeader,
-    PageFooter
+    PageFooter,
+    MusicPlayer
   },
   //注册路由器
   router

@@ -20,7 +20,7 @@ export default new VueRouter({
             path: "/contact", component: Contact, children: [{ path: "laji", component: HeadReplayBanner }]
         },
         // 文章页面
-        { path: "/writes", component: Writes },
+        { path: "/writes/:id", component: Writes },
         // 404页面
         { path: "/404", component: PageNotFound },
         { path: "*", redirect: "/404" }

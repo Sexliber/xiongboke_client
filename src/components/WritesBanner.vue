@@ -2,7 +2,7 @@
   <div class="bg-white softs">
     <div class="col-sm-4 col-xs-6">
       <div class="pic">
-        <router-link :to="{path:'writes',query:{id:DataSofts.id}}">
+        <router-link :to="{path:`/writes/${DataSofts.id}`}">
           <img :src="DataSofts.thumbnail">
           <p class="tag white bg-black" v-text="DataSofts.tag">
             <!-- 标签名 -->
@@ -33,10 +33,7 @@
             <!-- 浏览数量 -->
           </span>
         </div>
-        <router-link
-          :to="{path:'writes',query:{id:DataSofts.id}}"
-          class="more hidden-xs white bg-black"
-        >
+        <router-link :to="{path:`/writes/${DataSofts.id}`}" class="more hidden-xs white bg-black">
           <span class="fa fa-eye clearboth">
             <span>查看更多</span>
           </span>

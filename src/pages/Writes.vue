@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-text="$route.query.id"></h1>
+    <h1 v-text="$route.params.id"></h1>
   </div>
 </template>
 
