@@ -14,7 +14,7 @@
               @mouseover="mouseover(key)"
               :class="{active:isActive[key]}"
             >
-              <router-link :to="{path:'/writes',query:{id:item.id}}">
+              <router-link :to="{path:`/writes/${item.id}`}">
                 <div class="word container-fluid">
                   <div class="row">
                     <div class="title white col-xs-10 col-sm-10">
