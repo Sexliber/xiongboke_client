@@ -8,9 +8,9 @@
     <!-- 音乐播放器界面=>E -->
     <!-- 音乐播放器实例<=S -->
     <div class="music-player-do">
-      <video controls name="media" v-getDom>
+      <audio controls name="media" v-getDom>
         <source>
-      </video>
+      </audio>
     </div>
     <!-- 音乐播放器实例=>E -->
   </div>

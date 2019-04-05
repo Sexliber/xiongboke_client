@@ -54,9 +54,9 @@
     </div>
     <!-- 音乐播放器实例<=S -->
     <div id="netease-player" v-if="isRender">
-      <video controls name="media" v-getDom>
+      <audio controls name="media" v-getDom>
         <source :src="playingMusic.url+'&br=320000'">
-      </video>
+      </audio>
     </div>
     <!-- 音乐播放器实例=>E -->
   </div>
@@ -102,7 +102,11 @@ export default {
     // 监听播放歌曲参数变动切换播放器歌曲
     playingMusic: function(newSong, oldSong) {
       this.isClassPause.splice(this.lastActiveKey, 1, false);
-      mobilePlayer.load();
+      let codeRate = [999000, 320000, 192000, 128000];
+      for (let i in codeRate) {
+        mobilePlayer.src = this.playingMusic.url + `&br=${codeRate[i]}`;
+        mobilePlayer.load();
+      }
       mobilePlayer.play();
     }
   },
