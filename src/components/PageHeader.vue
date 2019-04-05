@@ -90,7 +90,6 @@
 export default {
   name: "PageHeader",
   data() {
-    
     return {
       //首选分类数据=>S
       links: [

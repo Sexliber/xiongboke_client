@@ -48,7 +48,6 @@ export default {
 
 <style scoped>
 /* 联系方式=>S */
-/* 联系方式=>S */
 
 footer {
   right: 0;

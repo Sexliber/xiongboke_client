@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     mouseover(key) {
-      let i = 0;
+      var i = 0;
       for (i in this.isActive) {
         if (i == key) this.isActive.splice(i, 1, true);
         else this.isActive.splice(i, 1, false);
@@ -64,7 +64,7 @@ export default {
   created() {
     this.axios.get("getPublicData").then(response => {
       this.getData = response.data;
-      let i = 0;
+      var i = 0;
       for (i in response.data) {
         if (i == 0) {
           this.isActive.splice(i, 1, true);

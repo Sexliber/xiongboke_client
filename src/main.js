@@ -69,9 +69,9 @@ Vue.filter('textLength',
   });
 //过滤器,时间修饰
 Vue.filter('dateMod', function (value) {
-  let oldDate = new Date(value);
-  let newDate = new Date();
-  let dif = newDate - oldDate;
+  var oldDate = new Date(value);
+  var newDate = new Date();
+  var dif = newDate - oldDate;
   if (dif / 1000 / 60 / 60 / 24 / 30 > 1) {
     return `${parseInt(dif / 1000 / 60 / 60 / 24 / 30)}个月前`;
   } else {
@@ -90,9 +90,9 @@ Vue.filter('dateMod', function (value) {
 });
 // 过滤器,整数0占位到指定长度
 Vue.filter('numPlace', function (value, length) {
-  let mtp = length - value.toString().length;
-  let numPlace = value.toString();
-  for (let i = 0; i < mtp; i++) {
+  var mtp = length - value.toString().length;
+  var numPlace = value.toString();
+  for (var i = 0; i < mtp; i++) {
     numPlace = 0 + numPlace;
   }
   return numPlace;

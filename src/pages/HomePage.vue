@@ -76,12 +76,12 @@ export default {
   methods: {
     //滚动监听方法
     handleScroll(v, h, e) {
-      let scrollTop = v.scrollTop;
+      var scrollTop = v.scrollTop;
       // 判断是否滚动到了一个新的区域<=S
-      let idName = this.getId(scrollTop);
+      var idName = this.getId(scrollTop);
       if (idName != this.lastIdName) {
         //滚动到一个不同的区域
-        let i = 0;
+        var i = 0;
         for (i in this.navName) {
           if (this.navName[i].en == idName) {
             this.flexTitleAnimaIsActive.splice(i, 1, true);
@@ -94,9 +94,9 @@ export default {
       // 判断是否滚动到了一个新的区域=>E
 
       // 设置滚动指示器宽度<=S
-      let screenHeight = document.querySelector("body").offsetHeight;
-      let height = 0;
-      let m = 0;
+      var screenHeight = document.querySelector("body").offsetHeight;
+      var height = 0;
+      var m = 0;
       height +=
         classEleTop[this.navName[this.navName.length - 1].en].offsetFootTop;
       this.progressBarWidth.splice(
@@ -108,7 +108,7 @@ export default {
     },
     // 接收滚动收缩长度,判断显示区域停在哪个块上,并且返回该块的id
     getId(scrollTop) {
-      let i = 0;
+      var i = 0;
       for (i in this.navName) {
         if (
           (scrollTop >= classEleTop[this.navName[i].en].offsetHeadTop) &

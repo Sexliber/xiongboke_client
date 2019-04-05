@@ -17,7 +17,7 @@ export default {
     };
   },
   mounted() {
-    let clear = setTimeout(() => {
+    var clear = setTimeout(() => {
       this.isLoading = false;
       clearTimeout(clear);
     }, 300);

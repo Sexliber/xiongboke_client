@@ -73,7 +73,7 @@ import isMobile from "../libs/isMobile";
 import MusicPlayer from "../model/MusicPlayer";
 
 // 移动端播放器dom
-let mobilePlayer = null;
+var mobilePlayer = null;
 
 export default {
   name: "NeteaseMusic",
@@ -82,7 +82,7 @@ export default {
       // 歌曲面板背景
       background: global.NeteaseMusicBg,
       // 网易云歌单ID号
-      neteaseListId: 150994526,
+      neteaseListId: 154459396,
       // active,isClassPause数组
       isActive: [false],
       isClassPause: [false],
@@ -92,6 +92,8 @@ export default {
       getData: [0],
       // 是否渲染移动端播放器
       isRender: isMobile,
+      // 码率
+      codeRate: 128000,
       // 移动端播放器正在播放歌曲参数
       playingMusic: "",
       // 移动端播放器是否为暂停状态
@@ -102,11 +104,8 @@ export default {
     // 监听播放歌曲参数变动切换播放器歌曲
     playingMusic: function(newSong, oldSong) {
       this.isClassPause.splice(this.lastActiveKey, 1, false);
-      let codeRate = [999000, 320000, 192000, 128000];
-      for (let i in codeRate) {
-        mobilePlayer.src = this.playingMusic.url + `&br=${codeRate[i]}`;
-        mobilePlayer.load();
-      }
+      mobilePlayer.src = this.playingMusic.url + `&br=${this.codeRate}`;
+      mobilePlayer.load();
       mobilePlayer.play();
     }
   },
@@ -154,17 +153,19 @@ export default {
   created() {
     // 请求网易云歌单
     this.axios
-      .get("neteaseMusic", {
+      .get(global.NeteaseMusicList, {
         params: {
-          // 网易云歌单id号
-          id: this.neteaseListId
+          key: global.NeteaseMusicKey,
+          id: this.neteaseListId,
+          offset: 0
         }
       })
       .then(response => {
         // 获取到到所有数据传递给getData
-        this.getData = response.data;
+        this.getData = response.data.data.songs;
         // 初始化isActive和isClassPause长度
-        for (let i in response.data) {
+        var i = 0;
+        for (i in this.getData) {
           this.isActive.splice(i, 1, false);
           this.isClassPause.splice(i, 1, false);
         }

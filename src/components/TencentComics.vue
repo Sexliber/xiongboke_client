@@ -52,15 +52,23 @@ export default {
   name: "CloudComics",
   data: function() {
     return {
-      background: global.TencentComicBg,
       getData: [0]
     };
   },
   created() {
     // 获取腾讯漫画数据,adpos为必须项,num为请求的数据长度
-    this.axios.get("tencentComic?num=12").then(response => {
-      this.getData = response.data;
-    });
+    this.axios
+      .get("tencentComic", {
+        params: {
+          num: 12
+        }
+      })
+      .then(response => {
+        this.getData = response.data;
+      })
+      .catch(error => {
+        console.log("请求错误");
+      });
   }
 };
 </script>

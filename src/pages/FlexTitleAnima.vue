@@ -153,11 +153,11 @@ import TencentComics from "../components/TencentComics";
 // 引入组件=>E
 
 // 内容块里面每个类元素距离的offsetTop值
-export let classEleTop = new Array();
+export var classEleTop = new Array();
 // 被点击的导航栏角标号
-export let navbarSubId = new Array(0);
+export var navbarSubId = new Array(0);
 //滚动指示器容器宽度
-export let barWrapWidth = 0;
+export var barWrapWidth = 0;
 
 export default {
   name: "FlexTitleAnima",
@@ -197,7 +197,7 @@ export default {
     // 监听isActive数组变化
     getIsActive: function(oldData, newData) {
       // 遍历isActive数组查看true值的脚标号
-      let i = 0;
+      var i = 0;
       for (i in newData) {
         if (newData[i]) {
           // 传入角标执行导航栏动画
@@ -213,7 +213,7 @@ export default {
       // 传递导航按钮角标给父组件
       navbarSubId.splice(0, 1, id);
       // active类控制器重新分配
-      let m = 0;
+      var m = 0;
       for (m in this.isActive) {
         this.isActive.splice(m, 1, false);
       }
@@ -231,9 +231,9 @@ export default {
       this.isAnimated = true;
 
       // 浮动标题更换
-      let value = this.navName[id].en.toUpperCase();
-      let word = [0];
-      let i = 0;
+      var value = this.navName[id].en.toUpperCase();
+      var word = [0];
+      var i = 0;
       for (i = 0; i < this.word.length; i++) {
         //循环截取value并且转化为ASCII码-64得到对应1~26的字母值
         if (i >= value.length) {
@@ -245,7 +245,7 @@ export default {
 
       //数组内容加减
       this.titleFlexClear = setInterval(() => {
-        let flag = this.calc(this.word, word);
+        var flag = this.calc(this.word, word);
         if (flag) {
           clearInterval(this.titleFlexClear);
           //浮动标题块动画结束
@@ -256,8 +256,8 @@ export default {
     },
     //数组内容加减法,小于目标数则加,大于则减,相等则不做计算
     calc(oldArr, newArr) {
-      let allEqual = true;
-      let i = 0;
+      var allEqual = true;
+      var i = 0;
       for (i = 0; i < oldArr.length; i++) {
         if (oldArr[i] > newArr[i]) {
           this.word.splice(i, 1, oldArr[i] - 1);
@@ -329,11 +329,11 @@ export default {
 // 通过dom重置offsetTop数组
 var resetClassEleTop = function(el) {
   // 滚动监听上间距
-  let id = el.getAttribute("id");
-  let offsetHeadTop =
+  var id = el.getAttribute("id");
+  var offsetHeadTop =
     el.offsetTop + document.querySelector("body").offsetHeight;
-  let offsetHeight = el.offsetHeight;
-  let offsetFootTop = offsetHeadTop + offsetHeight;
+  var offsetHeight = el.offsetHeight;
+  var offsetFootTop = offsetHeadTop + offsetHeight;
   classEleTop[id] = { offsetHeadTop, offsetFootTop, offsetHeight };
 };
 </script>
@@ -407,6 +407,7 @@ var resetClassEleTop = function(el) {
 .flex-title .title span {
   -webkit-animation-duration: 300ms;
   animation-duration: 300ms;
+  font-size: .92rem;
 }
 
 .progress-bar-wrap {
