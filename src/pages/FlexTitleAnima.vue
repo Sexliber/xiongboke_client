@@ -63,6 +63,7 @@
         </div>
       </div>
       <!-- 最新文章<=E -->
+
       <!-- 实用软件<=S -->
       <div :id="navName[1].en" v-offsettop class="padding1 v100">
         <!-- 标题<=S -->
@@ -84,7 +85,9 @@
             <div class="col-md-8">
               <transition>
                 <!-- 轮播图组件 -->
-                <image-replay-banner class="padding1"/>
+                <div class="soft-replay padding1">
+                  <image-replay-banner :get-data="replayArr"/>
+                </div>
               </transition>
               <!-- 软件<=S -->
               <transition-group tag="div">
@@ -180,7 +183,9 @@ export default {
       // 请求到的文章数据数组
       writesArr: [0],
       // 请求到的软件数据
-      softsArr: [0]
+      softsArr: [0],
+      // 请求到的轮播图数据
+      replayArr:[0]
     };
   },
   //接收父组件参数
@@ -323,6 +328,10 @@ export default {
     this.axios.get("getPublicData").then(response => {
       this.softsArr = response.data;
     });
+    //请求轮播图数据
+    this.axios.get("getPublicData").then(response => {
+      this.replayArr = response.data;
+    });
   }
 };
 
@@ -342,7 +351,9 @@ var resetClassEleTop = function(el) {
 
 <style scoped>
 /* 响应式浮动标题栏=>S */
-
+.hero-unit{
+  display: none
+}
 .placeholder {
   position: relative;
   float: left;
@@ -407,7 +418,7 @@ var resetClassEleTop = function(el) {
 .flex-title .title span {
   -webkit-animation-duration: 300ms;
   animation-duration: 300ms;
-  font-size: .92rem;
+  font-size: 0.92rem;
 }
 
 .progress-bar-wrap {
@@ -559,6 +570,9 @@ var resetClassEleTop = function(el) {
   font-size: 18px;
   margin-top: 4px;
   margin-bottom: 0;
+}
+.soft-replay{
+  height: 60vh;
 }
 /* 内容=>E */
 

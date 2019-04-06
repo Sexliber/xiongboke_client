@@ -118,6 +118,9 @@ export default {
   padding: 6px 10px !important;
   font-weight: 500 !important;
 }
+img{
+  width: 100%;
+}
 p {
   padding-left: 10px;
   color: #ccc;

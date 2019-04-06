@@ -18,6 +18,14 @@
         :class="{active:isActive[key],next:isNext[key],left:isLeft[key],right:isRight[key]}"
       >
         <div class="pic" :style="{backgroundImage:`url(${item.thumbnail})`}"/>
+        <div class="overlay"></div>
+        <div class="hero-unit animated">
+          <h1 v-text="item.en"></h1>
+          <p v-text="item.entext"></p>
+          <p>
+            <router-link :to="{path:item.path}" class="btn btn-large" v-text="item.zh"></router-link>
+          </p>
+        </div>
       </div>
     </div>
     <!-- 左右切换按钮 -->

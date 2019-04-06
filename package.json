@@ -13,6 +13,8 @@
     "babel-polyfill": "^6.26.0",
     "qs": "^6.7.0",
     "vue": "^2.6.6",
+    "vue-progressbar": "^0.7.5",
+    "vue-range": "^1.1.0",
     "vue-router": "^3.0.2",
     "vuescroll": "^4.11.2"
   },

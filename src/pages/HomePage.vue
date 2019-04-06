@@ -3,7 +3,9 @@
   <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
     <div class="background" :style="{backgroundImage:`url(${background})`}">
       <!-- 头部轮播组件 -->
-      <head-replay-banner/>
+      <div class="replay-banner-container">
+        <head-replay-banner :get-data="replayItems"/>
+      </div>
       <!-- 响应式滚动内容页 -->
       <flex-title-anima
         :nav-name="navName"
@@ -20,7 +22,7 @@
 // 全局配置
 import global from "../VueGlobal";
 //头部轮播组件
-import HeadReplayBanner from "../components/HeadReplayBanner";
+import HeadReplayBanner from "../components/ReplayBanner.vue";
 //响应式滚动标题栏
 import FlexTitleAnima from "./FlexTitleAnima";
 // 获取FlexTitleAnima组件的接口参数
@@ -34,6 +36,37 @@ export default {
     return {
       // 背景图片
       background: global.FullPageBg,
+      // 首页轮播图数组
+      replayItems: [
+        {
+          thumbnail: "../assets/images/homepage/advert-bg-1.jpg",
+          en: "New Works",
+          zh: "最新作品",
+          entext: "Here are some of my works.",
+          path: "/designs"
+        },
+        {
+          thumbnail: "../assets/images/homepage/advert-bg-2.jpg",
+          en: "Soft and Tools",
+          zh: "软件工具",
+          entext: "Here are some of soft and tools.",
+          path: "/softs"
+        },
+        {
+          thumbnail: "../assets/images/homepage/advert-bg-3.jpg",
+          en: "Code Record",
+          zh: "代码审计",
+          entext: "There are code keynotes.",
+          path: "/code"
+        },
+        {
+          thumbnail: "../assets/images/homepage/advert-bg-4.jpg",
+          en: "Cartoons",
+          zh: "影视动漫",
+          entext: "Here are some of movie and cartoons.",
+          path: "/video"
+        }
+      ],
       // 响应式滚动标题导航栏命名
       navName: [
         { en: "writes", zh: "最新文章" },
@@ -134,5 +167,10 @@ export default {
 .background {
   background-size: cover;
   background-attachment: fixed;
+}
+.replay-banner-container {
+  position: relative;
+  height: 100vh;
+  z-index: 10;
 }
 </style>

@@ -4,20 +4,42 @@
   *-->
   <div id="music-player" v-if="isRender" v-show="isShow" v-getMusicUiDom>
     <!-- 音乐播放器界面<=S -->
-    <div class="music-player-ui">
+    <div class="music-player-ui noselect">
       <div class="bg" :style="{backgroundImage:`url(${playerBg})`}"></div>
       <div class="player-container">
         <header @mousedown="headerMouseDown">
           <div class="search bg-black"></div>
         </header>
+
         <div class="player-body"></div>
+
         <footer>
-          <div class="progress-container">
-            <div class="progress-bar"></div>
+          <div class="progress-container" @click="setProgress">
+            <div class="progress-bar" :style="{width:progressBarWidth+'px'}"></div>
           </div>
           <div class="user-handle container-fluid">
             <div class="row">
-              <div class="info col-md-4"></div>
+              <!-- 歌曲信息<=S -->
+              <div class="info col-md-4">
+                <div class="pic">
+                  <img :src="playerHeadImg">
+                </div>
+                <div class="name line1">
+                  <marquee
+                    class="white"
+                    behavior="scroll"
+                    width="80%"
+                    direction="left"
+                    v-text="playingMusic.name"
+                  ></marquee>
+                </div>
+                <div class="singer line1">
+                  <span class="white" v-text="playingMusic.singer"/>
+                </div>
+              </div>
+              <!-- 歌曲信息=>E -->
+
+              <!-- 播放操作<=S -->
               <div class="player clearboth col-md-4">
                 <i class="fa fa-fast-backward white" aria-hidden="true"></i>
                 <i
@@ -28,7 +50,22 @@
                 ></i>
                 <i class="fa fa-fast-forward white" aria-hidden="true"></i>
               </div>
-              <div class="setting col-md-4"></div>
+              <!-- 播放操作=>E -->
+
+              <!-- 设置按钮<=S -->
+              <div class="setting col-md-4">
+                <div class="row">
+                  <div class="col-md-offset-4 col-md-8">
+                    <i class="fa fa-th-list white" aria-hidden="true"></i>
+                    <i class="fa fa-volume-up white" aria-hidden="true" @click="volShow = !volShow"></i>
+                    <i class="fa fa-undo white" aria-hidden="true"></i>
+                  </div>
+                  <div class="volume" v-show="volShow">
+                    <input type="range" min="0" max="100" defaultValue="100" v-model="volume">
+                  </div>
+                </div>
+              </div>
+              <!-- 设置按钮=>E -->
             </div>
           </div>
         </footer>
@@ -73,6 +110,8 @@ export default {
       cursorOffsetTop: 0,
       // 鼠标距离header的左间距
       cursorOffsetLeft: 0,
+      // 音量调节工具是否可见
+      volShow: false,
       // 音乐码率
       codeRate: 999000,
       // 音乐清单
@@ -81,17 +120,49 @@ export default {
       playingMusic: "",
       // 音乐播放器背景
       playerBg: "null",
+      // 音乐播放器头图
+      playerHeadImg: "null",
       // 是否设置为暂停状态(true为暂停,false为继续播放)
-      isPause: false
+      isPause: false,
+      // 音量
+      volume: 100,
+      // 播放进度计时
+      playProgressTime: 0,
+      // 播放进度定时器
+      playProgress: null,
+      // 进度条容器宽度
+      progressBarContainerWidth:
+        (document.documentElement.offsetWidth / 19.2) * 8,
+      // 进度条宽度
+      progressBarWidth: 0,
+      // 进度条长度单位
+      progressBarWidthUnit: 0
     };
   },
   watch: {
-    // 监听到playingMusic变动,重置播放器配置并重新播放音乐
+    // 监听到playingMusic变动(及切换歌曲),重置播放器配置并重新播放音乐
     playingMusic: async function(newSong, oldSong) {
       // 重置音乐播放器配置并重新播放音乐
       MusicPlayerDom.src = this.playingMusic.url + `&br=${this.codeRate}`;
       MusicPlayerDom.load();
       MusicPlayerDom.play();
+
+      // 更换背景图片
+      this.playerBg = this.playingMusic.pic + "&param=800y600";
+
+      // 更换头图
+      this.playerHeadImg = this.playingMusic.pic + "&param=400y400";
+
+      // 初始化播放进度条并开始计算进度<=S
+      // 清除定时器
+      clearInterval(this.playProgress);
+      this.progressBarWidth = 0;
+      //计算进度单位
+      this.progressBarWidthUnit =
+        this.progressBarContainerWidth / this.playingMusic.time;
+      // 开始捕获播放进度时间
+      this.playProgress = setInterval(this.catchProgressTime, 100);
+      // 初始化播放进度条并开始计算进度=>E
 
       // 播放请求验证
       var codeRate = [999000, 320000, 192000, 128000];
@@ -102,7 +173,7 @@ export default {
         await this.axios
           .get(this.playingMusic.url + `&br=${codeRate[i]}`)
           .then(() => {
-            console.log("请求成功,开始播放")
+            console.log("请求成功,开始播放");
             if (i != 0) {
               MusicPlayerDom.src = this.playingMusic.url + `&br=${codeRate[i]}`;
               MusicPlayerDom.load();
@@ -116,16 +187,27 @@ export default {
 
         if (isBreak) break;
       }
-
-      // 更换背景图片
-      this.playerBg = this.playingMusic.pic + "&param=800y600";
     },
 
     // 监听isPause变动实现暂停播放功能
     isPause: function(newData, oldData) {
       // 判断是否暂停播放
-      if (this.isPause) MusicPlayerDom.pause();
-      else MusicPlayerDom.play();
+      if (this.isPause) {
+        //暂停播放
+        MusicPlayerDom.pause();
+        //清除定时器
+        clearInterval(this.playProgress);
+      } else {
+        // 继续播放
+        MusicPlayerDom.play();
+        // 重启定时器
+        this.playProgress = setInterval(this.catchProgressTime, 100);
+      }
+    },
+
+    // 监听volume变动更改音量大小
+    volume: function(newData, oldData) {
+      MusicPlayerDom.volume = newData / 100;
     }
   },
   directives: {
@@ -178,8 +260,28 @@ export default {
           // 头部移动事件=>E
         }
       }
-    }
+    },
     // 鼠标移动事件=>E
+
+    // *
+    // * 设置进度方法
+    // *
+    setProgress(e) {
+      // 清除定时器
+      clearInterval(this.playProgress);
+      // 获取并设置播放时间进度
+      MusicPlayerDom.currentTime = parseInt(
+        e.offsetX / this.progressBarWidthUnit
+      );
+      //继续捕获播放进度
+      this.playProgress = setInterval(this.catchProgressTime, 100);
+    },
+
+    // 进度条时间捕获并赋值给playProgressTime
+    catchProgressTime() {
+      this.playProgressTime = parseInt(MusicPlayerDom.currentTime);
+      this.progressBarWidth = this.playProgressTime * this.progressBarWidthUnit;
+    }
   },
   mounted() {
     // 数据广播站接收数据监听<=S
@@ -298,11 +400,17 @@ footer {
   background-color: rgba(0, 0, 0, 0.9);
 }
 .progress-container {
+  cursor: pointer;
   height: 0.02rem;
   background-color: #999999;
 }
 .progress-bar {
+  position: relative;
   height: 100%;
+  width: 60%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  background: linear-gradient(to right, #660099, #ff0066);
 }
 .user-handle .col-md-4 {
   height: 0.8rem;
@@ -322,6 +430,79 @@ footer {
   float: left;
   margin: 0 0.2rem;
   cursor: pointer;
+  text-align: center;
+}
+.setting {
+  line-height: 0.8rem;
+  text-align: center;
+  font-size: 0.18rem;
+}
+.setting .fa {
+  margin: 0 0.08rem;
+  cursor: pointer;
+}
+.info {
+  padding: 0.1rem 0 0.1rem 0.2rem;
+}
+.info .pic {
+  float: left;
+  height: 0.6rem;
+  width: 0.6rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.info .pic img {
+  width: 100%;
+}
+.info .name,
+.info .singer {
+  width: 1.6rem;
+  padding-left: 0.2rem;
+}
+.info .name {
+  padding-top: 0.1rem;
+  float: left;
+  font-size: 18px;
+  line-height: 0.2rem;
+}
+.info .singer {
+  float: left;
+  line-height: 0.2rem;
+  font-size: 14px;
+}
+
+/* 滑动条 */
+input[type="range"] {
+  position: absolute;
+  right: 0;
+  margin-right: -0.3rem;
+  bottom: 0;
+  margin-bottom: 0.6rem;
+  transform-origin: left center;
+  transform: rotateZ(-90deg);
+  /* 去除浏览器默认的样式 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 1.2rem;
+  border-radius: 0.2rem;
+}
+input[type="range"]:focus {
+  outline: none; /*原始的控件获取到焦点时，会显示包裹整个控件的边框，所以还需要把边框取消。*/
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 0.04rem;
+  border-radius: 0.2rem; /*将轨道设为圆角的*/
+  background-color: #ffc815;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 0.1rem;
+  height: 0.1rem;
+  border-radius: 50%;
+  position: relative;
+  top: -0.03rem;
+  background: #fff;
 }
 /* 音乐播放器UI界面=>E */
 </style>
