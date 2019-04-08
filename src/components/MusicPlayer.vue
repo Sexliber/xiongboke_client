@@ -76,7 +76,7 @@
     <!-- 音乐播放器实例<=S -->
     <div class="music-player-do">
       <audio controls name="media" v-getMusicDom>
-        <source>
+        <source :src="playerUrl">
       </audio>
     </div>
     <!-- 音乐播放器实例=>E -->
@@ -98,34 +98,67 @@ var MusicPlayerDom = null;
 
 export default {
   name: "MusicPlayer",
+
+  // *
+  // * data数据组
+  // * 用于播放器相关变量参数
+  // * *
   data() {
     return {
+      // *
+      // * 控制播放器是否渲染,是否显示参数
+      // * isRender通过isMobile模块判断当前设备是否为移动设备从而控制播放器是否渲染,如不是则渲染,反之则不渲染
+      // * isShow控制当前模块是否显示
+      // * *
       // 通过是否为移动设备判断是否渲染该组件
       isRender: !isMobile,
       // 音乐播放器是否显示,默认为false
       isShow: false,
+
+      // *
+      // * 播放器拖动功能相关配置
+      // * 如:鼠标是否在拖动头按下,鼠标是否在html元素中弹起,鼠标距离拖动头的上和左间距
+      // * *
       // 头部是否跟随鼠标移动状态(及鼠标是否在头部元素上保持按下)
       isMouseDown: false,
       // 鼠标距离header的上间距
       cursorOffsetTop: 0,
       // 鼠标距离header的左间距
       cursorOffsetLeft: 0,
-      // 音量调节工具是否可见
-      volShow: false,
+
+      // *
+      // * 正在播放的音乐相关配置
+      // * 码率,音乐清单,清单中的第几项
+      // * *
       // 音乐码率
-      codeRate: 999000,
+      codeRate: [999000, 320000, 192000, 128000],
       // 音乐清单
       songList: null,
+      // 正在播放清单中的第几首音乐
+      songListSub: 0,
       // 正在播放的音乐
-      playingMusic: "",
+      playingMusic: "null",
+
+      // *
+      // * 音乐播放器相关设置
+      // * 如:播放器背景,播放器头图,播放器音量,播放器是否未暂停状态
+      // * *
       // 音乐播放器背景
       playerBg: "null",
       // 音乐播放器头图
       playerHeadImg: "null",
       // 是否设置为暂停状态(true为暂停,false为继续播放)
       isPause: false,
+      // 音量调节工具是否可见
+      volShow: false,
+      // 播放地址
+      playerUrl: "",
       // 音量
       volume: 100,
+
+      // *
+      // * 播放器进度条相关变量
+      // * *
       // 播放进度计时
       playProgressTime: 0,
       // 播放进度定时器
@@ -139,11 +172,20 @@ export default {
       progressBarWidthUnit: 0
     };
   },
+
+  // *
+  // * watch数据监听
+  // * 此处用于监听data中数据的变异并执行相应方法
+  // * *
   watch: {
-    // 监听到playingMusic变动(及切换歌曲),重置播放器配置并重新播放音乐
+    // *
+    // * 监听playingMusic变动
+    // * 当playingMusic变动时则表明用户已切换歌曲
+    // * 此时重置播放器配置并重新播放音乐
+    // *
     playingMusic: async function(newSong, oldSong) {
       // 重置音乐播放器配置并重新播放音乐
-      MusicPlayerDom.src = this.playingMusic.url + `&br=${this.codeRate}`;
+      this.playerUrl = this.playingMusic.url + `&br=${this.codeRate[0]}`;
       MusicPlayerDom.load();
       MusicPlayerDom.play();
 
@@ -164,18 +206,18 @@ export default {
       this.playProgress = setInterval(this.catchProgressTime, 100);
       // 初始化播放进度条并开始计算进度=>E
 
-      // 播放请求验证
-      var codeRate = [999000, 320000, 192000, 128000];
+      // 播放请求验证,是否能获取到该歌曲,否则切换码率重新请求
       var i = 0;
-      for (i in codeRate) {
+      for (i in this.codeRate) {
         var isBreak = false;
 
         await this.axios
-          .get(this.playingMusic.url + `&br=${codeRate[i]}`)
+          .get(this.playingMusic.url + `&br=${this.codeRate[i]}`)
           .then(() => {
             console.log("请求成功,开始播放");
             if (i != 0) {
-              MusicPlayerDom.src = this.playingMusic.url + `&br=${codeRate[i]}`;
+              this.playerUrl =
+                this.playingMusic.url + `&br=${this.codeRate[i]}`;
               MusicPlayerDom.load();
               MusicPlayerDom.play();
             }
@@ -189,7 +231,13 @@ export default {
       }
     },
 
-    // 监听isPause变动实现暂停播放功能
+    // *
+    // * 监听isPause数据
+    // * 当isPause变动时,表明用户触发了暂停播放按钮,根据当前isPause值判断播放还是暂停
+    // * 当为true时,表示此时应暂停播放
+    // * 当为false时,表示此时应继续播放音乐
+    // * 注意:暂停时清除播放计时器,继续播放时则重启播放计时器
+    // * *
     isPause: function(newData, oldData) {
       // 判断是否暂停播放
       if (this.isPause) {
@@ -205,7 +253,9 @@ export default {
       }
     },
 
-    // 监听volume变动更改音量大小
+    // *
+    // * 监听volume变动更改音量大小
+    // * *
     volume: function(newData, oldData) {
       MusicPlayerDom.volume = newData / 100;
     }
@@ -283,19 +333,10 @@ export default {
       this.progressBarWidth = this.playProgressTime * this.progressBarWidthUnit;
     }
   },
-  mounted() {
-    // 数据广播站接收数据监听<=S
-    // 接收一首歌曲的相关参数
-    MusicPlayer.$on("songId", data => {
-      this.playingMusic = data;
-      this.isPause = false;
-    });
-    // 接收并设置音乐播放器是否显示
-    MusicPlayer.$on("isShow", data => {
-      this.isShow = data;
-    });
-    // 数据广播站接收数据监听=>E
-  },
+
+  // *
+  // * 在实例创建完成后钩子函数,此时该组件还未被挂载
+  // * *
   created() {
     // *
     // * 请求精品歌单信息
@@ -321,6 +362,27 @@ export default {
       false
     );
   },
+
+  // *
+  // * 组件已实例化并挂载钩子函数
+  // * *
+  mounted() {
+    // 数据广播站接收数据监听<=S
+    // 接收一首歌曲的相关参数
+    MusicPlayer.$on("songId", data => {
+      this.playingMusic = data;
+      this.isPause = false;
+    });
+    // 接收并设置音乐播放器是否显示
+    MusicPlayer.$on("isShow", data => {
+      this.isShow = data;
+    });
+    // 数据广播站接收数据监听=>E
+  },
+
+  // *
+  // * 组件销毁后钩子函数
+  // *
   destroyed() {
     // *
     // * 组件销毁后取消body绑定事件
@@ -349,6 +411,28 @@ export default {
   overflow: hidden;
 }
 
+/* 播放器隐藏动画 <=S */
+#music-player.shadow {
+  animation: playerHidden 300ms ease-in-out;
+  transform: scale(0);
+}
+
+@keyframes playerHidden {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.2);
+  }
+  20% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+/* 播放器隐藏动画 =>E */
+
 /* 隐藏音乐播放器实例 */
 .music-player-do {
   display: none;
@@ -361,6 +445,7 @@ export default {
   height: 100%;
   background-color: rgba(20, 20, 20, 0.9);
 }
+
 .music-player-ui .bg {
   position: absolute;
   z-index: 1;
@@ -392,9 +477,11 @@ header {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
 }
+/* 内容显示区域 */
 .player-body {
   height: 4.6rem;
 }
+/* 底部状态栏 */
 footer {
   height: 0.82rem;
   background-color: rgba(0, 0, 0, 0.9);
@@ -414,8 +501,6 @@ footer {
 }
 .user-handle .col-md-4 {
   height: 0.8rem;
-}
-.user-handle .info {
 }
 .user-handle .player {
   font-size: 0.24rem;
@@ -462,13 +547,13 @@ footer {
 .info .name {
   padding-top: 0.1rem;
   float: left;
-  font-size: 18px;
+  font-size: 0.18rem;
   line-height: 0.2rem;
 }
 .info .singer {
   float: left;
   line-height: 0.2rem;
-  font-size: 14px;
+  font-size: 0.14rem;
 }
 
 /* 滑动条 */
