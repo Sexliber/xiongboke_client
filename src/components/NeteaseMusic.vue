@@ -114,7 +114,7 @@ export default {
     excSong(key) {
       // 非移动设备则传递歌曲参数并显示播放器
       if (!isMobile) {
-        MusicPlayer.$emit("songId", this.getData[key]);
+        MusicPlayer.$emit("musicList", { list: this.getData, sub: key });
         MusicPlayer.$emit("isShow", true);
       }
       // 移动设备则直接播放音乐

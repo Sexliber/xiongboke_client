@@ -41,28 +41,60 @@
 
               <!-- 播放操作<=S -->
               <div class="player clearboth col-md-4">
-                <i class="fa fa-fast-backward white" aria-hidden="true"></i>
+                <i class="fa fa-fast-backward white" aria-hidden="true" @click="musicListSub--"></i>
                 <i
                   class="fa fa-play white"
                   :class="{'fa-pause':!isPause}"
                   aria-hidden="true"
                   @click="isPause=!isPause"
                 ></i>
-                <i class="fa fa-fast-forward white" aria-hidden="true"></i>
+                <i class="fa fa-fast-forward white" aria-hidden="true" @click="musicListSub++"></i>
               </div>
               <!-- 播放操作=>E -->
 
               <!-- 设置按钮<=S -->
               <div class="setting col-md-4">
                 <div class="row">
+                  <!-- 按钮<=S -->
                   <div class="col-md-offset-4 col-md-8">
-                    <i class="fa fa-th-list white" aria-hidden="true"></i>
+                    <i
+                      class="fa fa-th-list white"
+                      aria-hidden="true"
+                      @click="musicListShow = !musicListShow"
+                    ></i>
                     <i class="fa fa-volume-up white" aria-hidden="true" @click="volShow = !volShow"></i>
                     <i class="fa fa-undo white" aria-hidden="true"></i>
                   </div>
+                  <!-- 按钮=>E -->
+
+                  <!-- 正在播放的音乐清单<=S -->
+                  <div class="playingList" v-show="musicListShow">
+                    <svg>
+                      <path
+                        fill-rule="evenodd"
+                        opacity="0.741"
+                        fill="rgb(255, 255, 255)"
+                        d="M196.000,292.000 L107.486,292.000 L101.910,298.971 C100.846,300.301 99.121,300.301 98.057,298.971 L92.480,292.000 L4.000,292.000 C1.791,292.000 -0.000,290.209 -0.000,288.000 L-0.000,4.000 C-0.000,1.791 1.791,0.000 4.000,0.000 L196.000,0.000 C198.209,0.000 200.000,1.791 200.000,4.000 L200.000,288.000 C200.000,290.209 198.209,292.000 196.000,292.000 Z"
+                      ></path>
+                    </svg>
+                    <div class="meanlist">
+                      <ul>
+                        <li
+                          class="darkgray"
+                          v-for="(item,key) in musicList"
+                          :key="key"
+                          @click="musicListSub = key"
+                        >{{item.name}}</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- 正在播放的音乐清单=>E -->
+
+                  <!-- 音量控制<=S -->
                   <div class="volume" v-show="volShow">
                     <input type="range" min="0" max="100" defaultValue="100" v-model="volume">
                   </div>
+                  <!-- 音量控制=>E -->
                 </div>
               </div>
               <!-- 设置按钮=>E -->
@@ -133,9 +165,9 @@ export default {
       // 音乐码率
       codeRate: [999000, 320000, 192000, 128000],
       // 音乐清单
-      songList: null,
+      musicList: "null",
       // 正在播放清单中的第几首音乐
-      songListSub: 0,
+      musicListSub: 99999,
       // 正在播放的音乐
       playingMusic: "null",
 
@@ -151,6 +183,8 @@ export default {
       isPause: false,
       // 音量调节工具是否可见
       volShow: false,
+      // 音乐清单工具是否可见
+      musicListShow: false,
       // 播放地址
       playerUrl: "",
       // 音量
@@ -178,6 +212,21 @@ export default {
   // * 此处用于监听data中数据的变异并执行相应方法
   // * *
   watch: {
+    // *
+    // * 监听musicList和musicListSub变动
+    // * 当musicList和musicListSub变动时表明歌单中歌曲脚标发生变动
+    // * 此时通过songList(当前播放歌单)和subListSub(当前播放的歌单中的第几项)来变动playingMusic触发歌曲切换
+    // *
+    musicList: function(newSub, oldSub) {
+      this.playingMusic = this.musicList[newSub];
+    },
+    musicListSub: function(newSub, oldSub) {
+      // 判断角标是否大于等于歌单长度,如是,则重置角标值为0
+      if (newSub >= this.musicList.length) this.musicListSub = 0;
+      else if (newSub < 0) this.musicListSub = this.musicList.length - 1;
+      else this.playingMusic = this.musicList[newSub];
+    },
+
     // *
     // * 监听playingMusic变动
     // * 当playingMusic变动时则表明用户已切换歌曲
@@ -331,6 +380,7 @@ export default {
     catchProgressTime() {
       this.playProgressTime = parseInt(MusicPlayerDom.currentTime);
       this.progressBarWidth = this.playProgressTime * this.progressBarWidthUnit;
+      if (this.playProgressTime >= this.playingMusic.time) this.musicListSub++;
     }
   },
 
@@ -369,8 +419,12 @@ export default {
   mounted() {
     // 数据广播站接收数据监听<=S
     // 接收一首歌曲的相关参数
-    MusicPlayer.$on("songId", data => {
-      this.playingMusic = data;
+    MusicPlayer.$on("musicList", data => {
+      // 切换音乐清单
+      this.musicList = data.list;
+      // 切换清单脚标
+      this.musicListSub = data.sub;
+      // 切换暂停状态为否
       this.isPause = false;
     });
     // 接收并设置音乐播放器是否显示
@@ -387,9 +441,7 @@ export default {
     // *
     // * 组件销毁后取消body绑定事件
     // *
-    document.documentElement.removeEventListener("mouseup", () =>
-      this.isMove(false)
-    );
+    document.documentElement.removeEventListener("mousemove", this.playerMove);
     document.documentElement.removeEventListener("mouseup", () => {
       this.isMove(false);
       document.documentElement.classList.remove("noselect");
@@ -462,7 +514,7 @@ export default {
   top: 0;
   height: 100%;
   width: 100%;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.88));
+  background: linear-gradient(132deg, rgba(0, 0, 0, 0.54), rgba(0, 0, 0, 0.76));
 }
 .player-container {
   position: relative;
@@ -555,7 +607,35 @@ footer {
   line-height: 0.2rem;
   font-size: 0.14rem;
 }
-
+.playingList {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.22rem;
+  height: 3rem;
+  width: 2rem;
+  overflow: hidden;
+}
+.playingList svg {
+  height: 3rem;
+  width: 2rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.playingList .meanlist {
+  padding: 0.1rem;
+  z-index: 4;
+  overflow: hidden scroll;
+  height: 3rem;
+  position: relative;
+  margin-right: -17px;
+}
+.playingList li {
+  position: relative;
+  font-size: 0.16rem;
+  line-height: 0.36rem;
+  text-align: center;
+}
 /* 滑动条 */
 input[type="range"] {
   position: absolute;

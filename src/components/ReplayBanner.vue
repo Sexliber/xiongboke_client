@@ -277,6 +277,7 @@ export default {
   width: 100%;
   overflow: hidden;
   display: none;
+  background-color: #222222;
 }
 .item .pic {
   position: relative;
