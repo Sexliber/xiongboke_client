@@ -7,7 +7,7 @@
     <div class="music-player-ui noselect">
       <div class="bg" :style="{backgroundImage:`url(${playerBg})`}"></div>
       <div class="player-container">
-        <header>
+        <header class="bg-black">
           <div class="title line1">
             <span class="white">音乐播放器</span>
           </div>
@@ -585,6 +585,7 @@ header .search input {
   font-size: 0.16rem;
   width: 90%;
   line-height: 0.32rem;
+  height: 0.32rem;
   border-width: 0;
   outline: none;
   background: transparent;
@@ -703,7 +704,7 @@ footer {
 }
 .playingList .meanlist {
   z-index: 4;
-  overflow: hidden scroll;
+  overflow-y: scroll;
   height: 2.72rem;
   width: 2.06rem;
   margin: 0.1rem;

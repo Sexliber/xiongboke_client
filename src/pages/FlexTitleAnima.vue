@@ -542,7 +542,7 @@ var resetClassEleTop = function(el) {
 }
 
 .content-container .v100 {
-  min-height: 100vh;
+  min-height: 100px;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
