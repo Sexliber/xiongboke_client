@@ -169,7 +169,6 @@ export default {
           this.isActive.splice(i, 1, false);
           this.isClassPause.splice(i, 1, false);
         }
-        console.log(this.getData);
       });
   }
 };

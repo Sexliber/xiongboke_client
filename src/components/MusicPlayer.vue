@@ -7,8 +7,25 @@
     <div class="music-player-ui noselect">
       <div class="bg" :style="{backgroundImage:`url(${playerBg})`}"></div>
       <div class="player-container">
-        <header @mousedown="headerMouseDown">
-          <div class="search bg-black"></div>
+        <header>
+          <div class="title line1">
+            <span class="white">音乐播放器</span>
+          </div>
+          <div class="search">
+            <input
+              class="lightgray"
+              type="text"
+              v-model="searchContent"
+              placeholder="搜索歌单/歌曲/歌手/专辑/MV"
+            >
+            <div class="do-search lightgray">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="close" @click="isShow=false">
+            <i class="fa fa-times white" aria-hidden="true"></i>
+          </div>
+          <div class="do-drag" @mousedown.self="headerMouseDown"/>
         </header>
 
         <div class="player-body"></div>
@@ -25,13 +42,7 @@
                   <img :src="playerHeadImg">
                 </div>
                 <div class="name line1">
-                  <marquee
-                    class="white"
-                    behavior="scroll"
-                    width="80%"
-                    direction="left"
-                    v-text="playingMusic.name"
-                  ></marquee>
+                  <span class="white marquee" v-text="playingMusic.name"></span>
                 </div>
                 <div class="singer line1">
                   <span class="white" v-text="playingMusic.singer"/>
@@ -80,7 +91,8 @@
                     <div class="meanlist">
                       <ul>
                         <li
-                          class="darkgray"
+                          class="darkgray line1"
+                          :class="{marquee:key==musicListSub,active:key==musicListSub}"
                           v-for="(item,key) in musicList"
                           :key="key"
                           @click="musicListSub = key"
@@ -139,7 +151,8 @@ export default {
     return {
       // *
       // * 控制播放器是否渲染,是否显示参数
-      // * isRender通过isMobile模块判断当前设备是否为移动设备从而控制播放器是否渲染,如不是则渲染,反之则不渲染
+      // * isRender通过isMobile模块判断当前设备是否为移动设备从而控制播放器是否渲染
+      // * 如果是移动设备则不渲染,如不是则渲染
       // * isShow控制当前模块是否显示
       // * *
       // 通过是否为移动设备判断是否渲染该组件
@@ -189,6 +202,8 @@ export default {
       playerUrl: "",
       // 音量
       volume: 100,
+      // 搜索值
+      searchContent: "",
 
       // *
       // * 播放器进度条相关变量
@@ -237,6 +252,9 @@ export default {
       this.playerUrl = this.playingMusic.url + `&br=${this.codeRate[0]}`;
       MusicPlayerDom.load();
       MusicPlayerDom.play();
+
+      // 切换按钮为播放状态
+      this.isPause = false;
 
       // 更换背景图片
       this.playerBg = this.playingMusic.pic + "&param=800y600";
@@ -523,11 +541,72 @@ export default {
 
 /* 头部 */
 header {
+  position: relative;
+  z-index: 1;
   height: 0.58rem;
+  padding: 0.13rem;
 }
-.search {
+header .do-drag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+header > div {
+  float: left;
+}
+.search-container {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
+}
+header .title {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-size: 0.18rem;
+  line-height: 0.32rem;
+  z-index: -1;
+}
+header .search {
+  position: relative;
+  z-index: 1;
+  height: 0.32rem;
+  width: 3rem;
+  margin-left: 1.3rem;
+  padding: 0 0.2rem;
+  background-color: rgba(255, 255, 255, 0.74);
+  border-radius: 0.16rem;
+}
+header .search input {
+  display: block;
+  margin: 0;
+  font-size: 0.16rem;
+  width: 90%;
+  line-height: 0.32rem;
+  border-width: 0;
+  outline: none;
+  background: transparent;
+  float: left;
+}
+header .do-search {
+  display: block;
+  line-height: 0.32rem;
+  font-size: 0.2rem;
+  text-align: right;
+  width: 10%;
+  float: right;
+}
+header .do-search i {
+  cursor: pointer;
+}
+header .close {
+  position: relative;
+  z-index: 1;
+  float: right;
+  line-height: 0.32rem;
+  font-size: 0.26rem;
 }
 /* 内容显示区域 */
 .player-body {
@@ -594,7 +673,7 @@ footer {
 .info .name,
 .info .singer {
   width: 1.6rem;
-  padding-left: 0.2rem;
+  margin-left: 0.2rem;
 }
 .info .name {
   padding-top: 0.1rem;
@@ -623,18 +702,23 @@ footer {
   left: 0;
 }
 .playingList .meanlist {
-  padding: 0.1rem;
   z-index: 4;
   overflow: hidden scroll;
-  height: 3rem;
+  height: 2.72rem;
+  width: 2.06rem;
+  margin: 0.1rem;
   position: relative;
-  margin-right: -17px;
 }
 .playingList li {
   position: relative;
   font-size: 0.16rem;
   line-height: 0.36rem;
-  text-align: center;
+  text-align: left;
+  cursor: pointer;
+}
+.playingList li.active {
+  color: #fff;
+  text-overflow: inherit;
 }
 /* 滑动条 */
 input[type="range"] {

@@ -186,6 +186,11 @@ export default {
     margin-bottom: 0;
   }
 }
+@media screen and (min-width:1000px) and (max-width:1800px){
+  .info{
+    display: none;
+  }
+}
 </style>
 
 

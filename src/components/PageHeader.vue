@@ -51,9 +51,9 @@
             <i class="fa fa-facebook" aria-hidden="true"></i>
           </li>
         </a>
-        <a href>
+        <a href @click.prevent="doMusicPlayer">
           <li class="contact visible-4" :class="{visible:contIsActive}">
-            <i class="fa fa-twitter" aria-hidden="true"></i>
+            <i class="fa fa-music" aria-hidden="true"></i>
           </li>
         </a>
       </ul>
@@ -87,6 +87,11 @@
 
 
 <script>
+// 移动设备检测模块
+import isMobile from "../libs/isMobile";
+// 音乐播放器数据广播站
+import MusicPlayer from "../model/MusicPlayer";
+
 export default {
   name: "PageHeader",
   data() {
@@ -107,6 +112,12 @@ export default {
       // 操作联系按钮响应
       contIsActive: false
     };
+  },
+  methods: {
+    doMusicPlayer() {
+      // 非移动设备下通过MusicPlayer数据广播站传递isShow的值为true使音乐播放器显示
+      MusicPlayer.$emit("isShow", !isMobile);
+    }
   }
 };
 </script>
