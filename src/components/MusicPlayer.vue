@@ -5,8 +5,12 @@
   <div id="music-player" v-if="isRender" v-show="isShow" v-getMusicUiDom>
     <!-- 音乐播放器界面<=S -->
     <div class="music-player-ui noselect">
+      <!-- 播放器背景 -->
       <div class="bg" :style="{backgroundImage:`url(${playerBg})`}"></div>
+
+      <!-- 播放器内容搜索栏<=S -->
       <div class="player-container">
+        <!-- 播放器头部搜索栏<=S -->
         <header class="bg-black">
           <div class="title line1">
             <span class="white">音乐播放器</span>
@@ -27,9 +31,17 @@
           </div>
           <div class="do-drag" @mousedown.self="headerMouseDown"/>
         </header>
+        <!-- 播放器头部=>E -->
 
-        <div class="player-body"></div>
+        <!-- 播放器内容展示部分<=S -->
+        <div class="player-body">
+          <!-- 正在播放的音乐歌词及详细信息展示<=S -->
+          <div class="player-lrc"></div>
+          <!-- 正在播放的音乐歌词及详细信息展示=>E -->
+        </div>
+        <!-- 播放器内容展示部分=>E -->
 
+        <!-- 播放器底部工具栏<=S -->
         <footer>
           <div class="progress-container" @click="setProgress">
             <div class="progress-bar" :style="{width:progressBarWidth+'px'}"></div>
@@ -113,7 +125,9 @@
             </div>
           </div>
         </footer>
+        <!-- 播放器底部工具栏=>E -->
       </div>
+      <!-- 播放器内容=>E -->
     </div>
     <!-- 音乐播放器界面=>E -->
 
@@ -183,6 +197,8 @@ export default {
       musicListSub: 99999,
       // 正在播放的音乐
       playingMusic: "null",
+      // 正在播放音乐的歌词
+      playingMusicLrc: [0],
 
       // *
       // * 音乐播放器相关设置
@@ -208,7 +224,7 @@ export default {
       // *
       // * 播放器进度条相关变量
       // * *
-      // 播放进度计时
+      // 播放进度计时(整数)
       playProgressTime: 0,
       // 播放进度定时器
       playProgress: null,
@@ -248,19 +264,17 @@ export default {
     // * 此时重置播放器配置并重新播放音乐
     // *
     playingMusic: async function(newSong, oldSong) {
-      // 重置音乐播放器配置并重新播放音乐
-      this.playerUrl = this.playingMusic.url + `&br=${this.codeRate[0]}`;
-      MusicPlayerDom.load();
-      MusicPlayerDom.play();
-
       // 切换按钮为播放状态
-      this.isPause = false;
+      this.isPause = true;
 
       // 更换背景图片
       this.playerBg = this.playingMusic.pic + "&param=800y600";
 
       // 更换头图
       this.playerHeadImg = this.playingMusic.pic + "&param=400y400";
+
+      // 清除歌词
+      this.playingMusicLrc = [].concat(0);
 
       // 初始化播放进度条并开始计算进度<=S
       // 清除定时器
@@ -273,29 +287,51 @@ export default {
       this.playProgress = setInterval(this.catchProgressTime, 100);
       // 初始化播放进度条并开始计算进度=>E
 
-      // 播放请求验证,是否能获取到该歌曲,否则切换码率重新请求
-      var i = 0;
-      for (i in this.codeRate) {
-        var isBreak = false;
+      // *
+      // * 请求歌词
+      // * *
+      this.axios
+        .get(this.playingMusic.lrc + `&br=${this.codeRate[i]}`)
+        .then(response => {
+          // *
+          // * 请求成功,获取歌词,重置播放器,播放音乐
+          // * *
+          this.doLrc(response.data);
+        });
 
-        await this.axios
-          .get(this.playingMusic.url + `&br=${this.codeRate[i]}`)
-          .then(() => {
-            console.log("请求成功,开始播放");
-            if (i != 0) {
-              this.playerUrl =
-                this.playingMusic.url + `&br=${this.codeRate[i]}`;
-              MusicPlayerDom.load();
-              MusicPlayerDom.play();
-            }
-            isBreak = true;
+      // *
+      // * 播放验证方法
+      // * 用于验证当前播放连接是否可用
+      // * 如不可用则更换码率重新请求
+      // * *
+      var i = 0;
+      var verify = () => {
+        this.axios
+          .head(this.playingMusic.url + `&br=${this.codeRate[i]}`)
+          .then(response => {
+            console.log("请求成功,开始播放", i);
+            this.playerUrl = this.playingMusic.url + `&br=${this.codeRate[i]}`;
+            MusicPlayerDom.load();
+            this.isPause = false;
+            return;
           })
           .catch(error => {
-            console.log("请求失败,更换码率");
+            // *
+            // * 请求失败,更换码率,重新发送请求
+            // * *
+            console.log(error);
+            if (i < this.codeRate.length) {
+              console.log("请求失败,更换码率", i);
+              i++;
+              verify();
+            } else console.log("无可用码率");
+            return;
           });
-
-        if (isBreak) break;
-      }
+        return;
+      };
+      // 播放请求
+      await verify();
+      return;
     },
 
     // *
@@ -394,11 +430,22 @@ export default {
       this.playProgress = setInterval(this.catchProgressTime, 100);
     },
 
-    // 进度条时间捕获并赋值给playProgressTime
+    // *
+    // * 进度条时间捕获并赋值给playProgressTime和playProgressTimeFloat
+    // * *
     catchProgressTime() {
+      // 获取到的播放进度时间转化为毫秒
       this.playProgressTime = parseInt(MusicPlayerDom.currentTime);
       this.progressBarWidth = this.playProgressTime * this.progressBarWidthUnit;
       if (this.playProgressTime >= this.playingMusic.time) this.musicListSub++;
+    },
+
+    // *
+    // * 歌词处理
+    // * 将处理好的歌词返回给playingMusicLrc数组
+    // * *
+    doLrc(lrc) {
+      
     }
   },
 

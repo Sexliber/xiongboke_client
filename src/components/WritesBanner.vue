@@ -101,9 +101,9 @@ export default {
 }
 
 .softs .col-sm-8 {
-  position: absolute;
+  position: relative;
   right: 0;
-  top: 24px;
+  top: 0;
   bottom: 24px;
 }
 .softs .text {
