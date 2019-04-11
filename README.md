@@ -10,7 +10,7 @@ yarn install
 yarn run serve
 ```
 
-### Compiles and minifies for production
+### Vue项目打包
 ```
 yarn run build
 ```
