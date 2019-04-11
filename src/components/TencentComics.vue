@@ -7,36 +7,37 @@
           <span>腾讯漫画</span>
         </div>
         <div class="container-fluid">
-          <ul class="row list">
-            <a
-              v-for="(item,key) in getData"
-              :key="key"
-              :href="'http://ac.qq.com/Comic/comicInfo/id/'+item.id"
-              target="_blank"
-            >
-              <li class="comic col-sm-4 col-md-6 col-xs-6">
-                <div class="pic bg-black">
-                  <img :src="item.pic" alt>
-                </div>
-                <div class="content bg-black">
-                  <h3 class="title white line1" v-text="item.less_title"/>
-                  <p class="intrd line1" v-text="item.intrd"/>
-                  <div class="tag">
-                    <span
-                      v-for="(tags,_key) in item.tags"
-                      :key="_key"
-                      v-text="tags"
-                      class="bg-yellow white"
-                    />
+          <div class="list padding0" v-for="(item, key) in getData" :key="key">
+            <div class="row" v-if="key%2-1">
+              <a
+                v-for="n in 2"
+                :key="n"
+                target="_blank"
+                :href="`https://ac.qq.com/Comic/comicInfo/id/${getValue(getData[key+n-1],'id')}`"
+              >
+                <li class="comic col-sm-6 col-md-6 col-xs-6">
+                  <div class="pic bg-black">
+                    <img :src="getValue(getData[key+n-1],'pic')">
                   </div>
-                </div>
-                <div class="border">
-                  <div></div>
-                </div>
-              </li>
-            </a>
-            <div class="overlay"/>
-          </ul>
+                  <div class="content bg-black">
+                    <h3 class="title white line1" v-text="getValue(getData[key+n-1],'less_title')"/>
+                    <p class="intrd line1" v-text="getValue(getData[key+n-1],'intrd')"/>
+                    <div class="tag">
+                      <span
+                        v-for="(tags,_key) in getValue(getData[key+n-1],'tags')"
+                        :key="_key"
+                        v-text="tags"
+                        class="bg-yellow white"
+                      />
+                    </div>
+                  </div>
+                  <div class="border">
+                    <div></div>
+                  </div>
+                </li>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -69,6 +70,13 @@ export default {
       .catch(error => {
         console.log("请求错误");
       });
+  },
+  methods: {
+    getValue(obj, key) {
+      if (obj != undefined) {
+        return obj[key];
+      } else return;
+    }
   }
 };
 </script>
@@ -118,7 +126,7 @@ export default {
   padding: 6px 10px !important;
   font-weight: 500 !important;
 }
-img{
+img {
   width: 100%;
 }
 p {
@@ -135,5 +143,8 @@ p {
 }
 .overlay {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.85));
+}
+.padding0 {
+  padding: 0 !important;
 }
 </style>

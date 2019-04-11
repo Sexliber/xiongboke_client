@@ -8,7 +8,7 @@
       <!-- 播放器背景 -->
       <div class="bg" :style="{backgroundImage:`url(${playerBg})`}"></div>
 
-      <!-- 播放器内容搜索栏<=S -->
+      <!-- 播放器内容<=S -->
       <div class="player-container">
         <!-- 播放器头部搜索栏<=S -->
         <header class="bg-black">
@@ -36,7 +36,20 @@
         <!-- 播放器内容展示部分<=S -->
         <div class="player-body">
           <!-- 正在播放的音乐歌词及详细信息展示<=S -->
-          <div class="player-lrc"></div>
+          <div class="player-lrc container-fluid">
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-8 lrc-container">
+                <div class="lrc-wrap">
+                  <ul :style="{marginTop:lrcWrapTop+'rem'}">
+                    <li v-for="(item, index) in playingMusicLrc" :key="index">
+                      <span v-text="getOpt(item,'lrc')" class="white"></span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- 正在播放的音乐歌词及详细信息展示=>E -->
         </div>
         <!-- 播放器内容展示部分=>E -->
@@ -148,6 +161,8 @@
 import isMobile from "../libs/isMobile";
 // 引入音乐播放器数据广播站,用于接受音乐参数
 import MusicPlayer from "../model/MusicPlayer";
+// 引入歌词处理模块
+import DoLrc from "../libs/musicLrc";
 
 // 音乐播放器UI界面dom
 var MusicPlayerUi = null;
@@ -220,6 +235,10 @@ export default {
       volume: 100,
       // 搜索值
       searchContent: "",
+      // 歌词容器上间距
+      lrcWrapTop: 0,
+      // 歌词的行高
+      lrcLineHeight: 0.36,
 
       // *
       // * 播放器进度条相关变量
@@ -273,9 +292,6 @@ export default {
       // 更换头图
       this.playerHeadImg = this.playingMusic.pic + "&param=400y400";
 
-      // 清除歌词
-      this.playingMusicLrc = [].concat(0);
-
       // 初始化播放进度条并开始计算进度<=S
       // 清除定时器
       clearInterval(this.playProgress);
@@ -294,9 +310,27 @@ export default {
         .get(this.playingMusic.lrc + `&br=${this.codeRate[i]}`)
         .then(response => {
           // *
-          // * 请求成功,获取歌词,重置播放器,播放音乐
+          // * 歌词处理
+          // * 将处理好的歌词返回给playingMusicLrc数组
           // * *
-          this.doLrc(response.data);
+
+          // 清理上一首音乐的歌词
+          // var i = 0;
+          // for (i in this.playingMusicLrc) {
+          //   this.playingMusicLrc.splice(i, 1, {
+          //     id: -1,
+          //     lrc: ""
+          //   });
+          // }
+          this.playingMusicLrc = [0];
+
+          var doLrc = new DoLrc();
+          if (response.data.indexOf("暂无歌词") != -1) {
+            this.playingMusicLrc = [].concat({ id: 0, lrc: "暂无歌词" });
+          } else {
+            this.playingMusicLrc = [].concat(doLrc.parse(response.data));
+            doLrc.flush();
+          }
         });
 
       // *
@@ -309,7 +343,7 @@ export default {
         this.axios
           .head(this.playingMusic.url + `&br=${this.codeRate[i]}`)
           .then(response => {
-            console.log("请求成功,开始播放", i);
+            console.log(`码率${this.codeRate[i]}请求成功,开始播放`);
             this.playerUrl = this.playingMusic.url + `&br=${this.codeRate[i]}`;
             MusicPlayerDom.load();
             this.isPause = false;
@@ -321,7 +355,7 @@ export default {
             // * *
             console.log(error);
             if (i < this.codeRate.length) {
-              console.log("请求失败,更换码率", i);
+              console.log(`码率${this.codeRate[i]}请求失败,更换码率`);
               i++;
               verify();
             } else console.log("无可用码率");
@@ -361,6 +395,18 @@ export default {
     // * *
     volume: function(newData, oldData) {
       MusicPlayerDom.volume = newData / 100;
+    },
+
+    // *
+    // * 监听playProgressTime变动
+    // * playProgressTime变动则说明音乐时间进度改变
+    // * 此时重置歌词容器的上间距,实现歌词滚动
+    // * *
+    playProgressTime: function(newData, oldData) {
+      if (this.playingMusicLrc[newData] != undefined) {
+        this.lrcWrapTop =
+          -1 * (this.playingMusicLrc[newData].id - 1) * this.lrcLineHeight;
+      }
     }
   },
   directives: {
@@ -441,11 +487,19 @@ export default {
     },
 
     // *
-    // * 歌词处理
-    // * 将处理好的歌词返回给playingMusicLrc数组
+    // * 获取对象内的参数
     // * *
-    doLrc(lrc) {
-      
+    getOpt(obj, key) {
+      if (obj != undefined && obj.lrc != "") {
+        if (obj.id != -1 && obj.id != undefined && obj.lrc != "") {
+          if(obj[key].id != undefined)return "-------";
+          else return obj[key];
+        } else {
+          return "";
+        }
+      } else {
+        return "";
+      }
     }
   },
 
@@ -659,6 +713,26 @@ header .close {
 /* 内容显示区域 */
 .player-body {
   height: 4.6rem;
+}
+.lrc-container {
+  height: 4.6rem;
+  padding: 0.4rem;
+}
+.lrc-wrap {
+  padding-top: 1.4rem;
+  overflow: hidden;
+  height: 100%;
+}
+.lrc-wrap ul {
+  transition: all 300ms linear;
+}
+.lrc-wrap li {
+  font-size: 0.14rem;
+  line-height: 0.36rem;
+  text-align: center;
+}
+.lrc-wrap li.active {
+  font-size: 0.24rem;
 }
 /* 底部状态栏 */
 footer {
