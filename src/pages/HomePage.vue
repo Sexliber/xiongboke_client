@@ -50,7 +50,7 @@ export default {
           en: "Soft and Tools",
           zh: "软件工具",
           entext: "Here are some of soft and tools.",
-          path: "/softs"
+          path: "/software"
         },
         {
           thumbnail: "../assets/images/homepage/advert-bg-3.jpg",
