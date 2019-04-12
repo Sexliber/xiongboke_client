@@ -42,8 +42,12 @@
               <div class="col-md-8 lrc-container">
                 <div class="lrc-wrap">
                   <ul :style="{marginTop:lrcWrapTop+'rem'}">
-                    <li v-for="(item, index) in playingMusicLrc" :key="index">
-                      <span v-text="getOpt(item,'lrc')" class="white"></span>
+                    <li
+                      v-for="(item, index) in playingMusicLrc"
+                      :key="index"
+                      :class="{active:lrcActive[index]}"
+                    >
+                      <span v-text="getOpt(item,'lrc')"></span>
                     </li>
                   </ul>
                 </div>
@@ -239,6 +243,9 @@ export default {
       lrcWrapTop: 0,
       // 歌词的行高
       lrcLineHeight: 0.36,
+      // 歌词active类控制器
+      lrcActive: [0],
+      lastLrcActiveId: 0,
 
       // *
       // * 播放器进度条相关变量
@@ -283,6 +290,9 @@ export default {
     // * 此时重置播放器配置并重新播放音乐
     // *
     playingMusic: async function(newSong, oldSong) {
+      // 重置歌词容器上间距为0
+      this.lrcWrapTop = 0;
+
       // 切换按钮为播放状态
       this.isPause = true;
 
@@ -315,21 +325,26 @@ export default {
           // * *
 
           // 清理上一首音乐的歌词
-          // var i = 0;
-          // for (i in this.playingMusicLrc) {
-          //   this.playingMusicLrc.splice(i, 1, {
-          //     id: -1,
-          //     lrc: ""
-          //   });
-          // }
           this.playingMusicLrc = [0];
 
+          // 创建歌词处理对象
           var doLrc = new DoLrc();
           if (response.data.indexOf("暂无歌词") != -1) {
             this.playingMusicLrc = [].concat({ id: 0, lrc: "暂无歌词" });
           } else {
-            this.playingMusicLrc = [].concat(doLrc.parse(response.data));
+            let getListArr = doLrc.parse(response.data);
+            this.playingMusicLrc = [].concat(getListArr);
+            //清洗通道
             doLrc.flush();
+
+            // 初始化歌词active控制器数组长度
+            for (let i = 0; i < getListArr.length; i++) {
+              if (i == 0) {
+                this.lrcActive.splice(i, 1, true);
+              } else {
+                this.lrcActive.splice(i, 1, false);
+              }
+            }
           }
         });
 
@@ -401,9 +416,20 @@ export default {
     // * 监听playProgressTime变动
     // * playProgressTime变动则说明音乐时间进度改变
     // * 此时重置歌词容器的上间距,实现歌词滚动
+    // * 同时更改active类控制器,实现播放的歌词放大
     // * *
     playProgressTime: function(newData, oldData) {
-      if (this.playingMusicLrc[newData] != undefined) {
+      // 歌词容器上间距设置
+      if (
+        this.playingMusicLrc[newData] != undefined &&
+        this.playingMusicLrc[newData].id != undefined
+      ) {
+        // active切换
+        this.lrcActive.splice(this.lastLrcActiveId, 1, false);
+        this.lrcActive.splice(newData, 1, true);
+        this.lastLrcActiveId = newData;
+
+        // 歌词容器上间距设置
         this.lrcWrapTop =
           -1 * (this.playingMusicLrc[newData].id - 1) * this.lrcLineHeight;
       }
@@ -492,7 +518,7 @@ export default {
     getOpt(obj, key) {
       if (obj != undefined && obj.lrc != "") {
         if (obj.id != -1 && obj.id != undefined && obj.lrc != "") {
-          if(obj[key].id != undefined)return "-------";
+          if (obj[key].id != undefined) return "-------";
           else return obj[key];
         } else {
           return "";
@@ -727,12 +753,15 @@ header .close {
   transition: all 300ms linear;
 }
 .lrc-wrap li {
+  color: rgba(255, 255, 255, 0.74);
   font-size: 0.14rem;
   line-height: 0.36rem;
   text-align: center;
 }
 .lrc-wrap li.active {
-  font-size: 0.24rem;
+  color: #fff;
+  font-size: 0.2rem;
+  line-height: .42rem;
 }
 /* 底部状态栏 */
 footer {
