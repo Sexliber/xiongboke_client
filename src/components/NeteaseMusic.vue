@@ -153,9 +153,9 @@ export default {
   created() {
     // 请求网易云歌单
     this.axios
-      .get(global.NeteaseMusicList, {
+      .get(global.MusicApi+"/netease/songList", {
         params: {
-          key: global.NeteaseMusicKey,
+          key: global.MusicApiKey,
           id: this.neteaseListId,
           offset: 0
         }

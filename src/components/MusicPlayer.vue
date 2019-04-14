@@ -23,7 +23,11 @@
               placeholder="搜索歌单/歌曲/歌手/专辑/MV"
             >
             <div class="do-search lightgray">
-              <i class="fa fa-search" aria-hidden="true"></i>
+              <a
+                class="fa fa-search lightgray"
+                aria-hidden="true"
+                @click.prevent="searchOffset=0;searchMusic()"
+              ></a>
             </div>
           </div>
           <div class="close" @click="isShow=false">
@@ -35,8 +39,133 @@
 
         <!-- 播放器内容展示部分<=S -->
         <div class="player-body">
+          <div class="music-container container-fluid" v-show="!showLrc">
+            <div class="row">
+              <!-- 正在播放的歌单<=S -->
+              <div class="col-md-4 music-list">
+                <vue-scroll>
+                  <ul>
+                    <li
+                      v-for="(item, key) in musicList"
+                      :key="key"
+                      :class="{active:key==musicListSub}"
+                      @click="musicListSub=key"
+                    >
+                      <div class="row">
+                        <div
+                          class="pic"
+                          :class="{'col-md-3':key==musicListSub}"
+                          v-show="key==musicListSub"
+                        >
+                          <img :src="item.pic">
+                        </div>
+                        <div :class="{'col-md-9':key==musicListSub}">
+                          <div class="row">
+                            <div class="line1" :class="{'col-md-8':!(key==musicListSub)}">
+                              <span
+                                :class="{marquee:key==musicListSub}"
+                                v-cloak
+                              >{{item.name}}&nbsp;-&nbsp;{{item.singer}}</span>
+                            </div>
+                            <div class="line1" :class="{'col-md-4':!(key==musicListSub)}">
+                              <span v-cloak>
+                                <span
+                                  v-show="key==musicListSub"
+                                >{{parseInt(playProgressTime/60) | numPlace(2)}}:{{playProgressTime%60 | numPlace(2)}}/</span>
+                                {{parseInt(item.time/60) | numPlace(2)}}:{{item.time%60 | numPlace(2)}}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </vue-scroll>
+              </div>
+              <!-- 正在播放的歌单=>E -->
+
+              <!-- 搜索结果容器<=S -->
+              <div class="col-md-8 s-finish-wrap">
+                <div class="assort clearboth">
+                  <a href class="white line1">精品歌单</a>
+                  <a href class="white line1">热门歌单</a>
+                  <a href class="white line1">MV排行榜</a>
+                  <a href class="white line1">歌单分类</a>
+                </div>
+                <div class="default-load" v-show="!showSearchView"></div>
+                <div class="s-finish-view" v-show="showSearchView">
+                  <nav class="clearboth">
+                    <div class="search-type">
+                      <a
+                        href
+                        class="white line1"
+                        @click.prevent="searchType='song';searchOffset=0;searchMusic()"
+                      >音乐</a>
+                      <a
+                        href
+                        class="white line1"
+                        @click.prevent="searchType='album';searchOffset=0;searchMusic()"
+                      >专辑</a>
+                      <a
+                        href
+                        class="white line1"
+                        @click.prevent="searchType='list';searchOffset=0;searchMusic()"
+                      >歌单</a>
+                    </div>
+                    <div class="search-origin">
+                      <a
+                        href
+                        class="white line1"
+                        @click.prevent="searchOrigin='netease';searchOffset=0;codeRate=[999000,192000,128000,320000];searchMusic()"
+                      >网易云</a>
+                      <a
+                        href
+                        class="white line1"
+                        @click.prevent="searchOrigin='kugou';searchOffset=0;codeRate=[99000,32000,12800];searchMusic()"
+                      >酷狗</a>
+                      <a
+                        href
+                        class="white line1"
+                        @click.prevent="searchOrigin='tencent';searchOffset=0;codeRate=[192,320,128,96,48,24];searchMusic()"
+                      >QQ</a>
+                    </div>
+                  </nav>
+                  <div class="content-wrap">
+                    <vue-scroll>
+                      <ul>
+                        <li v-for="(item, key) in searchList" :key="key" class="container-fluid">
+                          <div class="row">
+                            <div class="ico col-sm-1 col-xs-1">
+                              <span class="sernumber lightgray" v-cloak>{{key+1 | numPlace(2)}}</span>
+                            </div>
+                            <div class="name col-sm-6 col-xs-6 line1 darkgray">
+                              <a
+                                href
+                                v-text="item.name"
+                                @click.prevent="musicList=searchList;musicListSub=key"
+                              ></a>
+                            </div>
+                            <div class="singer col-sm-3 col-xs-3 line1 lightgray">
+                              <span v-text="item.singer"></span>
+                            </div>
+                            <div class="time lightgray col-sm-2 col-xs-2">
+                              <span
+                                v-cloak
+                              >{{parseInt(item.time/60) | numPlace(2)}}:{{item.time%60 | numPlace(2)}}</span>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </vue-scroll>
+                  </div>
+                </div>
+              </div>
+              <!-- 搜索结果容器=>E -->
+            </div>
+          </div>
+
           <!-- 正在播放的音乐歌词及详细信息展示<=S -->
-          <div class="player-lrc container-fluid">
+          <div class="player-lrc container-fluid" v-show="showLrc">
             <div class="row">
               <div class="col-md-4"></div>
               <div class="col-md-8 lrc-container">
@@ -97,39 +226,11 @@
                 <div class="row">
                   <!-- 按钮<=S -->
                   <div class="col-md-offset-4 col-md-8">
-                    <i
-                      class="fa fa-th-list white"
-                      aria-hidden="true"
-                      @click="musicListShow = !musicListShow"
-                    ></i>
+                    <a class="white" @click.prevent="showLrc=!showLrc" style="margin-right:.1rem">词</a>
                     <i class="fa fa-volume-up white" aria-hidden="true" @click="volShow = !volShow"></i>
-                    <i class="fa fa-undo white" aria-hidden="true"></i>
+                    <i class="fa fa-download white" aria-hidden="true" @click="download"></i>
                   </div>
                   <!-- 按钮=>E -->
-
-                  <!-- 正在播放的音乐清单<=S -->
-                  <div class="playingList" v-show="musicListShow">
-                    <svg>
-                      <path
-                        fill-rule="evenodd"
-                        opacity="0.741"
-                        fill="rgb(255, 255, 255)"
-                        d="M196.000,292.000 L107.486,292.000 L101.910,298.971 C100.846,300.301 99.121,300.301 98.057,298.971 L92.480,292.000 L4.000,292.000 C1.791,292.000 -0.000,290.209 -0.000,288.000 L-0.000,4.000 C-0.000,1.791 1.791,0.000 4.000,0.000 L196.000,0.000 C198.209,0.000 200.000,1.791 200.000,4.000 L200.000,288.000 C200.000,290.209 198.209,292.000 196.000,292.000 Z"
-                      ></path>
-                    </svg>
-                    <div class="meanlist">
-                      <ul>
-                        <li
-                          class="darkgray line1"
-                          :class="{marquee:key==musicListSub,active:key==musicListSub}"
-                          v-for="(item,key) in musicList"
-                          :key="key"
-                          @click="musicListSub = key"
-                        >{{item.name}}</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <!-- 正在播放的音乐清单=>E -->
 
                   <!-- 音量控制<=S -->
                   <div class="volume" v-show="volShow">
@@ -167,6 +268,7 @@ import isMobile from "../libs/isMobile";
 import MusicPlayer from "../model/MusicPlayer";
 // 引入歌词处理模块
 import DoLrc from "../libs/musicLrc";
+import VueGlobal from "../VueGlobal";
 
 // 音乐播放器UI界面dom
 var MusicPlayerUi = null;
@@ -192,6 +294,14 @@ export default {
       isRender: !isMobile,
       // 音乐播放器是否显示,默认为false
       isShow: false,
+
+      // *
+      // * 相关块显示隐藏
+      // * *
+      // 显示歌词
+      showLrc: false,
+      // 显示搜索结果模块
+      showSearchView: false,
 
       // *
       // * 播放器拖动功能相关配置
@@ -231,14 +341,24 @@ export default {
       isPause: false,
       // 音量调节工具是否可见
       volShow: false,
-      // 音乐清单工具是否可见
-      musicListShow: false,
       // 播放地址
       playerUrl: "",
+      // 下载地址
+      downloadUrl: "",
+      // 音乐格式
+      musicType: ".mp3",
       // 音量
       volume: 100,
       // 搜索值
       searchContent: "",
+      // 搜索类型
+      searchType: "song",
+      // 搜索源
+      searchOrigin: "netease",
+      // 搜索到的音乐数组
+      searchList: "null",
+      // 搜索分页
+      searchOffset: 0,
       // 歌词容器上间距
       lrcWrapTop: 0,
       // 歌词的行高
@@ -275,7 +395,7 @@ export default {
     // * 此时通过songList(当前播放歌单)和subListSub(当前播放的歌单中的第几项)来变动playingMusic触发歌曲切换
     // *
     musicList: function(newSub, oldSub) {
-      this.playingMusic = this.musicList[newSub];
+      this.playingMusic = this.musicList[this.musicListSub];
     },
     musicListSub: function(newSub, oldSub) {
       // 判断角标是否大于等于歌单长度,如是,则重置角标值为0
@@ -362,6 +482,13 @@ export default {
             this.playerUrl = this.playingMusic.url + `&br=${this.codeRate[i]}`;
             MusicPlayerDom.load();
             this.isPause = false;
+            MusicPlayerDom.play();
+            // 设置音乐格式以供下载时使用
+            this.downloadUrl = response.request.responseURL;
+            this.musicType = this.downloadUrl.substring(
+              this.downloadUrl.lastIndexOf(".")
+            );
+
             return;
           })
           .catch(error => {
@@ -373,7 +500,10 @@ export default {
               console.log(`码率${this.codeRate[i]}请求失败,更换码率`);
               i++;
               verify();
-            } else console.log("无可用码率");
+            } else {
+              this.musicListSub++;
+              console.log("无可用码率");
+            }
             return;
           });
         return;
@@ -526,6 +656,59 @@ export default {
       } else {
         return "";
       }
+    },
+
+    // *
+    // * 文件下载
+    // * *
+    download() {
+      this.axios({
+        // 用axios发送get请求
+        method: "get",
+        url: this.downloadUrl, // 请求地址
+        responseType: "blob" // 表明返回服务器返回的数据类型
+      }).then(res => {
+        // 将blob对象转换为域名结合式的url
+        let blobUrl = window.URL.createObjectURL(res.data);
+        let link = document.createElement("a");
+        document.body.appendChild(link);
+        link.style.display = "none";
+        link.href = blobUrl;
+        // 设置a标签的下载属性，设置文件名及格式，后缀名最好让后端在数据格式中返回
+        link.download = this.playingMusic.name + this.musicType;
+        // 自触发click事件
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      });
+    },
+
+    // *
+    // * 搜索方法
+    // * type参数为要搜索的类型
+    // * *
+    searchMusic() {
+      if (this.searchContent != "") {
+        this.showSearchView = true;
+        this.axios
+          .get("musicApi", {
+            params: {
+              searchOrigin: this.searchOrigin,
+              doWhat: "search",
+              key: VueGlobal.MusicApiKey,
+              s: this.searchContent,
+              type: this.searchType,
+              limit: 20,
+              offset: this.searchOffset
+            }
+          })
+          .then(res => {
+            this.searchList = res.data;
+            this.searchOffset++;
+          });
+      } else {
+        this.showSearchView = false;
+      }
     }
   },
 
@@ -672,6 +855,7 @@ header {
   z-index: 1;
   height: 0.58rem;
   padding: 0.13rem;
+  background-color: transparent;
 }
 header .do-drag {
   position: absolute;
@@ -761,12 +945,106 @@ header .close {
 .lrc-wrap li.active {
   color: #fff;
   font-size: 0.2rem;
-  line-height: .42rem;
+  line-height: 0.42rem;
+}
+.music-container .music-list {
+  height: 4.6rem;
+  overflow: hidden;
+  border-right: 1px solid #888;
+}
+.music-container .music-list .pic img {
+  width: 100%;
+  height: auto;
+}
+.music-container .music-list .pic,
+.music-container .music-list .col-md-9 {
+  padding: 0.06rem;
+}
+.music-container .music-list .row .row {
+  padding: 0.02rem 0.06rem;
+}
+.music-container .music-list li {
+  padding: 0.06rem;
+  background-color: #fff;
+  cursor: pointer;
+}
+.music-container .music-list li:hover {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.music-container .music-list li .col-md-4 {
+  text-align: right;
+}
+.music-container .music-list li.active {
+  color: #fff;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.music-container .music-list .col-md-9 .row {
+  padding: 0.04rem;
+}
+.music-container .music-list .col-md-9 .line1:first-child {
+  margin-bottom: 0.04rem;
+  font-size: 0.16rem;
+}
+.music-container .music-list .col-md-9 .line1:nth-child(2) {
+  font-size: 0.14rem;
+}
+.s-finish-wrap {
+  height: 4.6rem;
+  background-color: #fff;
+}
+.s-finish-wrap .assort,
+.s-finish-view nav > div {
+  padding: 0.07rem 0.17rem;
+  background-color: #222;
+}
+.s-finish-view nav,
+.s-finish-view nav > div {
+  background-color: #0099cc;
+}
+.s-finish-wrap .assort a,
+.s-finish-view nav a {
+  font-size: 0.14rem;
+  display: inline;
+  padding: 0.01rem 0.13rem;
+  border-radius: 0.2rem;
+  color: #fff;
+}
+.s-finish-wrap .assort a:hover,
+.s-finish-view nav a:hover {
+  background-color: #000;
+}
+.s-finish-view nav a:hover {
+  background-color: #006699;
+}
+.s-finish-view nav .search-origin {
+  float: right;
+}
+.s-finish-view nav .search-type {
+  float: left;
+}
+.s-finish-view .content-wrap {
+  padding: 0.1rem 0;
+  height: 3.92rem;
+  overflow: hidden;
+}
+.s-finish-view .content-wrap li {
+  padding: 0.08rem 0.2rem;
+}
+.s-finish-view .content-wrap li:nth-child(2n) {
+  background-color: #eee;
+}
+.s-finish-view .content-wrap li:nth-child(2n + 1) {
+  background-color: #fff;
+}
+.s-finish-view .content-wrap li .time {
+  text-align: right;
 }
 /* 底部状态栏 */
 footer {
   height: 0.82rem;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: transparent;
 }
 .progress-container {
   cursor: pointer;

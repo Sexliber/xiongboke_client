@@ -60,6 +60,14 @@ a:hover {
 	text-decoration: none;
 }
 
+a:link{
+	text-decoration: none;
+}
+
+a:visited{
+	text-decoration: none;
+}
+
 .clearboth::after {
 	display: block;
 	content: "";
@@ -96,7 +104,7 @@ a:hover {
 }
 
 .lightgray {
-	color: #404040;
+	color: #888;
 }
 
 .white {

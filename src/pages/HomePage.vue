@@ -70,7 +70,7 @@ export default {
       // 响应式滚动标题导航栏命名
       navName: [
         { en: "writes", zh: "最新文章" },
-        { en: "softs", zh: "实用软件" },
+        { en: "tools", zh: "实用软件" },
         { en: "codes", zh: "代码审计" },
         { en: "pages", zh: "网页实例" },
         { en: "designs", zh: "最新设计" }

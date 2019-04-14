@@ -10,8 +10,11 @@ import Vue from 'vue';
 
 
 
-// 引入axios请求模块并配置到Vue全局属性
+// *
+// * 引入axios请求模块并配置到Vue全局属性
+// *
 import axios from 'axios';
+// 设置默认请求域名地址
 axios.defaults.baseURL = global.BASE_URL;
 Vue.prototype.axios = axios;
 
@@ -24,7 +27,7 @@ Vue.use(vuescroll, {
   ops: {
     vuescroll: {
       mode: 'native',
-      sizeStrategy: 'number',
+      sizeStrategy: Number,
       detectResize: true
     },
     scrollPanel: {
@@ -108,6 +111,7 @@ Vue.filter('numPlace', function (value, length) {
 
 // 引入并且渲染App视图<=S
 import App from './App';
+import { Number } from 'core-js';
 
 Vue.config.productionTip = false;
 new Vue({
