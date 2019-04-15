@@ -90,7 +90,6 @@
                   <a href class="white line1">精品歌单</a>
                   <a href class="white line1">热门歌单</a>
                   <a href class="white line1">MV排行榜</a>
-                  <a href class="white line1">歌单分类</a>
                 </div>
                 <div class="default-load" v-show="!showSearchView"></div>
                 <div class="s-finish-view" v-show="showSearchView">
@@ -121,18 +120,13 @@
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchOrigin='kugou';searchOffset=0;codeRate=[99000,32000,12800];searchMusic()"
-                      >酷狗</a>
-                      <a
-                        href
-                        class="white line1"
                         @click.prevent="searchOrigin='tencent';searchOffset=0;codeRate=[192,320,128,96,48,24];searchMusic()"
                       >QQ</a>
                     </div>
                   </nav>
                   <div class="content-wrap">
-                    <vue-scroll>
-                      <ul>
+                    <vue-scroll @handle-scroll="refresh">
+                      <ul ref="searchList">
                         <li v-for="(item, key) in searchList" :key="key" class="container-fluid">
                           <div class="row">
                             <div class="ico col-sm-1 col-xs-1">
@@ -140,6 +134,7 @@
                             </div>
                             <div class="name col-sm-6 col-xs-6 line1 darkgray">
                               <a
+                                class="darkgray"
                                 href
                                 v-text="item.name"
                                 @click.prevent="musicList=searchList;musicListSub=key"
@@ -291,7 +286,7 @@ export default {
       // * isShow控制当前模块是否显示
       // * *
       // 通过是否为移动设备判断是否渲染该组件
-      isRender: !isMobile,
+      isRender: false,
       // 音乐播放器是否显示,默认为false
       isShow: false,
 
@@ -485,9 +480,9 @@ export default {
             MusicPlayerDom.play();
             // 设置音乐格式以供下载时使用
             this.downloadUrl = response.request.responseURL;
-            this.musicType = this.downloadUrl.substring(
-              this.downloadUrl.lastIndexOf(".")
-            );
+            // this.musicType = this.downloadUrl.substring(
+            //   this.downloadUrl.lastIndexOf(".")
+            // );
 
             return;
           })
@@ -703,12 +698,24 @@ export default {
             }
           })
           .then(res => {
-            this.searchList = res.data;
-            this.searchOffset++;
+            // 200:成功返回数据
+            if (res.status == "200") {
+              this.searchList = res.data;
+              this.searchOffset++;
+            } else {
+              return;
+            }
           });
       } else {
         this.showSearchView = false;
       }
+    },
+
+    // *
+    // * 搜索内容刷新
+    // *
+    refresh(v,h,event){
+      console.log(v,h,this.$refs["searchList"].offsetHeight)
     }
   },
 
@@ -739,6 +746,11 @@ export default {
       },
       false
     );
+
+    // *
+    // * 当实例创建完成后通过MusicPlayer广播站通知各接收站,并传递true值
+    // * *
+    MusicPlayer.$emit("renderFinished", true);
   },
 
   // *
@@ -755,6 +767,14 @@ export default {
       // 切换暂停状态为否
       this.isPause = false;
     });
+
+    // 接收并设置音乐播放器是否渲染<=S
+    MusicPlayer.$on("isRender", data => {
+      // 控制音乐播放器渲染
+      this.isRender = data;
+    });
+    // 接收并设置音乐播放器是否渲染=>E
+
     // 接收并设置音乐播放器是否显示
     MusicPlayer.$on("isShow", data => {
       this.isShow = data;
@@ -831,6 +851,7 @@ export default {
   z-index: 1;
   height: 100%;
   width: 100%;
+  transform: scale(1.1);
   background-size: cover;
   background-repeat: no-repeat;
   filter: blur(9px);
@@ -965,12 +986,13 @@ header .close {
 }
 .music-container .music-list li {
   padding: 0.06rem;
-  background-color: #fff;
   cursor: pointer;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 .music-container .music-list li:hover {
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 .music-container .music-list li .col-md-4 {
   text-align: right;
@@ -978,7 +1000,7 @@ header .close {
 .music-container .music-list li.active {
   color: #fff;
   padding: 0;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 .music-container .music-list .col-md-9 .row {
   padding: 0.04rem;

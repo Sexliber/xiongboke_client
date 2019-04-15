@@ -6,7 +6,7 @@
           <i aria-hidden="true" class="fa fa-list-ul"></i>
           <span>优选内容</span>
         </div>
-        <div class="list">
+        <div class="list" :class="{loading:!isGetData}">
           <ul>
             <li
               v-for="(item,key) in getData"
@@ -49,6 +49,7 @@ export default {
   data: function() {
     return {
       getData: [0],
+      isGetData:false,
       isActive: [0]
     };
   },
@@ -64,6 +65,7 @@ export default {
   created() {
     this.axios.get("getPublicData").then(response => {
       this.getData = response.data;
+      this.isGetData = true;
       var i = 0;
       for (i in response.data) {
         if (i == 0) {

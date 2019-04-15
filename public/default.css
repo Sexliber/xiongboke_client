@@ -178,7 +178,6 @@ a:visited{
 
 .loading {
 	position: relative;
-	height: 100vh;
 	overflow: hidden;
 }
 
@@ -188,6 +187,7 @@ a:visited{
 	content: "";
 	z-index: 999998;
 	top: 0;
+	left: 0;
 	height: 100%;
 	width: 100%;
 	text-align: center;
@@ -197,7 +197,7 @@ a:visited{
 
 .loading::after {
 	z-index: 999999;
-	position: fixed;
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	margin: -24px -31px;

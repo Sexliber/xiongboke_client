@@ -5,7 +5,7 @@
         <i aria-hidden="true" class="fa fa-list-ul"></i>
         <span>我的歌单</span>
       </div>
-      <div class="list">
+      <div class="list" :class="{loading:!isGetData}">
         <vue-scroll>
           <ul>
             <li
@@ -88,8 +88,10 @@ export default {
       isClassPause: [false],
       // 上一个获取active类的元素key值
       lastActiveKey: 0,
-      // 接收所有歌曲信息
+      // 接收所有歌曲信息数据
       getData: [0],
+      // 是否已经接收到数据
+      isGetData:false,
       // 是否渲染移动端播放器
       isRender: isMobile,
       // 码率
@@ -97,7 +99,9 @@ export default {
       // 移动端播放器正在播放歌曲参数
       playingMusic: "",
       // 移动端播放器是否为暂停状态
-      isPause: false
+      isPause: false,
+      // 音乐播放器是否已经渲染完毕
+      musicPlayerIsRender: false
     };
   },
   watch: {
@@ -111,11 +115,28 @@ export default {
   },
   methods: {
     // 每一个item被点击后将值传递给音乐播放器数据广播站
-    excSong(key) {
+    async excSong(key) {
       // 非移动设备则传递歌曲参数并显示播放器
       if (!isMobile) {
-        MusicPlayer.$emit("musicList", { list: this.getData, sub: key });
+        // 通过MusicPlayer广播isRender为true的消息
+        MusicPlayer.$emit("isRender", true);
+
+        // *
+        // * 验证音乐播放器组件是否渲染完毕
+        // * 如渲染完毕,则继续执行后续操作
+        // * 如未渲染完毕,则循环验证
+        // * *
+        var verify = () => {
+          let timer = setInterval(() => {
+            if (this.musicPlayerIsRender) clearInterval(timer);
+          }, 100);
+        };
+        await verify();
+
+        // 通过MusicPlayer广播isShow为true的消息
         MusicPlayer.$emit("isShow", true);
+        // 通过MusicPlayer广播musicList,及要求播放的音乐清单
+        MusicPlayer.$emit("musicList", { list: this.getData, sub: key });
       }
       // 移动设备则直接播放音乐
       else {
@@ -153,7 +174,7 @@ export default {
   created() {
     // 请求网易云歌单
     this.axios
-      .get(global.MusicApi+"/netease/songList", {
+      .get(global.MusicApi + "/netease/songList", {
         params: {
           key: global.MusicApiKey,
           id: this.neteaseListId,
@@ -169,7 +190,17 @@ export default {
           this.isActive.splice(i, 1, false);
           this.isClassPause.splice(i, 1, false);
         }
+        // 取消数据加载动画
+        this.isGetData = true;
       });
+  },
+  mounted() {
+    // *
+    // * 接收音乐播放器是否渲染完毕的消息
+    // * *
+    MusicPlayer.$on("renderFinished", data => {
+      this.musicPlayerIsRender = data;
+    });
   }
 };
 </script>

@@ -7,7 +7,7 @@
         <head-replay-banner :get-data="replayItems"/>
       </div>
       <!-- 响应式滚动内容页 -->
-      <flex-title-anima
+      <router-view
         :nav-name="navName"
         :get-is-active="flexTitleAnimaIsActive"
         :progress-bar-width="progressBarWidth"
@@ -23,11 +23,8 @@
 import global from "../VueGlobal";
 //头部轮播组件
 import HeadReplayBanner from "../components/ReplayBanner.vue";
-//响应式滚动标题栏
-import FlexTitleAnima from "./FlexTitleAnima";
 // 获取FlexTitleAnima组件的接口参数
 import { classEleTop, navbarSubId, barWrapWidth } from "./FlexTitleAnima";
-import { constants } from "fs";
 
 export default {
   name: "HomePage",
@@ -155,8 +152,7 @@ export default {
   // 组件注册
   components: {
     //轮播组件
-    HeadReplayBanner,
-    FlexTitleAnima
+    HeadReplayBanner
   }
 };
 </script>

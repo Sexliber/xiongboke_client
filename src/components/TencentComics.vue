@@ -7,7 +7,8 @@
           <span>腾讯漫画</span>
         </div>
         <div class="container-fluid">
-          <div class="list padding0" v-for="(item, key) in getData" :key="key">
+          <div :class="{loading:!isGetData}">
+            <div class="list padding0" v-for="(item, key) in getData" :key="key">
             <div class="row" v-if="key%2-1">
               <a
                 v-for="n in 2"
@@ -38,6 +39,7 @@
               </a>
             </div>
           </div>
+          </div>
         </div>
       </div>
     </div>
@@ -53,7 +55,8 @@ export default {
   name: "CloudComics",
   data: function() {
     return {
-      getData: [0]
+      getData: [0],
+      isGetData:false
     };
   },
   created() {
@@ -61,11 +64,12 @@ export default {
     this.axios
       .get("tencentComic", {
         params: {
-          num: 12
+          num: 10
         }
       })
       .then(response => {
         this.getData = response.data;
+        this.isGetData = true;
       })
       .catch(error => {
         console.log("请求错误");
