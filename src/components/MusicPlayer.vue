@@ -26,7 +26,7 @@
               <a
                 class="fa fa-search lightgray"
                 aria-hidden="true"
-                @click.prevent="searchOffset=0;searchMusic()"
+                @click.prevent="showLrc=false;resetSearch();searchMusic()"
               ></a>
             </div>
           </div>
@@ -98,33 +98,33 @@
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchType='song';searchOffset=0;searchMusic()"
+                        @click.prevent="searchType='song';resetSearch();searchMusic()"
                       >音乐</a>
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchType='album';searchOffset=0;searchMusic()"
+                        @click.prevent="searchType='album';resetSearch();searchMusic()"
                       >专辑</a>
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchType='list';searchOffset=0;searchMusic()"
+                        @click.prevent="searchType='list';resetSearch();searchMusic()"
                       >歌单</a>
                     </div>
                     <div class="search-origin">
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchOrigin='netease';searchOffset=0;codeRate=[999000,192000,128000,320000];searchMusic()"
+                        @click.prevent="searchOrigin='netease';resetSearch();codeRate=[999000, 320000, 192000, 128000];searchMusic()"
                       >网易云</a>
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchOrigin='tencent';searchOffset=0;codeRate=[192,320,128,96,48,24];searchMusic()"
+                        @click.prevent="searchOrigin='tencent';resetSearch();codeRate=[192,320,128,96,48,24];searchMusic()"
                       >QQ</a>
                     </div>
                   </nav>
-                  <div class="content-wrap">
+                  <div class="content-wrap" ref="searchListWrap" :class="{loading:searchLoading}">
                     <vue-scroll @handle-scroll="refresh">
                       <ul ref="searchList">
                         <li v-for="(item, key) in searchList" :key="key" class="container-fluid">
@@ -169,9 +169,10 @@
                     <li
                       v-for="(item, index) in playingMusicLrc"
                       :key="index"
+                      class="line1"
                       :class="{active:lrcActive[index]}"
                     >
-                      <span v-text="getOpt(item,'lrc')"></span>
+                      <span v-html="getOpt(item,'lrc')"></span>
                     </li>
                   </ul>
                 </div>
@@ -351,9 +352,13 @@ export default {
       // 搜索源
       searchOrigin: "netease",
       // 搜索到的音乐数组
-      searchList: "null",
+      searchList: [],
       // 搜索分页
       searchOffset: 0,
+      // 搜索请求开关
+      searchReqFlag: true,
+      // 是否正在搜索中
+      searchLoading: false,
       // 歌词容器上间距
       lrcWrapTop: 0,
       // 歌词的行高
@@ -682,7 +687,17 @@ export default {
     // * 搜索方法
     // * type参数为要搜索的类型
     // * *
+    // 重置搜索参数
+    resetSearch() {
+      this.searchList = [];
+      this.searchOffset = 0;
+      this.searchReqFlag = true;
+    },
+    // 搜索方法
     searchMusic() {
+      //开始搜索动画
+      this.searchLoading = true;
+
       if (this.searchContent != "") {
         this.showSearchView = true;
         this.axios
@@ -700,11 +715,18 @@ export default {
           .then(res => {
             // 200:成功返回数据
             if (res.status == "200") {
-              this.searchList = res.data;
+              this.searchList = this.searchList.concat(res.data);
               this.searchOffset++;
-            } else {
+              // 打开请求开关
+              this.searchReqFlag = true;
+            }
+            // 非正常返回结果
+            else {
               return;
             }
+
+            // 关闭搜索动画
+            this.searchLoading = false;
           });
       } else {
         this.showSearchView = false;
@@ -714,8 +736,17 @@ export default {
     // *
     // * 搜索内容刷新
     // *
-    refresh(v,h,event){
-      console.log(v,h,this.$refs["searchList"].offsetHeight)
+    refresh(v, h, event) {
+      let diff =
+        this.$refs["searchList"].offsetHeight -
+        this.$refs["searchListWrap"].offsetHeight;
+      if (v.scrollTop >= diff) {
+        if (this.searchReqFlag) {
+          this.searchReqFlag = false;
+          // 开始请求新内容
+          this.searchMusic();
+        }
+      }
     }
   },
 
@@ -967,6 +998,7 @@ header .close {
   color: #fff;
   font-size: 0.2rem;
   line-height: 0.42rem;
+  white-space: normal;
 }
 .music-container .music-list {
   height: 4.6rem;
