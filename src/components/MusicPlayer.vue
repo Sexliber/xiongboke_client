@@ -115,12 +115,12 @@
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchOrigin='netease';resetSearch();codeRate=[999000, 320000, 192000, 128000];searchMusic()"
+                        @click.prevent="searchOrigin='netease';resetSearch();searchMusic()"
                       >网易云</a>
                       <a
                         href
                         class="white line1"
-                        @click.prevent="searchOrigin='tencent';resetSearch();codeRate=[192,320,128,96,48,24];searchMusic()"
+                        @click.prevent="searchOrigin='tencent';resetSearch();searchMusic()"
                       >QQ</a>
                     </div>
                   </nav>
@@ -315,7 +315,7 @@ export default {
       // * 码率,音乐清单,清单中的第几项
       // * *
       // 音乐码率
-      codeRate: [999000, 320000, 192000, 128000],
+      codeRate: [999000, 320000, 192000, 128000, 192, 320, 128, 96, 48, 24],
       // 音乐清单
       musicList: "null",
       // 正在播放清单中的第几首音乐
