@@ -128,27 +128,43 @@
                     <vue-scroll @handle-scroll="refresh">
                       <ul ref="searchList">
                         <li v-for="(item, key) in searchList" :key="key" class="container-fluid">
-                          <div class="row">
-                            <div class="ico col-sm-1 col-xs-1">
-                              <span class="sernumber lightgray" v-cloak>{{key+1 | numPlace(2)}}</span>
-                            </div>
-                            <div class="name col-sm-6 col-xs-6 line1 darkgray">
-                              <a
-                                class="darkgray"
-                                href
-                                v-text="item.name"
-                                @click.prevent="musicList=searchList;musicListSub=key"
-                              ></a>
-                            </div>
-                            <div class="singer col-sm-3 col-xs-3 line1 lightgray">
-                              <span v-text="item.singer"></span>
-                            </div>
-                            <div class="time lightgray col-sm-2 col-xs-2">
-                              <span
-                                v-cloak
-                              >{{parseInt(item.time/60) | numPlace(2)}}:{{item.time%60 | numPlace(2)}}</span>
+                          <!-- 搜索音乐结果<=S -->
+                          <div class="song" v-if="searchType=='song'">
+                            <div class="row">
+                              <div class="ico col-sm-1 col-xs-1">
+                                <span class="sernumber lightgray" v-cloak>{{key+1 | numPlace(2)}}</span>
+                              </div>
+                              <div class="name col-sm-6 col-xs-6 line1 darkgray">
+                                <a
+                                  class="darkgray"
+                                  href
+                                  v-text="item.name"
+                                  @click.prevent="musicList=searchList;musicListSub=key"
+                                ></a>
+                              </div>
+                              <div class="singer col-sm-3 col-xs-3 line1 lightgray">
+                                <span v-text="item.singer"></span>
+                              </div>
+                              <div class="time lightgray col-sm-2 col-xs-2">
+                                <span
+                                  v-cloak
+                                >{{parseInt(item.time/60) | numPlace(2)}}:{{item.time%60 | numPlace(2)}}</span>
+                              </div>
                             </div>
                           </div>
+                          <!-- 搜索音乐结果=>E -->
+
+                          <!-- 搜索专辑结果<=S -->
+                          <div class="album" v-if="searchType=='album'">
+                            
+                          </div>
+                          <!-- 搜索专辑结果=>E -->
+
+                          <!-- 搜索歌单结果<=S -->
+                          <div class="list" v-if="searchType=='list'">
+
+                          </div>
+                          <!-- 搜索歌单结果=>E -->
                         </li>
                       </ul>
                     </vue-scroll>
