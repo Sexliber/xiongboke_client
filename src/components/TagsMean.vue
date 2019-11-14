@@ -9,7 +9,7 @@
         <div class="list">
           <ul class="clearboth">
             <li v-for="(item,key) in itemList" :key="key">
-              <router-link :to="item.routerLink" class="white" v-text="item.title"/>
+              <router-link :to="item.routerLink" class="white" v-text="item.title" />
             </li>
           </ul>
         </div>

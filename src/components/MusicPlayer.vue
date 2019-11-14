@@ -21,6 +21,7 @@
               type="text"
               v-model="searchContent"
               placeholder="搜索歌单/歌曲/歌手/专辑/MV"
+              @keydown.enter="showLrc=false;resetSearch();searchMusic()"
             >
             <div class="do-search lightgray">
               <a
@@ -86,11 +87,6 @@
 
               <!-- 搜索结果容器<=S -->
               <div class="col-md-8 s-finish-wrap">
-                <div class="assort clearboth">
-                  <a href class="white line1">精品歌单</a>
-                  <a href class="white line1">热门歌单</a>
-                  <a href class="white line1">MV排行榜</a>
-                </div>
                 <div class="default-load" v-show="!showSearchView"></div>
                 <div class="s-finish-view" v-show="showSearchView">
                   <nav class="clearboth">
@@ -134,9 +130,9 @@
                               <div class="ico col-sm-1 col-xs-1">
                                 <span class="sernumber lightgray" v-cloak>{{key+1 | numPlace(2)}}</span>
                               </div>
-                              <div class="name col-sm-6 col-xs-6 line1 darkgray">
+                              <div class="name col-sm-6 col-xs-6 line1">
                                 <a
-                                  class="darkgray"
+                                  class="white"
                                   href
                                   v-text="item.name"
                                   @click.prevent="musicList=searchList;musicListSub=key"
@@ -597,7 +593,7 @@ export default {
   },
   methods: {
     // *
-    // * 播放器跟随鼠标移动开关
+    // * 播放器是否要跟随鼠标移动
     // * 鼠标按下则为true,弹起则为false
     // * 鼠标移出header则为false
     // *
@@ -731,6 +727,7 @@ export default {
           .then(res => {
             // 200:成功返回数据
             if (res.status == "200") {
+              console.log(res.data)
               this.searchList = this.searchList.concat(res.data);
               this.searchOffset++;
               // 打开请求开关
@@ -848,6 +845,17 @@ export default {
 
 
 <style scoped>
+
+/* 加载动画样式重置<=S */
+.loading::before{
+  background-color: rgba(255, 255, 255, 0.74);
+}
+.loading::after{
+  color: #222;
+  font-size: 24px;
+}
+/* 加载动画样式重置=>E*/
+
 #music-player {
   position: fixed;
   z-index: 999;
@@ -1062,7 +1070,6 @@ header .close {
 }
 .s-finish-wrap {
   height: 4.6rem;
-  background-color: #fff;
 }
 .s-finish-wrap .assort,
 .s-finish-view nav > div {
@@ -1071,7 +1078,7 @@ header .close {
 }
 .s-finish-view nav,
 .s-finish-view nav > div {
-  background-color: #0099cc;
+  background-color: #333;
 }
 .s-finish-wrap .assort a,
 .s-finish-view nav a {
@@ -1086,7 +1093,7 @@ header .close {
   background-color: #000;
 }
 .s-finish-view nav a:hover {
-  background-color: #006699;
+  background-color: #222;
 }
 .s-finish-view nav .search-origin {
   float: right;
@@ -1096,17 +1103,14 @@ header .close {
 }
 .s-finish-view .content-wrap {
   padding: 0.1rem 0;
-  height: 3.92rem;
+  height: 4.32rem;
   overflow: hidden;
 }
 .s-finish-view .content-wrap li {
   padding: 0.08rem 0.2rem;
 }
 .s-finish-view .content-wrap li:nth-child(2n) {
-  background-color: #eee;
-}
-.s-finish-view .content-wrap li:nth-child(2n + 1) {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 .s-finish-view .content-wrap li .time {
   text-align: right;

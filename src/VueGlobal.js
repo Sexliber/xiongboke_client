@@ -13,13 +13,26 @@ export default {
 
 
 
-    // 音乐Api ----------------------------------------------- <=S
+    // 音乐Api ----------------------------- <=S
 
     // Api密钥 
     MusicApiKey: 579621905,
 
-    MusicApi: "https://api.bzqll.com/music"
+    MusicApi: "https://api.bzqll.com/music",
 
-    // 音乐Api ------------------------------------------------------------ =>E
+    // 音乐Api ----------------------------- =>E
+
+
+
+    // LRY-API(漫画,电源,小说)-------------- <=S
+    // 接口地址
+    ComicVideoApi: "http://api.pingcc.cn",
+    // 漫画封面请求参数名
+    ComicCover: "/?mhname=",
+    // 漫画目录请求参数名
+    ComicCatalog: "/?mhurl1=",
+    // 漫画单个章节所有图片
+    ComicPic: "/?mhurl2=",
+    // LRY-API(漫画,电源,小说)-------------- =>E
 
 }

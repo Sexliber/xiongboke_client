@@ -38,6 +38,16 @@ export default new VueRouter({
         },
 
         // *
+        // * 在线漫画
+        // * *
+        {
+            path: "/comic",
+            component: resolve => {
+                require(['@/pages/Comic'], resolve);
+            }
+        },
+
+        // *
         // * 文章页面
         // * *
         {

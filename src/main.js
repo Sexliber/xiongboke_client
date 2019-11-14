@@ -1,14 +1,14 @@
 // 引入babel-polyfill模块
 import 'babel-polyfill';
 
-// 引入全局模块
-import global from './VueGlobal';
-
 // 引入Vue模块
 import Vue from 'vue';
 
+// 引入全局模块
+import global from './VueGlobal';
 
-
+// 将全局模块添加到Vue对象中
+Vue.prototype.global = global;
 
 // *
 // * 引入axios请求模块并配置到Vue全局属性
@@ -17,7 +17,6 @@ import axios from 'axios';
 // 设置默认请求域名地址
 axios.defaults.baseURL = global.BASE_URL;
 Vue.prototype.axios = axios;
-
 
 
 

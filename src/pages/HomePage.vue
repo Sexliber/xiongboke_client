@@ -58,10 +58,10 @@ export default {
         },
         {
           thumbnail: "../assets/images/homepage/advert-bg-4.jpg",
-          en: "Cartoons",
-          zh: "影视动漫",
+          en: "Comic",
+          zh: "在线漫画",
           entext: "Here are some of movie and cartoons.",
-          path: "/video"
+          path: "/Comic"
         }
       ],
       // 响应式滚动标题导航栏命名

@@ -29,7 +29,7 @@
                   <img :src="item.thumbnail">
                   <div class="content">
                     <h3 class="title white line1" v-text="item.title"/>
-                    <p class="date">{{item.date|dateMod}}</p>
+                    <p class="date" v-cloak>{{item.date|dateMod}}</p>
                   </div>
                 </div>
               </router-link>

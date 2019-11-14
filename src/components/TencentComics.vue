@@ -62,14 +62,15 @@ export default {
   created() {
     // 获取腾讯漫画数据,adpos为必须项,num为请求的数据长度
     this.axios
-      .get("tencentComic", {
+      .get("http://api.pingcc.cn/?mhname", {
         params: {
-          num: 10
+          
         }
       })
       .then(response => {
         this.getData = response.data;
         this.isGetData = true;
+        console.log(response.data);
       })
       .catch(error => {
         console.log("请求错误");
