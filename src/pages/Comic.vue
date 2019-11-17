@@ -2,18 +2,28 @@
   <div class="background">
     <div id="container" :class="{loading:isLoading}">
       <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
+        <input v-model="search" type="text" @keyup.enter="toLink" />
+        <button @click="toLink">搜索</button>
         <div class="row">
           <div
-            v-for="(item,key) in comicCatalogData"
+            v-for="(item,key) in comicCoverData"
             :key="key"
             class="col-xm-1 col-md-2 col-sm-3 col-xs-6"
           >
             <div>
-              <a :href="item.url" class="comic_pic" target="_blank" v-resetHeight>
+              <router-link
+                :to="{path:'/comic/comiccatalog',query:{url:item.url}}"
+                class="comic_pic"
+                v-resetHeight
+              >
                 <img :title="item.name" :src="item.cover" />
-              </a>
-              <a :href="item.url" class="comic_tit" v-text="item.name"></a>
-              <section class="comic_type" v-text="item.author"></section>
+              </router-link>
+              <router-link
+                :to="{path:'/comic/comiccatalog',query:{url:item.url}}"
+                class="comic_tit"
+                v-text="item.name"
+              ></router-link>
+              <section class="comic_type" v-cloak>{{item.author | undefinedTo('未知作者')}}</section>
             </div>
           </div>
         </div>
@@ -33,30 +43,70 @@ export default {
       // 搜索内容
       search: "最新",
       // 漫画封面数组
-      comicCatalogData: [0]
+      comicCoverData: [0]
     };
+  },
+
+  watch: {
+    // 监听路由
+    $route: function(route,oldRoute){
+      this.reqComicCoverData();
+    }
   },
 
   methods: {
     // 滚动条事件
-    handleScroll(e) {}
+    handleScroll(e) {},
+
+    // 跳转页面实现搜索
+    toLink() {
+      let path = this.$route.path;
+      let location = {
+        path,
+        query: {
+          search: this.search
+        }
+      };
+      this.$router.push(location);
+    },
+
+    // 用获取到的漫画封面数组传递给comicCoverData变量
+    reqComicCoverData() {
+
+      // 添加页面加载动画
+      this.isLoading = true;
+
+      // 将要搜索的内容传递给search变量
+      if (
+        this.$route.query.search == undefined ||
+        this.$route.query.search == ""
+      ) {
+        this.search = "最新";
+      } else {
+        this.search = this.$route.query.search;
+      }
+
+      //请求漫画封面数据
+      this.axios({
+        url: this.global.ComicVideoApi + this.global.ComicCover + this.search
+      }).then(res => {
+        // 请求到的漫画封面信息传递给comicCoverData
+        this.comicCoverData = res.data.list;
+        // 去除页面加载动画
+        this.isLoading = false;
+      });
+
+    }
   },
+
   created() {
-    this.axios({
-      url: this.global.ComicVideoApi + this.global.ComicCover + this.search
-    }).then(res => {
-      // 请求到的漫画封面信息传递给comicCatalogData
-      this.comicCatalogData = res.data.list;
-      // 去除页面加载动画
-      this.isLoading = false;
-    });
+    this.reqComicCoverData();
   },
 
   directives: {
-    // 获取图片宽度,并设置图片的高度为宽度的1.4倍
+    // 获取图片宽度,并设置图片的高度为宽度的1.2倍
     resetHeight: {
       inserted(el) {
-        console.log(el.offsetWidth);
         el.style.height = el.offsetWidth * 1.2 + "px";
       }
     }

@@ -27,6 +27,8 @@ export default new VueRouter({
             ]
         },
 
+
+
         // *
         // * 我的联系方式
         // * *
@@ -37,15 +39,35 @@ export default new VueRouter({
             }
         },
 
+
+
         // *
         // * 在线漫画
         // * *
+        // 书架页面
         {
             path: "/comic",
+            name: "comic",
             component: resolve => {
                 require(['@/pages/Comic'], resolve);
             }
         },
+        // 漫画目录页面
+        {
+            path: "/comic/comiccatalog",
+            component: resolve => {
+                require(['@/pages/ComicCatalog'], resolve);
+            }
+        },
+        // 漫画内容页面
+        {
+            path: "/comicctt",
+            component: resolve => {
+                require(['@/pages/ComicContent'], resolve);
+            }
+        },
+
+
 
         // *
         // * 文章页面
@@ -57,11 +79,14 @@ export default new VueRouter({
             }
         },
 
+
+
         // *
         // * 404页面,并且将未定义的路由重定向到/404组件
         // * *
         {
-            path: "/404", component: resolve => {
+            path: "/404",
+            component: resolve => {
                 require(['@/pages/404'], resolve)
             }
         },
