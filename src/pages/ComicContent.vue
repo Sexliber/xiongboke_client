@@ -1,10 +1,13 @@
 <template>
   <div class="container" :class="{loading:isLoading}">
+    <div class="mean"></div>
     <vue-scroll ref="vuescroll" @handle-scroll="handleScroll" @handle-resize="handleResize">
+      <div class="toPreChapter" @click="rechapter('top')" v-show="toPreChapterFlag">上一章</div>
       <div class="slot-load" slot="load-start"></div>
       <div class="pic" v-for="(item, index) in pic" :key="index">
         <img :src="item.img" :onerror="img403" alt="加载失败" />
       </div>
+      <div class="toNextChapter" @click="rechapter('bottom')">下一章</div>
     </vue-scroll>
   </div>
 </template>
@@ -24,7 +27,9 @@ export default {
       // 403图片地址
       img403: this.global.img403,
       // 页面高度
-      pageHeight: 0
+      pageHeight: 0,
+      // 章节跳转开关
+      toPreChapterFlag: false
     };
   },
   watch: {
@@ -61,9 +66,9 @@ export default {
     // 滚动事件
     handleScroll(v, h, e) {
       if (v.scrollTop <= 0) {
-        this.rechapter("top");
-      } else if (v.scrollTop >= this.pageHeight - e.path[2].offsetHeight) {
-        this.rechapter("bottom");
+        this.toPreChapterFlag = true;
+      } else {
+        this.toPreChapterFlag = false;
       }
     },
     // 页面尺寸改变事件
@@ -116,11 +121,22 @@ export default {
 
 <style scoped>
 .container {
+  padding: 0;
   height: 100%;
   width: 100%;
   background-color: #333333;
 }
 .pic {
   text-align: center;
+}
+.pic > img {
+  max-width: 100%;
+}
+.toPreChapter,.toNextChapter{
+  padding: 10px;
+  background-color: #ffc815;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
 }
 </style>
