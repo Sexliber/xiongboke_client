@@ -11,7 +11,10 @@ export default {
     // 整页背景
     FullPageBg: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1554179280430&di=f95b9060c536837614b87cff91f3c6a1&imgtype=0&src=http%3A%2F%2Fclubimg.club.vmall.com%2Fdata%2Fattachment%2Fforum%2F201811%2F21%2F093948xyt7oconm4aoui44.jpg",
 
-
+    // 404图片地址
+    img403: 
+    `this.src=
+    '../assets/images/img404.png'`,
 
     // 音乐Api ----------------------------- <=S
 

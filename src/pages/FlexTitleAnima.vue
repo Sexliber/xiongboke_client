@@ -113,13 +113,6 @@
                   </div>
                 </transition>
                 <!-- 优选内容=>E -->
-                <!-- 腾讯漫画<=S -->
-                <transition>
-                  <div class="col-md-12 padding1">
-                    <tencent-comics/>
-                  </div>
-                </transition>
-                <!-- 腾讯漫画=>E -->
                 <!-- 网易云音乐<=S -->
                 <transition>
                   <div class="col-md-12 padding1">
@@ -152,7 +145,6 @@ import WritesBanner from "../components/WritesBanner";
 import TagsMean from "../components/TagsMean";
 import NeteaseMusic from "../components/NeteaseMusic";
 import Optimi from "../components/Optimi";
-import TencentComics from "../components/TencentComics";
 // 引入组件=>E
 
 // 内容块里面每个类元素距离的offsetTop值
@@ -315,8 +307,7 @@ export default {
     WritesBanner,
     TagsMean,
     NeteaseMusic,
-    Optimi,
-    TencentComics
+    Optimi
   },
   // 该组件data对象加载完毕后开始请求数据
   created() {

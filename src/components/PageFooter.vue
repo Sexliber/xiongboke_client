@@ -1,9 +1,6 @@
 <template>
   <!-- 页脚=>S -->
   <footer>
-    <!-- <a :href="webRoot" class="mail-link">
-      <i class="fa fa-envelope" aria-hidden="true"></i>
-    </a>-->
     <router-link :to="{path:'/contact', query:{}}" class="mail-link">
       <i class="fa fa-envelope" aria-hidden="true"></i>
     </router-link>
@@ -11,9 +8,9 @@
     <div class="footer-social">
       <ul>
         <li v-for="(item,i) in iconsHref" :key="i">
-          <a :href="item.href" target="_blank" class="white">
+          <router-link :to="{path:'/'}" class="white">
             <i :class="item.icon"></i>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -26,18 +23,16 @@
 
 
 <script>
-import global from "../VueGlobal";
 export default {
   name: "PageFooter",
   data() {
     return {
-      webRoot: global.webRoot,
       iconsHref: [
-        { icon: "fa fa-facebook", href: global.webRoot },
-        { icon: "fa fa-twitter", href: global.webRoot },
-        { icon: "fa fa-instagram", href: global.webRoot },
-        { icon: "fa fa-pinterest", href: global.webRoot },
-        { icon: "fa fa-tumblr", href: global.webRoot }
+        { icon: "fa fa-facebook" },
+        { icon: "fa fa-twitter" },
+        { icon: "fa fa-instagram" },
+        { icon: "fa fa-pinterest" },
+        { icon: "fa fa-tumblr" }
       ]
     };
   }

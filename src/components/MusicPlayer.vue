@@ -276,7 +276,6 @@ import isMobile from "../libs/isMobile";
 import MusicPlayer from "../model/MusicPlayer";
 // 引入歌词处理模块
 import DoLrc from "../libs/musicLrc";
-import VueGlobal from "../VueGlobal";
 
 // 音乐播放器UI界面dom
 var MusicPlayerUi = null;
@@ -717,7 +716,7 @@ export default {
             params: {
               searchOrigin: this.searchOrigin,
               doWhat: "search",
-              key: VueGlobal.MusicApiKey,
+              key: this.global.MusicApiKey,
               s: this.searchContent,
               type: this.searchType,
               limit: 20,

@@ -1,9 +1,13 @@
 <template>
-  <div class="background">
-    <div id="container" :class="{loading:isLoading}">
+  <div class="background" :class="{loading:isLoading}">
+    <div id="container">
       <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
+        <!-- 搜索框<=S -->
         <input v-model="search" type="text" @keyup.enter="toLink" />
         <button @click="toLink">搜索</button>
+        <!-- 搜索框E=> -->
+
+        <!-- 漫画封面浏览<=S -->
         <div class="row">
           <div
             v-for="(item,key) in comicCoverData"
@@ -16,7 +20,7 @@
                 class="comic_pic"
                 v-resetHeight
               >
-                <img :title="item.name" :src="item.cover" />
+                <img :title="item.name" :src="item.cover" :onerror="img403" />
               </router-link>
               <router-link
                 :to="{path:'/comic/comiccatalog',query:{url:item.url}}"
@@ -27,6 +31,7 @@
             </div>
           </div>
         </div>
+        <!-- 漫画封面浏览E=> -->
       </vue-scroll>
     </div>
   </div>
@@ -43,13 +48,15 @@ export default {
       // 搜索内容
       search: "最新",
       // 漫画封面数组
-      comicCoverData: [0]
+      comicCoverData: [0],
+      // 403图片路径
+      img403: this.global.img403
     };
   },
 
   watch: {
     // 监听路由
-    $route: function(route,oldRoute){
+    $route: function(route, oldRoute) {
       this.reqComicCoverData();
     }
   },
@@ -72,7 +79,6 @@ export default {
 
     // 用获取到的漫画封面数组传递给comicCoverData变量
     reqComicCoverData() {
-
       // 添加页面加载动画
       this.isLoading = true;
 
@@ -95,7 +101,6 @@ export default {
         // 去除页面加载动画
         this.isLoading = false;
       });
-
     }
   },
 
@@ -116,12 +121,14 @@ export default {
 
 <style scoped>
 .background {
+  height: 100%;
   background: #f8f8f8;
   overflow: hidden;
+  padding: 8px;
 }
 #container {
-  height: 100vh;
-  margin: 8px;
+  height: 100%;
+  width: 100%;
 }
 .col-xm-1 {
   padding: 8px;
@@ -130,11 +137,16 @@ export default {
   background-color: #fff;
 }
 .comic_pic {
+  position: relative;
   display: block;
   overflow: hidden;
   width: 100%;
 }
 .comic_pic img {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
   width: 100%;
 }
 

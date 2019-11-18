@@ -29,8 +29,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 // 引入路由配置
-import VueRouterConfig from "./VueRouter";
-const router = VueRouterConfig;
+import RouterConfig from "./Router";
+const router = RouterConfig;
 // 路由管理块=>E
 
 export default {

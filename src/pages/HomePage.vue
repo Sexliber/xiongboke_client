@@ -20,7 +20,7 @@
 
 <script>
 // 全局配置
-import global from "../VueGlobal";
+import global from "../Global";
 //头部轮播组件
 import HeadReplayBanner from "../components/ReplayBanner.vue";
 // 获取FlexTitleAnima组件的接口参数

@@ -1,11 +1,10 @@
 <template>
   <div class="container" :class="{loading:isLoading}">
     <vue-scroll ref="vuescroll">
-
       <!-- 漫画封面 -->
       <div class="comicCover" v-if="!reqErr">
         <div class="cover">
-          <img :src="comicInfo.cover" :alt="comicInfo.name" />
+          <img :src="comicInfo.cover" :onerror="img403" :alt="comicInfo.name" />
         </div>
         <div v-cloak>{{comicInfo.name}}</div>
         <div v-cloak>{{comicInfo.author | undefinedTo("未知来源")}}</div>
@@ -22,10 +21,12 @@
           v-for="(item,key) in comicCatalog"
           :key="key"
         >
-          <router-link :to="{path:'/comicctt',query:{url:item.url,catalogUrl:$route.query.url}}" v-text="item.num"></router-link>
+          <router-link
+            :to="{path:'/comicctt',query:{url:item.url,catalogUrl:$route.query.url}}"
+            v-text="item.num"
+          ></router-link>
         </div>
       </div>
-
     </vue-scroll>
 
     <!-- 请求失败展示画面 -->
@@ -46,7 +47,9 @@ export default {
       //   页面加载动画开关
       isLoading: true,
       //   请求失败开关
-      reqErr: false
+      reqErr: false,
+      // 403图片地址
+      img403: this.global.img403
     };
   },
   created() {
@@ -90,6 +93,9 @@ export default {
   margin: 0;
   height: 100%;
 }
+.comicCatalog {
+  padding-bottom: 70px;
+}
 .chapter {
   position: relative;
   height: 48px;
@@ -101,13 +107,13 @@ export default {
   bottom: 10px;
   left: 30px;
   right: 30px;
-  background-color: #222222;
-  color: #fff;
+  border: 1px solid #222;
+  color: #222222;
   line-height: 28px;
   text-align: center;
 }
 .chapter:hover > a {
-  background-color: #ffc815;
-  color: #222222;
+  background-color: #222;
+  color: #fff;
 }
 </style>

@@ -65,8 +65,6 @@
 
 
 <script>
-// 全局配置
-import global from "../VueGlobal";
 // 检测当前设备是否为移动设备
 import isMobile from "../libs/isMobile";
 // 引入音乐播放器数据广播站
@@ -79,8 +77,6 @@ export default {
   name: "NeteaseMusic",
   data: function() {
     return {
-      // 歌曲面板背景
-      background: global.NeteaseMusicBg,
       // 网易云歌单ID号
       neteaseListId: 154459396,
       // active,isClassPause数组
