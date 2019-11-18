@@ -27,9 +27,18 @@ export default {
       pageHeight: 0
     };
   },
+  watch: {
+    $route: function(newRoute, oldRoute) {
+      this.reqComicPic();
+      this.$refs["vuescroll"].scrollTo({ y: 0 }, 0);
+    }
+  },
   methods: {
-    // 请求漫画图片
+    // 请求漫画图片和目录
     reqComicPic() {
+      // 开启加载动画
+      this.isLoading = true;
+      // 请求漫画图片
       this.axios({
         url:
           this.global.ComicVideoApi +
@@ -39,13 +48,22 @@ export default {
         this.pic = res.data.list;
         this.isLoading = false;
       });
+      // 请求漫画目录
+      this.axios({
+        url:
+          this.global.ComicVideoApi +
+          this.global.ComicCatalog +
+          this.$route.query.catalogUrl
+      }).then(res => {
+        this.comicCatalog = res.data.list;
+      });
     },
     // 滚动事件
     handleScroll(v, h, e) {
       if (v.scrollTop <= 0) {
-        console.log("到顶了");
+        this.rechapter("top");
       } else if (v.scrollTop >= this.pageHeight - e.path[2].offsetHeight) {
-        console.log("到底了");
+        this.rechapter("bottom");
       }
     },
     // 页面尺寸改变事件
@@ -56,8 +74,9 @@ export default {
     rechapter(action) {
       // 获取当前章节在目录数组中的脚标号
       let sub = 0;
+
       for (let index in this.comicCatalog) {
-        if (this.comicCatalog[index].url == this.$route.url) {
+        if (this.comicCatalog[index].url == this.$route.query.url) {
           sub = index;
           break;
         }
@@ -66,42 +85,29 @@ export default {
       // *
       // * 章节切换
       // * *
-      let refresh = {
-        // 切换到上一个章节
-        top: () => {
-          if (sub > 0) {
-            this.$router.push({
-              path: "/comicctt",
-              query: { url: this.comicCatalog[index - 1].url }
-            });
-          }
-        },
-        // 切换到下一个章节
-        bottom: () => {
-          if (sub < this.comicCatalog.length) {
-            this.$router.push({
-              path: "/comicctt",
-              query: { url: this.comicCatalog[index + 1].url }
-            });
-          }
-        },
-        // 跳转到指定章节
-        link: () => {}
-      };
-      refresh[action]();
+      switch (action) {
+        case "top":
+          if (sub > 0) sub--;
+          break;
+
+        case "bottom":
+          if (sub < this.comicCatalog.length) sub++;
+          break;
+
+        default:
+          break;
+      }
+      this.$router.push({
+        path: "/comicctt",
+        query: {
+          url: this.comicCatalog[sub].url,
+          catalogUrl: this.$route.query.catalogUrl
+        }
+      });
     }
   },
   created() {
-    this.comicCatalog = this.$route.params.catalog;
     this.reqComicPic();
-    this.axios({
-      url:
-        this.global.ComicVideoApi +
-        this.global.ComicCatalog +
-        this.$route.query.catalogUrl
-    }).then(res => {
-      this.comicCatalog = res.data.list;
-    });
   }
 };
 </script>
