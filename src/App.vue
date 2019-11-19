@@ -1,18 +1,18 @@
 <template>
   <div id="app">
     <!-- 页头 -->
-    <page-header/>
+    <page-header />
 
     <!-- 音乐播放器 -->
-    <music-player/>
+    <music-player />
 
     <div class="content-container">
       <!-- 路由器分支 -->
-      <router-view/>
+      <router-view />
     </div>
 
     <!-- 页脚 -->
-    <page-footer/>
+    <page-footer />
   </div>
 </template>
 
@@ -45,5 +45,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#app {
+  position: relative;
+  overflow: hidden;
+}
+@media screen and (max-width: 1064px) and (min-width: 0px) {
+  .content-container {
+    margin: 42px 0 0 0;
+    width: 100vw;
+    height: calc(100vh - 84px);
+  }
+}
 </style>

@@ -4,7 +4,7 @@
   **-->
   <div class="container" :class="{loading:isLoading}">
     <!-- 菜单栏按钮 -->
-    <div class="mean-button" @click="showMean=!showMean">
+    <div class="mean-button" v-show="meanButtonShow" @click="showMean=!showMean">
       <div class="bar"></div>
       <div class="bar"></div>
       <div class="bar"></div>
@@ -15,17 +15,30 @@
         <router-link to="/comic" class="fa fa-home"></router-link>
       </div>
       <div class="link">
-        <router-link to="/comic" class="fa fa-bars"></router-link>
+        <a to="/comic" class="fa fa-bars" @click="showCatalog=!showCatalog"></a>
       </div>
       <div class="link"></div>
+    </div>
+    <!-- 目录 -->
+    <div class="catalog" :class="{show:showCatalog}">
+      <vue-scroll>
+        <router-link
+          v-for="(item, index) in comicCatalog"
+          :key="index"
+          v-text="item.num"
+          :to="{path:'/comicctt',query:{url:item.url,catalogUrl: $route.query.catalogUrl}}"
+        ></router-link>
+      </vue-scroll>
     </div>
 
     <vue-scroll ref="vuescroll" @handle-scroll="handleScroll" @handle-resize="handleResize">
       <!-- 前往上个章节按钮 -->
       <div class="toPreChapter" @click="rechapter('top')" v-show="toPreChapterFlag">上一章</div>
       <!-- 漫画图片 -->
-      <div class="pic" v-for="(item, index) in pic" :key="index">
-        <img :src="item.img" :onerror="img403" alt="加载失败" />
+      <div @click="meanButtonShow=!meanButtonShow">
+        <div class="pic" v-for="(item, index) in pic" :key="index">
+          <img :src="item.img" :onerror="img403" alt="加载失败" />
+        </div>
       </div>
       <!-- 前往下个章节按钮 -->
       <div class="toNextChapter" @click="rechapter('bottom')">下一章</div>
@@ -51,14 +64,23 @@ export default {
       pageHeight: 0,
       // 章节跳转开关
       toPreChapterFlag: false,
+      // 菜单按钮显示开关
+      meanButtonShow: false,
       // 菜单开关
-      showMean: false
+      showMean: false,
+      // 目录开关
+      showCatalog: false
     };
   },
   watch: {
+    // 监听路由变化
     $route: function(newRoute, oldRoute) {
+      // 请求漫画资源
       this.reqComicPic();
+      // 滚动条归零
       this.$refs["vuescroll"].scrollTo({ y: 0 }, 0);
+      // 隐藏菜单和按钮
+      this.meanButtonShow = this.showMean = this.showCatalog = false;
     }
   },
   methods: {
@@ -219,6 +241,29 @@ export default {
 .link:nth-child(2) {
   top: 50%;
   right: 25%;
-  transform: translate(50%, -50%);
+  transform: translate(80%, -50%);
+}
+/* 目录 */
+.catalog {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  top: 0;
+  width: 240px;
+  height: 100%;
+  background-color: rgba(34, 34, 34, 0.6);
+  transform: translateX(100%);
+  transition-duration: 400ms;
+}
+.catalog.show {
+  transform: translateX(0);
+}
+.catalog a {
+  overflow: hidden;
+  display: block;
+  padding: 10px 20px;
+  border-bottom: #777 solid 1px;
+  color: #fff;
+  white-space: nowrap;
 }
 </style>
