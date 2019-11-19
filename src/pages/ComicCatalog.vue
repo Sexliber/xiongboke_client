@@ -16,11 +16,7 @@
 
       <!-- 漫画目录 -->
       <div class="comicCatalog row" v-if="!reqErr">
-        <div
-          class="chapter col-md-2 col-sm-3 col-xs-4"
-          v-for="(item,key) in comicCatalog"
-          :key="key"
-        >
+        <div class="chapter col-md-2 col-sm-3" v-for="(item,key) in comicCatalog" :key="key">
           <router-link
             :to="{path:'/comicctt',query:{url:item.url,catalogUrl:$route.query.url}}"
             v-text="item.num"
@@ -107,6 +103,7 @@ export default {
   bottom: 10px;
   left: 30px;
   right: 30px;
+  overflow: hidden;
   border: 1px solid #222;
   color: #222222;
   line-height: 28px;

@@ -1,12 +1,33 @@
 <template>
+  <!-- *
+  * 漫画内容页面
+  **-->
   <div class="container" :class="{loading:isLoading}">
-    <div class="mean"></div>
+    <!-- 菜单栏按钮 -->
+    <div class="mean-button" @click="showMean=!showMean">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+    <!-- 菜单栏 -->
+    <div class="mean" :class="{showMean:showMean}">
+      <div class="link">
+        <router-link to="/comic" class="fa fa-home"></router-link>
+      </div>
+      <div class="link">
+        <router-link to="/comic" class="fa fa-bars"></router-link>
+      </div>
+      <div class="link"></div>
+    </div>
+
     <vue-scroll ref="vuescroll" @handle-scroll="handleScroll" @handle-resize="handleResize">
+      <!-- 前往上个章节按钮 -->
       <div class="toPreChapter" @click="rechapter('top')" v-show="toPreChapterFlag">上一章</div>
-      <div class="slot-load" slot="load-start"></div>
+      <!-- 漫画图片 -->
       <div class="pic" v-for="(item, index) in pic" :key="index">
         <img :src="item.img" :onerror="img403" alt="加载失败" />
       </div>
+      <!-- 前往下个章节按钮 -->
       <div class="toNextChapter" @click="rechapter('bottom')">下一章</div>
     </vue-scroll>
   </div>
@@ -29,7 +50,9 @@ export default {
       // 页面高度
       pageHeight: 0,
       // 章节跳转开关
-      toPreChapterFlag: false
+      toPreChapterFlag: false,
+      // 菜单开关
+      showMean: false
     };
   },
   watch: {
@@ -41,6 +64,8 @@ export default {
   methods: {
     // 请求漫画图片和目录
     reqComicPic() {
+      // 刷新数组
+      this.pic = [0];
       // 开启加载动画
       this.isLoading = true;
       // 请求漫画图片
@@ -132,11 +157,68 @@ export default {
 .pic > img {
   max-width: 100%;
 }
-.toPreChapter,.toNextChapter{
+.toPreChapter,
+.toNextChapter {
   padding: 10px;
   background-color: #ffc815;
   color: #fff;
   text-align: center;
   cursor: pointer;
+}
+/* 菜单栏 */
+.mean,
+.mean-button {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 50px;
+  background-color: rgba(34, 34, 34, 0.4);
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+  transition-duration: 400ms;
+}
+.mean-button {
+  padding: 14px 0px 14px 42px;
+  width: 70px;
+  cursor: pointer;
+  z-index: 4;
+}
+.mean-button .bar {
+  width: 14px;
+  height: 2px;
+  background-color: #ffffff;
+  margin: 4px 0;
+}
+.mean {
+  width: 0;
+  height: 0;
+  border-radius: 0;
+  z-index: 3;
+  overflow: hidden;
+}
+.showMean {
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  background-color: rgba(34, 34, 34, 0.6);
+}
+.link {
+  position: absolute;
+  width: 24px;
+  color: #fff;
+  font-size: 24px;
+}
+.link a {
+  color: #fff;
+}
+.link:first-child {
+  top: 25%;
+  left: 50%;
+  transform: translate(40%, -50%);
+}
+.link:nth-child(2) {
+  top: 50%;
+  right: 25%;
+  transform: translate(50%, -50%);
 }
 </style>

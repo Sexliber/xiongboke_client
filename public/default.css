@@ -227,9 +227,9 @@ a:visited {
 
 @media screen and (max-width: 1064px) and (min-width: 0px) {
 	.content-container {
-		margin: 70px 0 0 0;
+		margin: 42px 0 0 0;
 		width: 100vw;
-		height: calc(100vh - 140px);
+		height: calc(100vh - 84px);
 	}
 }
 

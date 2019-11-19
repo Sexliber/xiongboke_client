@@ -152,10 +152,9 @@ footer {
 
 @media screen and (max-width: 1064px) and (min-width: 0px) {
   /* 联系方式=>S */
-  header,
   footer {
     width: 100vw;
-    height: 70px;
+    height: 42px;
   }
   footer {
     position: relative;
@@ -163,8 +162,8 @@ footer {
   .mail-link {
     left: 100%;
     margin-left: -60px;
-    height: 70px;
-    line-height: 70px;
+    height: 42px;
+    line-height: 42px;
     width: 60px;
   }
   .mail-link::after {
@@ -178,7 +177,7 @@ footer {
   }
   .footer-social {
     position: relative;
-    top: 20px;
+    top: 6px;
     width: auto;
     z-index: 2;
     float: right;
@@ -190,7 +189,7 @@ footer {
   }
   .copyright {
     position: absolute;
-    top: 26px;
+    top: 13px;
     left: 30px;
     width: auto;
     text-align: left;

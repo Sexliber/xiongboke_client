@@ -608,7 +608,7 @@ var resetClassEleTop = function(el) {
   }
 
   .flexNavbar.isFlex {
-    top: 70px;
+    top: 42px;
     right: 0;
     width: 100%;
   }

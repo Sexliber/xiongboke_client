@@ -4,7 +4,7 @@
     <header>
       <!-- logo=>S -->
       <router-link :to="{path:'/',query:''}" class="logo-holder">
-        <img src="../assets/images/logo.png" alt="首页">
+        <img src="../assets/images/logo.png" alt="首页" />
       </router-link>
       <!-- logo=>E -->
 
@@ -28,7 +28,7 @@
         :class="{isShare:!contIsActive}"
         @click="contIsActive=!contIsActive"
       >
-        <img src="../assets/images/share.png" alt="联系方式">
+        <img src="../assets/images/share.png" alt="联系方式" />
       </div>
       <ul class="contact-container">
         <a href>
@@ -64,7 +64,7 @@
     <div class="mean-container" :class="{hide:!meanIsActive,show:meanIsActive}">
       <!-- 菜单logo=>S -->
       <div class="mean-logo">
-        <img src="../assets/images/logo-title.png">
+        <img src="../assets/images/logo-title.png" />
       </div>
       <!-- 菜单logo=>E -->
 
@@ -142,7 +142,6 @@ header {
   position: absolute;
   top: 60px;
   left: 15px;
-  width: 40px;
 }
 
 .logo-holder img {
@@ -487,22 +486,45 @@ header {
   header,
   footer {
     width: 100vw;
-    height: 70px;
+    height: 42px;
   }
   .logo-holder {
-    top: 16px;
+    top: 50%;
     left: 50%;
-    margin-left: -20px;
+    transform: translate(-50%, -50%);
   }
-  .nav-button {
-    top: 24px;
-    left: 30px;
-    margin-top: 0;
+  .logo-holder img {
+    width: 24px;
   }
   .show-share {
-    bottom: 28px;
-    left: 100%;
-    margin-left: -50px;
+    top: 50%;
+    left: auto;
+    right: 30px;
+    height: 24px;
+    width: 24px;
+    transform: translateY(-50%);
+  }
+  .show-share img {
+    display: block;
+    width: 24px;
+  }
+  .nav-button {
+    top: 50%;
+    margin-top: 0;
+    left: 30px;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 24px;
+  }
+  .menu-global {
+    border-width: 2px;
+  }
+  .menu-middle {
+    top: 9px;
+  }
+  .menu-bottom {
+    top: 18px;
+    height: 0;
   }
   .nav-button:hover::after,
   .show-share:hover::after {
@@ -516,10 +538,10 @@ header {
   }
   .mean-container {
     margin-left: -320px;
-    top: 70px;
+    top: 42px;
     left: 0;
     width: 320px;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 42px);
   }
   /* 导航栏,联系方式=>E */
 }
