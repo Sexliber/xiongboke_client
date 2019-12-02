@@ -1,238 +1,252 @@
 /* 通用样式=>S */
 
-html, body {
-	height: 100%;
-	width: 100%;
-	overflow: hidden;
-	font-size: calc(100vw / 19.2);
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-size: calc(100vw / 19.2);
 }
 
 body {
-	height: auto;
+    height: auto;
 }
 
-html, body, * {
-	margin: 0;
-	padding: 0;
-	font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
+html,
+body,
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
 }
 
 html>* {
-	font-size: 14px;
+    font-size: 14px;
 }
 
 body {
-	position: relative;
+    position: relative;
 }
 
 .row {
-	margin: 0;
+    margin: 0;
 }
 
 .row>* {
-	padding: 0;
+    padding: 0;
 }
 
-ul, li {
-	margin: 0;
-	list-style: none;
+ul,
+li {
+    margin: 0;
+    list-style: none;
 }
 
 .padding1 {
-	padding: 1px !important;
+    padding: 1px !important;
 }
 
 .container-fluid {
-	padding: 0;
+    padding: 0;
 }
 
 [v-cloak] {
-	display: none;
+    display: none;
 }
 
 a {
-	cursor: pointer;
-	text-decoration: none;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 a:hover {
-	color: #ffc815;
-	text-decoration: none;
+    color: #ffc815;
+    text-decoration: none;
 }
 
 a:link {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 a:visited {
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .clearboth::after {
-	display: block;
-	content: "";
-	clear: both;
+    display: block;
+    content: "";
+    clear: both;
 }
 
-.durate, .durate::after, .durate::before {
-	-webkit-transition: all 300ms linear;
-	transition: all 300ms linear;
+.durate,
+.durate::after,
+.durate::before {
+    -webkit-transition: all 300ms linear;
+    transition: all 300ms linear;
 }
 
-.title, .text {
-	padding-right: 20px;
+.title,
+.text {
+    padding-right: 20px;
 }
 
 .title {
-	font-size: 16px;
-	line-height: 20px;
-	margin: 0 0 12px 0;
-	font-weight: 500;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	word-break: break-all;
+    font-size: 16px;
+    line-height: 20px;
+    margin: 0 0 12px 0;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 .text {
-	font-size: 14px;
-	line-height: 20px;
-	margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
 }
 
 .darkgray {
-	color: #222222;
+    color: #222222;
 }
 
 .lightgray {
-	color: #888;
+    color: #888;
 }
 
 .white {
-	color: #fff;
+    color: #fff;
 }
 
 .gray {
-	color: #ddd;
+    color: #ddd;
 }
 
 .bg-white {
-	background-color: rgba(255, 255, 255, .9);
+    background-color: rgba(255, 255, 255, .9);
 }
 
 .bg-grayalpha {
-	background-color: rgba(64, 64, 64, 0.6);
+    background-color: rgba(64, 64, 64, 0.6);
 }
 
 .bg-black {
-	background-color: rgba(17, 17, 17, .9);
+    background-color: rgba(17, 17, 17, .9);
 }
 
 .bg-yellow {
-	background-color: #ffc815;
+    background-color: #ffc815;
 }
 
 .overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	background-color: rgba(0, 0, 0, .4)
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .4)
 }
 
 .line1 {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	word-wrap: break-word;
-	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: nowrap;
 }
 
 .__rail-is-vertical {
-	z-index: 99 !important;
+    z-index: 99 !important;
 }
 
 .noselect {
-	user-select: none;
+    user-select: none;
 }
+
 
 /* 跑马灯动画<=S */
 
 .marquee {
-	display: block;
-	margin: 0;
-	animation: marquee 2000ms linear infinite;
+    display: block;
+    margin: 0;
+    animation: marquee 2000ms linear infinite;
 }
 
 @keyframes marquee {
-	from {
-		margin-left: 0;
-	}
-	to {
-		margin-left: -50%;
-	}
+    from {
+        margin-left: 0;
+    }
+    to {
+        margin-left: -50%;
+    }
 }
 
+
 /* 跑马灯动画=>E */
+
 
 /* 页面载入动画<=S */
 
 .loading {
-	position: relative;
-	overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
 
 .loading::before {
-	display: block;
-	position: absolute;
-	content: "";
-	z-index: 999998;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	text-align: center;
-	line-height: 100vh;
-	background-color: #383838;
+    display: block;
+    position: absolute;
+    content: "";
+    z-index: 999998;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    line-height: 100vh;
+    background-color: #383838;
 }
 
 .loading::after {
-	z-index: 999999;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -24px -31px;
-	content: "\f1ce";
-	color: #ffc815;
-	-webkit-animation: fa-spin 2s infinite linear;
-	animation: fa-spin 2s infinite linear;
-	width: 1.28571429em;
-	text-align: center;
-	font: normal normal normal 48px/1 FontAwesome;
-	text-rendering: auto;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+    z-index: 999999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -24px -31px;
+    content: "\f1ce";
+    color: #ffc815;
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+    width: 1.28571429em;
+    text-align: center;
+    font: normal normal normal 48px/1 FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
+
 /* 页面载入动画=>E */
+
 
 /* ***内容盒子***<=S */
 
 .content-container {
-	position: relative;
-	width: calc(100% - 140px);
-	margin: auto;
-	overflow: hidden;
-	height: 100vh;
+    position: relative;
+    width: calc(100% - 140px);
+    margin: auto;
+    overflow: hidden;
+    height: 100vh;
 }
 
 @media screen and (max-width: 1064px) and (min-width: 0px) {
-	.content-container {
-		margin: 42px 0 0 0;
-		width: 100vw;
-		height: calc(100vh - 84px);
-	}
+    .content-container {
+        margin: 42px 0 0 0;
+        width: 100vw;
+        height: calc(100vh - 84px);
+    }
 }
 
+
 /* ***内容盒子***<=E */
+
 
 /* 通用样式=>E */

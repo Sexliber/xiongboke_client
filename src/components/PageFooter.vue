@@ -153,6 +153,7 @@ footer {
 @media screen and (max-width: 1064px) and (min-width: 0px) {
   /* 联系方式=>S */
   footer {
+    display: none;
     width: 100vw;
     height: 42px;
   }

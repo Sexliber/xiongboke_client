@@ -1,6 +1,12 @@
 <template>
+  <!-- 
+  漫画目录页面
+  -->
   <div class="container" :class="{loading:isLoading}">
     <vue-scroll ref="vuescroll">
+      <!-- 请求失败展示画面 -->
+      <div v-if="reqErr">对不起,暂无此漫画源!</div>
+      
       <!-- 漫画封面 -->
       <div class="comicCover" v-if="!reqErr">
         <div class="cover">
@@ -18,15 +24,12 @@
       <div class="comicCatalog row" v-if="!reqErr">
         <div class="chapter col-md-2 col-sm-3" v-for="(item,key) in comicCatalog" :key="key">
           <router-link
-            :to="{path:'/comicctt',query:{url:item.url,catalogUrl:$route.query.url}}"
+            :to="{path:'/comicctt',query:{chaperName:item.num,url:item.url,catalogUrl:$route.query.url}}"
             v-text="item.num"
           ></router-link>
         </div>
       </div>
     </vue-scroll>
-
-    <!-- 请求失败展示画面 -->
-    <div v-if="reqErr">对不起,暂无此漫画源!</div>
   </div>
 </template>
 
@@ -40,9 +43,9 @@ export default {
       comicCatalog: [0],
       // 漫画信息
       comicInfo: [0],
-      //   页面加载动画开关
+      // 页面加载动画开关
       isLoading: true,
-      //   请求失败开关
+      // 请求失败开关
       reqErr: false,
       // 403图片地址
       img403: this.global.img403

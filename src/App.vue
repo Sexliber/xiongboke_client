@@ -54,7 +54,7 @@ export default {
   .content-container {
     margin: 42px 0 0 0;
     width: 100vw;
-    height: calc(100vh - 84px);
+    height: calc(100vh - 42px);
   }
 }
 </style>

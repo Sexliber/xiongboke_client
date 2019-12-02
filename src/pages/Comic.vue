@@ -46,7 +46,7 @@ export default {
       // 页面加载状态
       isLoading: true,
       // 搜索内容
-      search: "最新",
+      search: "",
       // 漫画封面数组
       comicCoverData: [0],
       // 403图片路径
@@ -83,19 +83,22 @@ export default {
       this.isLoading = true;
 
       // 将要搜索的内容传递给search变量
+      var search = "";
       if (
         this.$route.query.search == undefined ||
         this.$route.query.search == ""
       ) {
-        this.search = "最新";
+        search = 1;
       } else {
-        this.search = this.$route.query.search;
+        search = this.$route.query.search;
       }
 
       //请求漫画封面数据
       this.axios({
-        url: this.global.ComicVideoApi + this.global.ComicCover + this.search
+        url: this.global.ComicVideoApi + this.global.ComicCover + search
       }).then(res => {
+        // 清楚原有数组
+        this.comicCoverData = [];
         // 请求到的漫画封面信息传递给comicCoverData
         this.comicCoverData = res.data.list;
         // 去除页面加载动画
