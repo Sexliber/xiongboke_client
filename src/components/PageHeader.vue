@@ -71,7 +71,7 @@
       <!-- 菜单清单=>S -->
       <div id="mean" class="clearboth">
         <ul class="mean-list">
-          <li class="mean-item" v-for="(item,i) in links" :key="i">
+          <li class="mean-item" v-for="(item,i) in links" :key="i" @click="meanIsActive=false">
             <router-link :to="item.url" class="white" v-text="item.title"></router-link>
           </li>
         </ul>
@@ -99,8 +99,8 @@ export default {
       //首选分类数据=>S
       links: [
         { url: { path: "/", query: {} }, title: "我的首页" },
-        { url: { path: "/", query: {} }, title: "我的作品" },
-        { url: { path: "/", query: {} }, title: "实用软件" },
+        { url: { path: "/comic", query: {} }, title: "漫画区域" },
+        { url: { path: "/video", query: {} }, title: "影视欣赏" },
         { url: { path: "/", query: {} }, title: "最新设计" },
         { url: { path: "/", query: {} }, title: "网站实例" },
         { url: { path: "/", query: {} }, title: "代码审计" }

@@ -35,10 +35,28 @@ const router = RouterConfig;
 
 export default {
   name: "app",
+  data() {
+    return {
+      // 窗口标题
+      title: ""
+    };
+  },
   components: {
     PageHeader,
     PageFooter,
     MusicPlayer
+  },
+  mounted() {
+    let _this = this;
+    // 监听浏览器窗口切换替换标题
+    document.addEventListener('visibilitychange', function() {
+      if (this.visibilityState == "hidden") {
+        _this.title = this.title;
+        this.title = "(っ °Д °;)っ别走吖!!!";
+      } else {
+        this.title = _this.title;
+      }
+    });
   },
   //注册路由器
   router

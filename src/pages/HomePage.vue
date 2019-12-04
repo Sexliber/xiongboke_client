@@ -4,7 +4,7 @@
     <div class="background" :style="{backgroundImage:`url(${background})`}">
       <!-- 头部轮播组件 -->
       <div class="replay-banner-container">
-        <head-replay-banner :get-data="replayItems"/>
+        <head-replay-banner :get-data="replayItems" />
       </div>
       <!-- 响应式滚动内容页 -->
       <router-view
@@ -89,6 +89,11 @@ export default {
       navSubId: navbarSubId,
       //响应式浮动标题导航栏滚动指示器宽度
       progressBarWidth: [0]
+    };
+  },
+  metaInfo() {
+    return {
+      title: "拐某人的个人空间"
     };
   },
   // 数据监听

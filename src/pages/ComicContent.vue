@@ -39,7 +39,7 @@
       <!-- 前往上个章节按钮 -->
       <div class="toPreChapter" @click="rechapter('top')" v-show="toPreChapterFlag">上一章</div>
       <!-- 漫画图片 -->
-      <div @click="meanButtonShow=!meanButtonShow;showMean=showCatalog=false">
+      <div class="pic-container" @click="meanButtonShow=!meanButtonShow;showMean=showCatalog=false">
         <div class="pic" v-for="(item, index) in pic" :key="index">
           <!-- 图片 -->
           <img
@@ -85,6 +85,11 @@ export default {
       showMean: false,
       // 目录开关
       showCatalog: false
+    };
+  },
+  metaInfo() {
+    return {
+      title: this.$route.query.chaperName
     };
   },
   watch: {
@@ -197,6 +202,9 @@ export default {
   width: 100%;
   background-color: #333333;
 }
+.pic-container{
+  min-height: 110vh;
+}
 .pic {
   text-align: center;
 }
@@ -206,7 +214,7 @@ export default {
 .pic > .placeholder {
   height: 600px;
   line-height: 600px;
-  color: #ffffff;;
+  color: #ffffff;
   font-size: 52px;
 }
 .toPreChapter,

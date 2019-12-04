@@ -6,7 +6,7 @@
     <vue-scroll ref="vuescroll">
       <!-- 请求失败展示画面 -->
       <div v-if="reqErr">对不起,暂无此漫画源!</div>
-      
+
       <!-- 漫画封面 -->
       <div class="comicCover" v-if="!reqErr">
         <div class="cover">
@@ -49,6 +49,13 @@ export default {
       reqErr: false,
       // 403图片地址
       img403: this.global.img403
+    };
+  },
+  metaInfo() {
+    return {
+      title: `${
+        this.comicInfo.name == undefined ? "" : this.comicInfo.name
+      }|目录`
     };
   },
   created() {

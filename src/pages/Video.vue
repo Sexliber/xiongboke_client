@@ -13,7 +13,7 @@
               @keyup.enter="toLink"
               type="text"
               class="form-control"
-              placeholder="输入漫画名"
+              placeholder="输入影视名称"
             />
             <span class="input-group-btn">
               <button class="btn btn-default" type="button" @click="toLink">

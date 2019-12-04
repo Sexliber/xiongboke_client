@@ -70,6 +70,18 @@ export default new VueRouter({
 
 
         // *
+        // * 影视欣赏
+        // * *
+        {
+            path: "/video",
+            component: resolve => {
+                require(['@/pages/Video'], resolve);
+            }
+        },
+
+
+
+        // *
         // * 文章页面
         // * *
         {

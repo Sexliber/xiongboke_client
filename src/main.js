@@ -5,18 +5,26 @@ import 'babel-polyfill';
 import Vue from 'vue';
 
 // *
-// * 将全局模块添加到Vue对象中
+// * 将全局变量添加到Vue对象中
 // *
 import global from './Global';
 Vue.prototype.global = global;
 
 // *
+// * 引入vue-head头管理
+// *
+import VueMeta from 'vue-meta';
+Vue.use(VueMeta, {
+    // 导航时刷新一次
+    refreshOnceOnNavigation: true
+});
+
+// *
 // * 引入axios请求模块并配置到Vue全局属性
 // *
 import axios from 'axios';
-axios.defaults.baseURL = global.BASE_URL;   // 设置默认请求域名地址
+axios.defaults.baseURL = global.BASE_URL; // 设置默认请求域名地址
 Vue.prototype.axios = axios;
-
 
 // 引入Vuescroll模块并且全局配置参数
 import vuescroll from 'vuescroll';
@@ -70,4 +78,4 @@ import { Number } from 'core-js';
 Vue.config.productionTip = false;
 new Vue({
     render: i => i(App)
-}).$mount('#app')
+}).$mount('#app');
