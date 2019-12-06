@@ -33,6 +33,10 @@ export default {
     ComicCatalog: "/?mhurl1=",
     // 漫画单个章节所有图片
     ComicPic: "/?mhurl2=",
-    // LRY-API(漫画,电源,小说)-------------- =>E
+    // 影视封面请求参数名
+    VideoCover: "/?ysname=",
+    // 影视播放地址请求参数名
+    VideoUrl: "/?ysurl="
+        // LRY-API(漫画,电源,小说)-------------- =>E
 
 }

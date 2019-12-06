@@ -122,7 +122,7 @@ export default {
       this.axios({
         url: this.global.ComicVideoApi + this.global.ComicCover + search
       }).then(res => {
-        // 清楚原有数组
+        // 清除原有数组
         this.comicCoverData = [];
         // 请求到的漫画封面信息传递给comicCoverData
         this.comicCoverData = res.data.list;

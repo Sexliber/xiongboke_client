@@ -1,6 +1,6 @@
 <template>
   <!-- *
-    * 漫画
+    * 电影
   * *-->
   <div class="background" :class="{loading:isLoading}">
     <div id="container">
@@ -24,30 +24,36 @@
         </div>
         <!-- 搜索框E=> -->
 
-        <!-- 漫画封面浏览<=S -->
+        <!-- 电影封面浏览<=S -->
         <div class="row">
           <div
-            v-for="(item,key) in comicCoverData"
+            v-for="(item,key) in videoCoverData"
             :key="key"
             class="col-lg-2 col-md-2 col-sm-3 col-xs-6"
           >
             <div>
               <router-link
-                :to="{path:'/comic/comiccatalog',query:{url:item.url}}"
-                class="comic_pic"
+                :to="{path:'/videodetails',query:{url:item.url}}"
+                class="video_pic"
                 v-resetHeight
               >
-                <img :title="item.name" :src="item.cover" :onerror="img403" />
+                <img
+                  :title="item.name"
+                  :src="item.cover"
+                  :onerror="img403"
+                  @load="imgShow.splice(key,1,1)"
+                  v-show="imgShow[key]"
+                />
               </router-link>
               <router-link
-                :to="{path:'/comic/comiccatalog',query:{url:item.url}}"
-                class="comic_tit"
+                :to="{path:'/videodetails',query:{url:item.url}}"
+                class="video_tit"
                 v-text="item.name"
               ></router-link>
             </div>
           </div>
         </div>
-        <!-- 漫画封面浏览E=> -->
+        <!-- 电影封面浏览E=> -->
       </vue-scroll>
     </div>
   </div>
@@ -55,18 +61,20 @@
 
 <script>
 export default {
-  name: "Comic",
+  name: "Video",
 
   data() {
     return {
       // 页面加载状态
       isLoading: true,
       // 搜索内容
-      search: "",
-      // 漫画封面数组
-      comicCoverData: [0],
+      search: this.$route.query.search || "",
+      // 电影封面数组
+      videoCoverData: [0],
       // 403图片路径
-      img403: this.global.img403
+      img403: this.global.img403,
+      // 图片开关组
+      imgShow: []
     };
   },
 
@@ -74,7 +82,7 @@ export default {
     return {
       title: `${
         this.$route.query.search == undefined ? "" : this.$route.query.search
-      }${this.comicCoverData.length}个搜索结果`
+      }${this.videoCoverData.length}个搜索结果`
     };
   },
 
@@ -82,7 +90,7 @@ export default {
     // 监听路由
     $route: function(route, oldRoute) {
       // 路由变动重新请求数据
-      this.reqComicCoverData();
+      this.reqVideoCoverData();
     }
   },
 
@@ -102,8 +110,8 @@ export default {
       this.$router.push(location);
     },
 
-    // 用获取到的漫画封面数组传递给comicCoverData变量
-    reqComicCoverData() {
+    // 用获取到的电影封面数组传递给videoCoverData变量
+    reqVideoCoverData() {
       // 添加页面加载动画
       this.isLoading = true;
 
@@ -118,22 +126,36 @@ export default {
         search = this.$route.query.search;
       }
 
-      //请求漫画封面数据
+      //请求电影封面数据
       this.axios({
-        url: this.global.ComicVideoApi + this.global.ComicCover + search
+        url: this.global.ComicVideoApi + this.global.VideoCover + search
       }).then(res => {
-        // 清楚原有数组
-        this.comicCoverData = [];
-        // 请求到的漫画封面信息传递给comicCoverData
-        this.comicCoverData = res.data.list;
+        // 清除原有数组
+        this.videoCoverData = [];
+        // 请求到的电影封面信息传递给videoCoverData
+        this.videoCoverData = res.data.list;
+        // 填充封面图片开关组
+        this.imgShow = new Array(res.data.list.length).fill(0);
         // 去除页面加载动画
         this.isLoading = false;
+        // 请求封面图片链接并添加到封面组中
+        this.videoCoverData.forEach((current, index) => {
+          this.axios({
+            url: this.global.ComicVideoApi + this.global.VideoUrl + current.url
+          }).then(respon => {
+            // 在当前数组中添加cover键值并将更新应用到封面数组中
+            let itemArr = current;
+            itemArr["cover"] = respon.data.data.cover;
+            this.videoCoverData.splice(index, 1, itemArr);
+          });
+        });
       });
     }
   },
 
   created() {
-    this.reqComicCoverData();
+    // 请求数据
+    this.reqVideoCoverData();
   },
 
   directives: {
@@ -165,13 +187,13 @@ export default {
 .col-lg-2 > div {
   background-color: #fff;
 }
-.comic_pic {
+.video_pic {
   position: relative;
   display: block;
   overflow: hidden;
   width: 100%;
 }
-.comic_pic img {
+.video_pic img {
   position: absolute;
   top: 50%;
   left: 0;
@@ -190,14 +212,14 @@ export default {
 .col-lg-2 > div:hover {
   box-shadow: #fff 0 0 4px;
 }
-.comic_tit {
+.video_tit {
   display: block;
   line-height: 60px;
   color: #edece9;
   font-size: 18px;
   white-space: nowrap;
 }
-.comic_type {
+.video_type {
   padding-bottom: 4px;
   white-space: nowrap;
 }
@@ -216,6 +238,7 @@ export default {
 }
 .input-group .form-control:focus {
   border-color: #ffc815;
+  box-shadow: #ffc815 0 0 4px;
 }
 .input-group .btn {
   color: #888;

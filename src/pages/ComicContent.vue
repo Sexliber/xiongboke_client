@@ -119,11 +119,10 @@ export default {
       }).then(res => {
         this.pic = res.data.list;
         this.isLoading = false;
-        // 图片加载区块开关数组初始化
-        this.placeholder = [];
-        res.data.list.forEach((current, index) => {
-          this.placeholder.push(1);
-        });
+        // 图片加载区块开关数组初始化长度并填充1
+        console.time("arr");
+        this.placeholder = new Array(res.data.list.length).fill(1);
+        console.timeEnd("arr");
       });
       // 请求漫画目录
       this.axios({

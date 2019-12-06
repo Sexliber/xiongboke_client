@@ -72,13 +72,20 @@ export default new VueRouter({
         // *
         // * 影视欣赏
         // * *
+        // 影视搜索页面
         {
             path: "/video",
             component: resolve => {
                 require(['@/pages/Video'], resolve);
             }
         },
-
+        // 影视信息和播放地址页面
+        {
+            path: "/videodetails",
+            component: resolve => {
+                require(['@/pages/VideoDetails'], resolve);
+            }
+        },
 
 
         // *
