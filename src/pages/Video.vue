@@ -39,7 +39,7 @@
               >
                 <img
                   :title="item.name"
-                  :src="item.cover"
+                  v-lazy="item.cover"
                   :onerror="img403"
                   @load="imgShow.splice(key,1,1)"
                   v-show="imgShow[key]"

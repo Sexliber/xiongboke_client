@@ -2,7 +2,7 @@
   <!-- *
   * 漫画内容页面
   **-->
-  <div class="container" :class="{loading:isLoading}">
+  <div class="container noselect" :class="{loading:isLoading}">
     <!-- 菜单栏按钮 -->
     <div class="mean-button" v-show="meanButtonShow" @click="showMean=!showMean">
       <div class="bar"></div>
@@ -43,7 +43,8 @@
         <div class="pic" v-for="(item, index) in pic" :key="index">
           <!-- 图片 -->
           <img
-            :src="item.img"
+            :src="index==0?item.img:''"
+            v-lazy="item.img"
             @load="placeholder.splice(index,1,0)"
             :onerror="img403"
             alt="加载失败"
@@ -67,8 +68,16 @@ export default {
     return {
       // 漫画图片
       pic: [0],
+      // 漫画信息
+      comicInfo: [0],
       // 漫画目录
       comicCatalog: [0],
+      // 目录url
+      catalogUrl: this.$route.query.catalogUrl,
+      // 图片url
+      picUrl: this.$route.query.url,
+      // 章节名
+      chaperName: this.$route.query.chaperName,
       //   页面加载动画开关
       isLoading: true,
       // 403图片地址
@@ -97,10 +106,20 @@ export default {
     $route: function(newRoute, oldRoute) {
       // 请求漫画资源
       this.reqComicPic();
-      // 滚动条归零
+
+      // 滚动条设置
       this.$refs["vuescroll"].scrollTo({ y: 0 }, 0);
+
       // 隐藏菜单和按钮
       this.meanButtonShow = this.showMean = this.showCatalog = false;
+
+      // 目录url,图片url,章节名重置
+      this.catalogUrl = this.$route.query.catalogUrl;
+      this.picUrl = this.$route.query.url;
+      this.chaperName = this.$route.query.chaperName;
+
+      // 存储用户数据
+      this.userInfoSave();
     }
   },
   methods: {
@@ -120,9 +139,7 @@ export default {
         this.pic = res.data.list;
         this.isLoading = false;
         // 图片加载区块开关数组初始化长度并填充1
-        console.time("arr");
         this.placeholder = new Array(res.data.list.length).fill(1);
-        console.timeEnd("arr");
       });
       // 请求漫画目录
       this.axios({
@@ -133,6 +150,8 @@ export default {
       }).then(res => {
         // 漫画目录数组更新
         this.comicCatalog = res.data.list;
+        // 漫画信息更新
+        this.comicInfo = res.data.data;
       });
     },
     // 滚动事件
@@ -145,6 +164,7 @@ export default {
     },
     // 页面尺寸改变事件
     handleResize(v, h, e) {
+      // 重新记录页面高度
       this.pageHeight = e.height;
     },
     // 漫画章节切换
@@ -182,11 +202,78 @@ export default {
           catalogUrl: this.$route.query.catalogUrl
         }
       });
+    },
+    // *
+    // * 存储用户数据
+    // * *
+    userInfoSave() {
+      if (localStorage.getItem("comicCache") === null) {
+        // 如浏览器中comicCache键值不存在,则初始化一个值
+        let json = { history: [] };
+        localStorage.setItem("comicCache", JSON.stringify(json));
+
+        // 添加键值后再次调用用户信息存储方法
+        this.userInfoSave();
+      } else {
+        // 从浏览器中获取comicCache键值转义为json数组
+        let json = JSON.parse(localStorage.getItem("comicCache"));
+
+        // 创建要存储的对象
+        let obj = this.comicInfo;
+        obj.catalogUrl = this.catalogUrl;
+        obj.chaperName = this.chaperName;
+        obj.picUrl = this.picUrl;
+
+        // 遍历浏览器存储数组查询是否存在相同数据
+        let sub = -1;
+        json.history.forEach((item, index) => {
+          if (item.catalogUrl == this.catalogUrl) sub = index;
+        });
+
+        // 添加或修改浏览器存储数组
+        if (sub != -1) {
+          json.history[sub] = obj;
+        } else {
+          json.history.push(obj);
+        }
+
+        // 重新上传到浏览器
+        localStorage.setItem("comicCache", JSON.stringify(json));
+      }
     }
   },
   created() {
+    // *
+    // * data对象初始化完毕后要处理事项
+    // * *
+
+    // 移动端下隐藏header标签栏
+    this.$emit("hide-header", 1);
+
     // 请求漫画图片
     this.reqComicPic();
+  },
+  mounted() {
+    // *
+    // * 虚拟dom挂载完毕后处理事项
+    // * *
+
+    // 添加window页面卸载刷新的监听事件,用于执行存储用户数据的方法,防止用户关闭浏览器页面
+    window.addEventListener("beforeunload", this.userInfoSave);
+  },
+  destroyed() {
+    // *
+    // * 组件销毁后要处理事项
+    // * *
+
+    // 显示header标签栏
+    this.$emit("hide-header", 0);
+
+    // 存储用户信息
+    this.userInfoSave();
+
+    // 移除window页面卸载刷新的监听事件
+    window.removeEventListener("beforeunload", this.userInfoSave);
   }
 };
 </script>
@@ -201,7 +288,7 @@ export default {
   width: 100%;
   background-color: #333333;
 }
-.pic-container{
+.pic-container {
   min-height: 110vh;
 }
 .pic {
@@ -219,7 +306,7 @@ export default {
 .toPreChapter,
 .toNextChapter {
   padding: 10px;
-  background-color: #ffc815;
+  background-color: #222;
   color: #fff;
   text-align: center;
   cursor: pointer;

@@ -11,13 +11,19 @@ import global from './Global';
 Vue.prototype.global = global;
 
 // *
-// * 引入vue-head头管理
+// * 引入vue-meta头管理
 // *
 import VueMeta from 'vue-meta';
 Vue.use(VueMeta, {
     // 导航时刷新一次
     refreshOnceOnNavigation: true
 });
+
+// *
+// * 引入vue-lazyload懒加载
+// *
+import VueLazyload from "vue-lazyload";
+Vue.use(VueLazyload, global.VueLazyConfig);
 
 // *
 // * 引入axios请求模块并配置到Vue全局属性

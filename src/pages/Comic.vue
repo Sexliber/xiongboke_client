@@ -37,7 +37,7 @@
                 class="comic_pic"
                 v-resetHeight
               >
-                <img :title="item.name" :src="item.cover" :onerror="img403" />
+                <img :title="item.name" v-lazy="item.cover" :onerror="img403" />
               </router-link>
               <router-link
                 :to="{path:'/comic/comiccatalog',query:{url:item.url}}"

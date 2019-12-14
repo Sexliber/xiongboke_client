@@ -8,10 +8,6 @@ body {
     font-size: calc(100vw / 19.2);
 }
 
-body {
-    height: auto;
-}
-
 html,
 body,
 * {
@@ -158,6 +154,24 @@ a:visited {
     z-index: 99 !important;
 }
 
+
+/* 中文不换行 */
+
+.t-no-wrap {
+    white-space: nowrap;
+}
+
+
+/* 文字超出显示省略号 */
+
+.t-over-hide {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* 文字不被选中 */
+
 .noselect {
     user-select: none;
 }
@@ -168,7 +182,7 @@ a:visited {
 .marquee {
     display: block;
     margin: 0;
-    animation: marquee 2000ms linear infinite;
+    animation: marquee 2s linear infinite;
 }
 
 @keyframes marquee {
@@ -205,22 +219,31 @@ a:visited {
     background-color: #383838;
 }
 
+.loading.w::before {
+    background-color: #fff;
+    opacity: .6;
+}
+
 .loading::after {
     z-index: 999999;
     position: absolute;
     top: 50%;
     left: 50%;
     margin: -24px -31px;
-    content: "\f1ce";
+    content: "\f110";
     color: #ffc815;
-    -webkit-animation: fa-spin 2s infinite linear;
-    animation: fa-spin 2s infinite linear;
+    -webkit-animation: fa-spin 1s infinite steps(8);
+    animation: fa-spin 1s infinite steps(8);
     width: 1.28571429em;
     text-align: center;
     font: normal normal normal 48px/1 FontAwesome;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.loading.w::after {
+    color: #222;
 }
 
 

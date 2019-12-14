@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 导航栏=>S -->
-    <header>
+    <header class="noselect">
       <!-- logo=>S -->
       <router-link :to="{path:'/',query:''}" class="logo-holder">
         <img src="../assets/images/logo.png" alt="首页" />
@@ -72,7 +72,7 @@
       <div id="mean" class="clearboth">
         <ul class="mean-list">
           <li class="mean-item" v-for="(item,i) in links" :key="i" @click="meanIsActive=false">
-            <router-link :to="item.url" class="white" v-text="item.title"></router-link>
+            <router-link :to="item.url" class="white noselect" v-text="item.title"></router-link>
           </li>
         </ul>
       </div>
@@ -132,6 +132,7 @@ header {
   height: 100vh;
   width: 70px;
   background-color: #222222;
+  border-right: 1px solid rgba(255, 255, 255, 0.21);
 }
 
 header {
@@ -487,6 +488,7 @@ header {
   footer {
     width: 100vw;
     height: 42px;
+    border-width: 0;
   }
   .logo-holder {
     top: 50%;

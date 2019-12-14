@@ -1,14 +1,14 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{'replace-container':hideHeader}">
     <!-- 页头 -->
-    <page-header />
+    <page-header :class="{'hide-header':hideHeader}" />
 
     <!-- 音乐播放器 -->
     <music-player />
 
     <div class="content-container">
       <!-- 路由器分支 -->
-      <router-view />
+      <router-view @hide-header="hideHeader=$event" />
     </div>
 
     <!-- 页脚 -->
@@ -37,9 +37,24 @@ export default {
   name: "app",
   data() {
     return {
-      // 窗口标题
-      title: ""
+      // 浏览器窗口标题切换暂存变量
+      title: "",
+      // 当前页面显示状态
+      visibilityState: "visible",
+      // 是否隐藏header标签栏
+      hideHeader: 0
     };
+  },
+  watch: {
+    // 监听当前页面显示状态是否变化
+    visibilityState(state) {
+      if (state == "visible") {
+        document.title = this.title;
+      } else {
+        this.title = document.title;
+        document.title = "(っ °Д °;)っ别走啊!!!";
+      }
+    }
   },
   components: {
     PageHeader,
@@ -47,15 +62,9 @@ export default {
     MusicPlayer
   },
   mounted() {
-    let _this = this;
     // 监听浏览器窗口切换替换标题
-    document.addEventListener('visibilitychange', function() {
-      if (this.visibilityState == "hidden") {
-        _this.title = this.title;
-        this.title = "(っ °Д °;)っ别走吖!!!";
-      } else {
-        this.title = _this.title;
-      }
+    document.addEventListener("visibilitychange", () => {
+      this.visibilityState = document.visibilityState;
     });
   },
   //注册路由器
@@ -67,6 +76,7 @@ export default {
 #app {
   position: relative;
   overflow: hidden;
+  height: 100%;
 }
 @media screen and (max-width: 1064px) and (min-width: 0px) {
   .content-container {
@@ -74,5 +84,14 @@ export default {
     width: 100vw;
     height: calc(100vh - 42px);
   }
+  /* 移动端隐藏header标签栏类<=S */
+  .hide-header {
+    display: none;
+  }
+  .replace-container > .content-container {
+    margin: 0;
+    height: 100%;
+  }
+  /* 移动端隐藏header标签栏类E=> */
 }
 </style>
