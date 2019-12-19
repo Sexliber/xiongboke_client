@@ -5,8 +5,7 @@
 export default {
 
     // axios请求默认地址
-    BASE_URL: "http://www.xiongboke.com",
-
+    BASE_URL: "/",
 
 
     // 整页背景
@@ -15,18 +14,7 @@ export default {
 
 
     // 404图片地址
-    img403: `this.src=
-    '../assets/images/img404.png'`,
-
-
-
-    // 音乐Api ----------------------------- <=S
-
-    // Api密钥 
-    MusicApiKey: 579621905,
-    MusicApi: "https://api.bzqll.com/music",
-
-    // 音乐Api ----------------------------- =>E
+    img403: `this.src='./assets/images/img404.jpg'`,
 
 
 
@@ -49,7 +37,42 @@ export default {
 
     // Vue懒加载配置参数-------------<=S
     VueLazyConfig: {
-
-    }
+        error: "./assets/images/img404.jpg"
+    },
     // Vue懒加载配置参数-------------E=>
+
+
+
+    // VueScroll滚动条配置参数--------------<=S
+    VueScrollConfig: {
+        ops: {
+            vuescroll: {
+                mode: 'native',
+                sizeStrategy: Number,
+                detectResize: true
+            },
+            scrollPanel: {
+                initialScrollY: false,
+                initialScrollX: false,
+                scrollingX: false,
+                scrollingY: true,
+                easing: 'easeInOutQuint',
+                verticalNativeBarPos: 'right'
+            },
+            bar: {
+                showDelay: 500,
+                onlyShowBarOnScroll: true,
+                keepShow: false,
+                background: '#ffc815',
+                opacity: 1,
+                hoverStyle: false,
+                specifyBorderRadius: false,
+                minSize: false,
+                size: '6px',
+                disable: false,
+            }
+        },
+        name: 'vueScroll'
+    }
+    // VueScroll滚动条配置参数-------------eE=>
 }

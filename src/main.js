@@ -4,6 +4,14 @@ import 'babel-polyfill';
 // 引入Vue模块
 import Vue from 'vue';
 
+
+
+// *
+// * 引入VueRouter路由器
+// *
+import VueRouter from "vue-router";
+Vue.use(VueRouter);
+
 // *
 // * 将全局变量添加到Vue对象中
 // *
@@ -34,36 +42,7 @@ Vue.prototype.axios = axios;
 
 // 引入Vuescroll模块并且全局配置参数
 import vuescroll from 'vuescroll';
-Vue.use(vuescroll, {
-    ops: {
-        vuescroll: {
-            mode: 'native',
-            sizeStrategy: Number,
-            detectResize: true
-        },
-        scrollPanel: {
-            initialScrollY: false,
-            initialScrollX: false,
-            scrollingX: false,
-            scrollingY: true,
-            easing: 'easeInOutQuint',
-            verticalNativeBarPos: 'right'
-        },
-        bar: {
-            showDelay: 500,
-            onlyShowBarOnScroll: true,
-            keepShow: false,
-            background: '#ffc815',
-            opacity: 1,
-            hoverStyle: false,
-            specifyBorderRadius: false,
-            minSize: false,
-            size: '6px',
-            disable: false,
-        }
-    },
-    name: 'vueScroll'
-});
+Vue.use(vuescroll, global.VueScrollConfig);
 
 
 // *

@@ -130,29 +130,37 @@ export default {
       // 开启加载动画
       this.isLoading = true;
       // 请求漫画图片
-      this.axios({
-        url:
-          this.global.ComicVideoApi +
-          this.global.ComicPic +
-          this.$route.query.url
-      }).then(res => {
-        this.pic = res.data.list;
-        this.isLoading = false;
-        // 图片加载区块开关数组初始化长度并填充1
-        this.placeholder = new Array(res.data.list.length).fill(1);
-      });
+      this.axios
+        .get("/getComic", {
+          params: {
+            url:
+              this.global.ComicVideoApi +
+              this.global.ComicPic +
+              this.$route.query.url
+          }
+        })
+        .then(res => {
+          this.pic = res.data.list;
+          this.isLoading = false;
+          // 图片加载区块开关数组初始化长度并填充1
+          this.placeholder = new Array(res.data.list.length).fill(1);
+        });
       // 请求漫画目录
-      this.axios({
-        url:
-          this.global.ComicVideoApi +
-          this.global.ComicCatalog +
-          this.$route.query.catalogUrl
-      }).then(res => {
-        // 漫画目录数组更新
-        this.comicCatalog = res.data.list;
-        // 漫画信息更新
-        this.comicInfo = res.data.data;
-      });
+      this.axios
+        .get("/getComic", {
+          params: {
+            url:
+              this.global.ComicVideoApi +
+              this.global.ComicCatalog +
+              this.$route.query.catalogUrl
+          }
+        })
+        .then(res => {
+          // 漫画目录数组更新
+          this.comicCatalog = res.data.list;
+          // 漫画信息更新
+          this.comicInfo = res.data.data;
+        });
     },
     // 滚动事件
     handleScroll(v, h, e) {

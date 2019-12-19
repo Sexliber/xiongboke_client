@@ -1,26 +1,29 @@
 <template>
-  <router-link :to="{path:`/writes/${WritesData.id}`}">
+  <router-link :to="{path:'/writes',query:{url:WritesData.url}}">
     <div class="write">
       <div class="bg-pic">
-        <img :src="WritesData.thumbnail">
+        <img :src="WritesData.cover" />
       </div>
     </div>
     <div class="content bg-white">
       <div class="title darkgray">
-        <span v-text="WritesData.title"/>
+        <h3 class="t-no-wrap t-over-hide" v-text="WritesData.title" />
+      </div>
+      <div class="text darkgray">
+        <span v-text="WritesData.text" />
       </div>
       <div class="visitor lightgray">
         <span class="click">
           <i class="fa fa-eye" aria-hidden="true"></i>
-          <span v-text="WritesData.visitors"/>
+          <span v-text="WritesData.visitors" />
         </span>
         <span class="comment">
           <i class="fa fa-commenting-o" aria-hidden="true"></i>
-          <span v-text="WritesData.comments"/>
+          <span v-text="WritesData.comments" />
         </span>
         <span class="assist">
           <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-          <span v-text="WritesData.assists"/>
+          <span v-text="WritesData.assists" />
         </span>
       </div>
     </div>
@@ -75,16 +78,28 @@ export default {
   color: #888;
   font-size: 14px;
 }
+.title,
+.text {
+  padding: 0 15px;
+}
 .title {
-  padding: 10px 15px 15px;
-  font-size: 16px;
-  line-height: 27px;
+  margin: 0;
+  font-size: 90px;
+  line-height: 46px;
   text-align: left;
-  height: 66px;
+}
+.title h3{
+  font-size: 20px;
+}
+.text {
   display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   overflow: hidden;
+  height: 80px;
+  font-size: 16px;
+  color: #828a92;
+  text-overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 .visitor {
   padding-left: 10px;
@@ -104,6 +119,11 @@ i {
   width: 24px;
   border-radius: 50%;
   overflow: hidden;
+}
+@media screen and (max-width: 1024px) {
+  .text{
+    display: none;
+  }
 }
 </style>
 

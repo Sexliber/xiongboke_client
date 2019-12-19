@@ -3,9 +3,6 @@
     <!-- 页头 -->
     <page-header :class="{'hide-header':hideHeader}" />
 
-    <!-- 音乐播放器 -->
-    <music-player />
-
     <div class="content-container">
       <!-- 路由器分支 -->
       <router-view @hide-header="hideHeader=$event" />
@@ -21,17 +18,11 @@
 import PageHeader from "./components/PageHeader";
 // 页脚模块
 import PageFooter from "./components/PageFooter";
-// 音乐播放器
-import MusicPlayer from "./components/MusicPlayer";
 
-// 路由管理块<=S
-import Vue from "vue";
-import VueRouter from "vue-router";
-Vue.use(VueRouter);
+
 // 引入路由配置
 import RouterConfig from "./Router";
 const router = RouterConfig;
-// 路由管理块=>E
 
 export default {
   name: "app",
@@ -58,8 +49,7 @@ export default {
   },
   components: {
     PageHeader,
-    PageFooter,
-    MusicPlayer
+    PageFooter
   },
   mounted() {
     // 监听浏览器窗口切换替换标题

@@ -92,7 +92,7 @@ export default new VueRouter({
         // * 文章页面
         // * *
         {
-            path: "/writes/:id",
+            path: "/writes",
             component: resolve => {
                 require(['@/pages/Writes'], resolve);
             }

@@ -55,7 +55,7 @@
             <div
               v-for="(item,key) in writesArr"
               :key="key"
-              class="col-md-3 col-sm-4 col-xs-6 padding1"
+              class="col-md-3 col-sm-4 padding1"
             >
               <writes-block :writes-data="item"/>
             </div>
@@ -113,13 +113,6 @@
                   </div>
                 </transition>
                 <!-- 优选内容=>E -->
-                <!-- 网易云音乐<=S -->
-                <transition>
-                  <div class="col-md-12 padding1">
-                    <netease-music/>
-                  </div>
-                </transition>
-                <!-- 网易云音乐=>E -->
               </div>
             </div>
           </div>
@@ -143,7 +136,6 @@ import WritesBlock from "../components/WritesBlock";
 import ImageReplayBanner from "../components/ImageReplayBanner";
 import WritesBanner from "../components/WritesBanner";
 import TagsMean from "../components/TagsMean";
-import NeteaseMusic from "../components/NeteaseMusic";
 import Optimi from "../components/Optimi";
 // 引入组件=>E
 
@@ -306,13 +298,12 @@ export default {
     ImageReplayBanner,
     WritesBanner,
     TagsMean,
-    NeteaseMusic,
     Optimi
   },
   // 该组件data对象加载完毕后开始请求数据
   created() {
     // 请求最新文章数据
-    this.axios.get("getPublicData").then(response => {
+    this.axios.get("getNews").then(response => {
       this.writesArr = response.data;
     });
     //请求实用软件数据

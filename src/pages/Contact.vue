@@ -1,8 +1,6 @@
 <template>
   <vue-scroll :class="{loading:isLoading}">
-    <h1>我的个性</h1>
-    <p>我的姓名</p>
-    <p>我的资料</p>
+    <h1>联系方式</h1>
     <router-view></router-view>
   </vue-scroll>
 </template>

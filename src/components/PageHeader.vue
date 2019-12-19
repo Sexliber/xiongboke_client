@@ -21,10 +21,9 @@
       </div>
       <!-- 菜单按钮=>E -->
 
-      <!-- 联系按钮=>S -->
+      <!-- 工具栏 =>S -->
       <div
         class="show-share durate"
-        id="contact"
         :class="{isShare:!contIsActive}"
         @click="contIsActive=!contIsActive"
       >
@@ -46,18 +45,18 @@
             <i class="fa fa-steam" aria-hidden="true"></i>
           </li>
         </a>
-        <a href>
+        <a title="书签">
           <li class="contact visible-3" :class="{visible:contIsActive}">
-            <i class="fa fa-facebook" aria-hidden="true"></i>
+            <i class="fa fa-bookmark" aria-hidden="true"></i>
           </li>
         </a>
-        <a href @click.prevent="doMusicPlayer">
+        <a @click.prevent="doMusicPlayer" title="音乐">
           <li class="contact visible-4" :class="{visible:contIsActive}">
             <i class="fa fa-music" aria-hidden="true"></i>
           </li>
         </a>
       </ul>
-      <!-- 联系按钮=>E -->
+      <!-- 工具栏 =>E -->
     </header>
 
     <!-- 菜单栏=>S -->
@@ -87,10 +86,6 @@
 
 
 <script>
-// 移动设备检测模块
-import isMobile from "../libs/isMobile";
-// 音乐播放器数据广播站
-import MusicPlayer from "../model/MusicPlayer";
 
 export default {
   name: "PageHeader",
@@ -242,10 +237,10 @@ header {
 }
 
 .show-share:after {
-  content: "contact";
+  content: "tools";
   position: absolute;
   top: -36px;
-  left: -12px;
+  left: -6px;
   font-family: Georgia, "Times New Roman", Times, serif;
   float: left;
   text-align: center;
