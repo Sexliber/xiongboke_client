@@ -34,7 +34,11 @@
             <router-link :to="{path:'/comic/comiccatalog',query:{url:item.url}}">
               <div class="comic-cover">
                 <div class="comic-pic" v-resetHeight>
-                  <img :title="item.name" v-lazy="item.cover" :onerror="img403" />
+                  <img
+                    :title="item.name"
+                    v-lazy="item.cover?item.cover.replace('http://','//'):''"
+                    :onerror="img403"
+                  />
                 </div>
                 <h1 class="comic-tit t-no-wrap t-over-hide" v-text="item.name"></h1>
                 <h2
@@ -120,7 +124,7 @@ export default {
       let reqUrl = this.global.ComicVideoApi + this.global.ComicCover + search;
 
       //请求漫画封面数据
-      this.axios.get("/getComic", {  params: { url: reqUrl }  }).then(res => {
+      this.axios.get("/getComic", { params: { url: reqUrl } }).then(res => {
         // 清除原有数组
         this.comicCoverData = [];
         // 请求到的漫画封面信息传递给comicCoverData

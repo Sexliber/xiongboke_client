@@ -44,7 +44,7 @@
           <!-- 图片 -->
           <img
             :src="index==0?item.img:''"
-            v-lazy="item.img"
+            v-lazy="item.img?item.img.replace('http://','//'):''"
             @load="placeholder.splice(index,1,0)"
             :onerror="img403"
             alt="加载失败"

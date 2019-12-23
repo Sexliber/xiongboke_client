@@ -50,7 +50,7 @@
             </div>
           </router-link>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid" :class="{loading:!loaded[0]}">
           <transition-group appear tag="div" class="row">
             <div
               v-for="(item,key) in writesArr"
@@ -169,7 +169,9 @@ export default {
       // 请求到的软件数据
       softsArr: [0],
       // 请求到的轮播图数据
-      replayArr:[0]
+      replayArr:[0],
+      // loding动画,内容动画管理器
+      loaded:[0,0,0,0,0]
     };
   },
   //接收父组件参数
@@ -305,6 +307,7 @@ export default {
     // 请求最新文章数据
     this.axios.get("getNews").then(response => {
       this.writesArr = response.data;
+      this.loaded.splice(0,1,1);
     });
     //请求实用软件数据
     this.axios.get("getPublicData").then(response => {
@@ -524,7 +527,7 @@ var resetClassEleTop = function(el) {
 }
 
 .content-container .v100 {
-  min-height: 100px;
+  min-height: 600px;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
@@ -555,6 +558,10 @@ var resetClassEleTop = function(el) {
 }
 .soft-replay{
   height: 60vh;
+}
+.loading{
+  height: 100%;
+  min-height: 600px;
 }
 /* 内容=>E */
 

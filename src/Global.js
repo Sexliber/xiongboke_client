@@ -5,7 +5,7 @@
 export default {
 
     // axios请求默认地址
-    BASE_URL: "/",
+    BASE_URL: "https://www.xiongboke.com",
 
 
     // 整页背景

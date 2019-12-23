@@ -12,7 +12,7 @@
           <!-- 漫画封面 -->
           <div class="comicCover clearboth">
             <div class="cover">
-              <img :src="comicInfo.cover" :onerror="img403" :alt="comicInfo.name" />
+              <img :src="comicInfo.cover?comicInfo.cover.replace('http://','//'):''" :onerror="img403" :alt="comicInfo.name" />
             </div>
             <div class="info">
               <div class="name t-no-wrap t-over-hide" v-cloak>{{comicInfo.name}}</div>

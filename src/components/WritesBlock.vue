@@ -7,23 +7,20 @@
     </div>
     <div class="content bg-white">
       <div class="title darkgray">
-        <h3 class="t-no-wrap t-over-hide" v-text="WritesData.title" />
+        <h3 v-text="WritesData.title" />
       </div>
-      <div class="text darkgray">
-        <span v-text="WritesData.text" />
-      </div>
-      <div class="visitor lightgray">
+      <div class="visitor lightgray t-no-wrap t-over-hide">
         <span class="click">
           <i class="fa fa-eye" aria-hidden="true"></i>
-          <span v-text="WritesData.visitors" />
-        </span>
-        <span class="comment">
-          <i class="fa fa-commenting-o" aria-hidden="true"></i>
-          <span v-text="WritesData.comments" />
+          <span v-text="WritesData.click" />
         </span>
         <span class="assist">
           <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-          <span v-text="WritesData.assists" />
+          <span v-text="WritesData.assist" />
+        </span>
+        <span class="time">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+          <span v-text="WritesData.time" />
         </span>
       </div>
     </div>
@@ -83,23 +80,18 @@ export default {
   padding: 0 15px;
 }
 .title {
-  margin: 0;
-  font-size: 90px;
-  line-height: 46px;
-  text-align: left;
-}
-.title h3{
-  font-size: 20px;
-}
-.text {
   display: -webkit-box;
   overflow: hidden;
-  height: 80px;
-  font-size: 16px;
-  color: #828a92;
+  margin: 0;
+  height: 90px;
+  line-height: 46px;
+  text-align: left;
   text-overflow: hidden;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+}
+.title h3{
+  font-size: 20px;
 }
 .visitor {
   padding-left: 10px;
