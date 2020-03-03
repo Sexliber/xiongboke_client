@@ -12,19 +12,11 @@ export default new VueRouter({
         // * 首页
         // * *
         {
+            name: "homepage",
             path: "/",
             component: resolve => {
                 require(['@/pages/HomePage'], resolve);
-            },
-            children: [
-                // 首页-总内容盒子
-                {
-                    path: "/",
-                    component: resolve => {
-                        require(['@/pages/FlexTitleAnima'], resolve);
-                    }
-                }
-            ]
+            }
         },
 
 
@@ -33,6 +25,7 @@ export default new VueRouter({
         // * 我的联系方式
         // * *
         {
+            name: "contact",
             path: "/contact",
             component: resolve => {
                 require(['@/pages/Contact'], resolve);
@@ -44,16 +37,17 @@ export default new VueRouter({
         // *
         // * 在线漫画
         // * *
-        // 书架页面
+        // 漫画书架页面
         {
-            path: "/comic",
             name: "comic",
+            path: "/comic",
             component: resolve => {
                 require(['@/pages/Comic'], resolve);
             }
         },
         // 漫画目录页面
         {
+            name: "comiccatalog",
             path: "/comic/comiccatalog",
             component: resolve => {
                 require(['@/pages/ComicCatalog'], resolve);
@@ -61,6 +55,7 @@ export default new VueRouter({
         },
         // 漫画内容页面
         {
+            name: "comicctt",
             path: "/comicctt",
             component: resolve => {
                 require(['@/pages/ComicContent'], resolve);
@@ -70,28 +65,10 @@ export default new VueRouter({
 
 
         // *
-        // * 影视欣赏
-        // * *
-        // 影视搜索页面
-        {
-            path: "/video",
-            component: resolve => {
-                require(['@/pages/Video'], resolve);
-            }
-        },
-        // 影视信息和播放地址页面
-        {
-            path: "/videodetails",
-            component: resolve => {
-                require(['@/pages/VideoDetails'], resolve);
-            }
-        },
-
-
-        // *
         // * 文章页面
         // * *
         {
+            name: "writes",
             path: "/writes",
             component: resolve => {
                 require(['@/pages/Writes'], resolve);
@@ -104,6 +81,7 @@ export default new VueRouter({
         // * 404页面,并且将未定义的路由重定向到/404组件
         // * *
         {
+            name: "404",
             path: "/404",
             component: resolve => {
                 require(['@/pages/404'], resolve)

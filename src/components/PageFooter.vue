@@ -2,15 +2,15 @@
   <!-- 页脚=>S -->
   <footer>
     <router-link :to="{path:'/contact', query:{}}" class="mail-link">
-      <i class="fa fa-envelope" aria-hidden="true"></i>
+      <i class="icon icon-user" aria-hidden="true"></i>
     </router-link>
 
     <div class="footer-social">
       <ul>
-        <li v-for="(item,i) in iconsHref" :key="i">
-          <router-link :to="{path:'/'}" class="white">
+        <li v-for="(item,index) in iconsHref" :key="index">
+          <a :href="item.link">
             <i :class="item.icon"></i>
-          </router-link>
+          </a>
         </li>
       </ul>
     </div>
@@ -28,11 +28,26 @@ export default {
   data() {
     return {
       iconsHref: [
-        { icon: "fa fa-facebook" },
-        { icon: "fa fa-twitter" },
-        { icon: "fa fa-instagram" },
-        { icon: "fa fa-pinterest" },
-        { icon: "fa fa-tumblr" }
+        {
+          icon: "icon icon-qq",
+          link: "http://wpa.qq.com/msgrd?v=3&uin=1162842690&site=qq&menu=yes"
+        },
+        {
+          icon: "icon icon-wechat",
+          link: ""
+        },
+        {
+          icon: "icon icon-bilibili",
+          link: "https://live.bilibili.com/58821"
+        },
+        {
+          icon: "icon icon-steam",
+          link: ""
+        },
+        {
+          icon: "icon icon-origin",
+          link: ""
+        }
       ]
     };
   }
@@ -54,7 +69,7 @@ footer {
   border-left: 1px solid rgba(255, 255, 255, 0.21);
   top: 0;
   right: 0;
-  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .mail-link {
@@ -66,11 +81,11 @@ footer {
   font-size: 14px;
   text-align: center;
   color: rgba(255, 255, 255, 0.51);
-  -webkit-transition: all 500ms linear;
-  -moz-transition: all 500ms linear;
-  -o-transition: all 500ms linear;
-  -ms-transition: all 500ms linear;
   transition: all 500ms linear;
+}
+
+.mail-link .icon{
+  font-size: 26px;
 }
 
 .mail-link:hover {
@@ -113,9 +128,6 @@ footer {
   border-radius: 100%;
   color: #383838;
   background: #f2f2f2;
-  -webkit-transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  -moz-transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  -o-transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
   transition: all 400ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
@@ -134,15 +146,7 @@ footer {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1px;
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
   transform: rotate(-90deg);
-  -webkit-transform-origin: left top;
-  -ms-transform-origin: left top;
-  -moz-transform-origin: left top;
-  -o-transform-origin: left top;
   transform-origin: left top;
 }
 
@@ -198,10 +202,6 @@ footer {
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 1px;
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
     transform: rotate(0deg);
   }
   /* 联系方式=>E */

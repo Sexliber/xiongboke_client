@@ -6,19 +6,18 @@
     <div id="container">
       <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
         <!-- 搜索框<=S -->
-        <div class="row search-container">
-          <div class="input-group col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+        <div class="search-container">
+          <div class="input-group" :class="{focus:focus}">
             <input
               v-model="search"
+              @focus="focus=true"
+              @blur="focus=false"
               @keyup.enter="toLink"
               type="text"
-              class="form-control"
               placeholder="输入漫画名"
             />
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button" @click="toLink">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
+            <span class="submit" @click="toLink">
+              <span class="icon icon-search"></span>
             </span>
           </div>
         </div>
@@ -64,11 +63,13 @@ export default {
       // 页面加载状态
       isLoading: true,
       // 搜索内容
-      search: "",
+      search: this.$route.query.search,
       // 漫画封面数组
       comicCoverData: [],
       // 403图片路径
-      img403: this.global.img403
+      img403: this.global.img403,
+      // 搜索框焦点
+      focus: false
     };
   },
 
@@ -78,14 +79,6 @@ export default {
         this.$route.query.search == undefined ? "" : this.$route.query.search
       }${this.comicCoverData.length}个搜索结果`
     };
-  },
-
-  watch: {
-    // 监听路由
-    $route: function(route, oldRoute) {
-      // 路由变动重新请求数据
-      this.reqComicCoverData();
-    }
   },
 
   methods: {
@@ -110,23 +103,13 @@ export default {
       this.isLoading = true;
 
       // 将要搜索的内容传递给search变量
-      var search = "";
-      if (
-        this.$route.query.search == undefined ||
-        this.$route.query.search == ""
-      ) {
-        search = 1;
-      } else {
-        search = this.$route.query.search;
-      }
-
-      // 请求地址
-      let reqUrl = this.global.ComicVideoApi + this.global.ComicCover + search;
+      var search =
+        this.$route.query.search === undefined ? "" : this.$route.query.search;
 
       //请求漫画封面数据
-      this.axios.get("/getComic", { params: { url: reqUrl } }).then(res => {
+      this.axios.get(this.global.ComicCover + search).then(res => {
         // 清除原有数组
-        this.comicCoverData = [];
+        this.comicCoverData.splice(0, this.comicCoverData.length);
         // 请求到的漫画封面信息传递给comicCoverData
         this.comicCoverData = res.data.list;
         // 去除页面加载动画
@@ -135,7 +118,14 @@ export default {
     }
   },
 
+  // 数据池初始化完毕后开始请求漫画封面数据
   created() {
+    this.reqComicCoverData();
+  },
+
+  // 检测search查询参数的改变
+  beforeRouteUpdate(to, from, next) {
+    next(true);
     this.reqComicCoverData();
   },
 
@@ -155,7 +145,6 @@ export default {
   height: 100%;
   background: #1c1c17;
   overflow: hidden;
-  padding: 0 26px;
 }
 #container {
   height: 100%;
@@ -222,23 +211,46 @@ export default {
 /* 搜索框 */
 .search-container {
   margin: 20px 0;
+  display: flex;
+  justify-content: space-around;
 }
-.input-group .form-control,
-.input-group .btn {
-  border-color: #2c2c25;
-  background-color: #000;
+.input-group {
+  flex: none;
+  width: 40%;
   height: 46px;
+  display: flex;
+  align-items: center;
+  background-color: #000;
 }
-.input-group .form-control {
+.input-group.focus{
+  box-shadow: #ffc815 0 0 3px;
+}
+.input-group input,
+.input-group .submit {
+  border-color: #2c2c25;
+}
+.input-group input {
+  flex: 5 0 0;
+  width: 0;
+  height: 28px;
+  background-color: transparent;
+  outline-color: transparent;
+  border-width: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.51);
+  box-sizing: border-box;
+  padding: 0 8px;
   color: #edece9;
 }
-.input-group .form-control:focus,
-.input-group .btn:focus {
-  border-color: #ffc815;
-  box-shadow: #ffc815 0 0 3px;
-  outline-color: transparent;
-}
-.input-group .btn {
+.input-group .submit {
+  flex: 1 0 0;
+  width: 0;
+  display: block;
+  text-align: center;
+  line-height: 46px;
   color: #888;
+  cursor: pointer;
+}
+.input-group .submit .icon {
+  font-size: 18px;
 }
 </style>

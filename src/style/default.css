@@ -1,16 +1,13 @@
 /* 通用样式=>S */
 
-html,
-body {
+html, body {
     height: 100%;
     width: 100%;
     overflow: hidden;
     font-size: calc(100vw / 19.2);
 }
 
-html,
-body,
-* {
+html, body, * {
     margin: 0;
     padding: 0;
     font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", 华文细黑, STHeiti, MingLiu;
@@ -24,6 +21,22 @@ body {
     position: relative;
 }
 
+#app {
+    z-index: 0;
+}
+
+.t-title {
+    font-size: 16px;
+}
+
+.t-text {
+    font-size: 14px;
+}
+
+.t-align-center {
+    text-align: center;
+}
+
 .row {
     margin: 0;
 }
@@ -32,8 +45,7 @@ body {
     padding: 0;
 }
 
-ul,
-li {
+ul, li {
     margin: 0;
     list-style: none;
 }
@@ -74,15 +86,12 @@ a:visited {
     clear: both;
 }
 
-.durate,
-.durate::after,
-.durate::before {
+.durate, .durate::after, .durate::before {
     -webkit-transition: all 300ms linear;
     transition: all 300ms linear;
 }
 
-.title,
-.text {
+.title, .text {
     padding-right: 20px;
 }
 
@@ -154,13 +163,11 @@ a:visited {
     z-index: 99 !important;
 }
 
-
 /* 中文不换行 */
 
 .t-no-wrap {
     white-space: nowrap;
 }
-
 
 /* 文字超出显示省略号 */
 
@@ -169,13 +176,11 @@ a:visited {
     text-overflow: ellipsis;
 }
 
-
 /* 文字不被选中 */
 
 .noselect {
     user-select: none;
 }
-
 
 /* 跑马灯动画<=S */
 
@@ -194,9 +199,7 @@ a:visited {
     }
 }
 
-
 /* 跑马灯动画=>E */
-
 
 /* 页面载入动画<=S */
 
@@ -225,30 +228,32 @@ a:visited {
 }
 
 .loading::after {
-    z-index: 999999;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin: -24px -31px;
-    content: "\f110";
-    color: #ffc815;
-    -webkit-animation: fa-spin 1s infinite steps(8);
-    animation: fa-spin 1s infinite steps(8);
-    width: 1.28571429em;
-    text-align: center;
-    font: normal normal normal 48px/1 FontAwesome;
-    text-rendering: auto;
+    transform: translate(-50%, -50%);
+    z-index: 999999;
+    font-family: "icon" !important;
+    font-size: 38px;
+    font-style: normal;
+    color: #fff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    content: "\e627" !important;
+    text-transform: lowercase !important;
+    animation: rotate 800ms infinite steps(8);
 }
 
-.loading.w::after {
-    color: #222;
+@keyframes rotate {
+    0% {
+        transform: rotateZ(0);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
 }
-
 
 /* 页面载入动画=>E */
-
 
 /* ***内容盒子***<=S */
 
@@ -268,8 +273,6 @@ a:visited {
     }
 }
 
-
 /* ***内容盒子***<=E */
-
 
 /* 通用样式=>E */

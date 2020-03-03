@@ -1,8 +1,10 @@
 <template>
-  <vue-scroll :class="{loading:isLoading}">
-    <h1>联系方式</h1>
-    <router-view></router-view>
-  </vue-scroll>
+  <div class="container-fluid" :class="{loading:isLoading}">
+    <vue-scroll>
+      <h1>联系方式</h1>
+      <router-view></router-view>
+    </vue-scroll>
+  </div>
 </template>
 
 <script>
@@ -18,9 +20,15 @@ export default {
     var clear = setTimeout(() => {
       this.isLoading = false;
       clearTimeout(clear);
-    }, 300);
+    }, 1000);
   }
 };
 </script>
+
+<style scoped>
+  .container-fluid{
+    height: 100%;
+  }
+</style>
 
 

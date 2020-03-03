@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="main-container">
     <!-- 导航栏=>S -->
     <header class="noselect">
       <!-- logo=>S -->
-      <router-link :to="{path:'/',query:''}" class="logo-holder">
+      <router-link :to="{path:'/'}" class="logo-holder">
         <img src="../assets/images/logo.png" alt="首页" />
       </router-link>
       <!-- logo=>E -->
@@ -13,7 +13,7 @@
         class="nav-button durate"
         id="open-button"
         :class="{active:meanIsActive}"
-        @click="meanIsActive=!meanIsActive"
+        @click="meanIsActive=!meanIsActive;showMean=true"
       >
         <span class="menu-global menu-top"></span>
         <span class="menu-global menu-middle"></span>
@@ -50,7 +50,7 @@
             <i class="fa fa-bookmark" aria-hidden="true"></i>
           </li>
         </a>
-        <a @click.prevent="doMusicPlayer" title="音乐">
+        <a title="音乐">
           <li class="contact visible-4" :class="{visible:contIsActive}">
             <i class="fa fa-music" aria-hidden="true"></i>
           </li>
@@ -60,7 +60,7 @@
     </header>
 
     <!-- 菜单栏=>S -->
-    <div class="mean-container" :class="{hide:!meanIsActive,show:meanIsActive}">
+    <div class="mean-container" v-show="showMean" :class="{hide:!meanIsActive,show:meanIsActive}">
       <!-- 菜单logo=>S -->
       <div class="mean-logo">
         <img src="../assets/images/logo-title.png" />
@@ -86,7 +86,6 @@
 
 
 <script>
-
 export default {
   name: "PageHeader",
   data() {
@@ -95,7 +94,6 @@ export default {
       links: [
         { url: { path: "/", query: {} }, title: "我的首页" },
         { url: { path: "/comic", query: {} }, title: "漫画区域" },
-        { url: { path: "/video", query: {} }, title: "影视欣赏" },
         { url: { path: "/", query: {} }, title: "最新设计" },
         { url: { path: "/", query: {} }, title: "网站实例" },
         { url: { path: "/", query: {} }, title: "代码审计" }
@@ -105,14 +103,10 @@ export default {
       // 操作菜单响应
       meanIsActive: false,
       // 操作联系按钮响应
-      contIsActive: false
+      contIsActive: false,
+      // 设置菜单v-show属性
+      showMean: false
     };
-  },
-  methods: {
-    doMusicPlayer() {
-      // 非移动设备下通过MusicPlayer数据广播站传递isShow的值为true使音乐播放器显示
-      MusicPlayer.$emit("isShow", !isMobile);
-    }
   }
 };
 </script>
@@ -121,6 +115,10 @@ export default {
 
 
 <style scoped>
+.main-container {
+  position: relative;
+  z-index: 999999;
+}
 header {
   position: fixed;
   top: 0;
@@ -131,7 +129,7 @@ header {
 }
 
 header {
-  z-index: 9999;
+  z-index: 999999;
 }
 
 .logo-holder {
@@ -324,7 +322,7 @@ header {
 
 .mean-container {
   top: 0;
-  z-index: 999;
+  z-index: 999998;
   position: fixed;
   left: 70px;
   height: 100vh;
@@ -444,12 +442,11 @@ header {
 
 #mean {
   position: absolute;
-  margin-top: -106px;
   top: 50%;
   left: 0;
+  transform: translateY(-50%);
   width: 1000%;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
-  -webkit-transition: all 300ms linear;
   transition: all 300ms linear;
   margin-left: 0;
 }

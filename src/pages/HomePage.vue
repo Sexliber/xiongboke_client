@@ -1,177 +1,187 @@
 <template>
-  <!-- vue-scroll滚动组件 -->
-  <vue-scroll ref="vuescroll" @handle-scroll="handleScroll">
-    <div class="background" :style="{backgroundImage:`url(${background})`}">
-      <!-- 头部轮播组件 -->
-      <div class="replay-banner-container">
-        <head-replay-banner :get-data="replayItems" />
-      </div>
-      <!-- 响应式滚动内容页 -->
-      <router-view
-        :nav-name="navName"
-        :get-is-active="flexTitleAnimaIsActive"
-        :progress-bar-width="progressBarWidth"
-      />
-    </div>
-  </vue-scroll>
+  <!-- @type:page
+  ---- @author:xiong
+  ---- @message:主页-->
+  <div class="container-fluid" :style="`background-image:url(${bgImg})`">
+    <!-- 内容块滚动监听组件 -->
+    <section-watcher :hide-aside="viewId=='header'" @viewId="viewId=$event">
+      <template v-slot:article>
+        <!-- 首屏 -->
+        <section id="header" nav-name="首屏推荐" icon-name="icon icon-home">
+          <!-- 轮播组件 -->
+          <replayer duration="800" waits="6000">
+            <!-- 视图块 -->
+            <template v-slot:view-panel>
+              <div :style="`background-image:url(${headerImg[0]})`"></div>
+              <div :style="`background-image:url(${headerImg[1]})`"></div>
+              <div :style="`background-image:url(${headerImg[2]})`"></div>
+              <div :style="`background-image:url(${headerImg[3]})`"></div>
+            </template>
+
+            <!-- 控制台 -->
+            <template v-slot:control-panel>
+              <li control="pre">
+                <span class="white icon icon-pre"></span>
+              </li>
+              <li control="next">
+                <span class="white icon icon-next"></span>
+              </li>
+              <ul class="to-bt">
+                <li
+                  control="to"
+                  v-for="(item, index) in headerImg"
+                  :key="index"
+                  :class="{active:index==0}"
+                ></li>
+              </ul>
+            </template>
+          </replayer>
+        </section>
+
+        <section
+          id="codes"
+          nav-name="代码审计"
+          icon-name="icon icon-code"
+          bg="../assets/images/homepage/flex-title-2.jpg"
+        ></section>
+        <section
+          id="comic"
+          nav-name="动漫卡通"
+          icon-name="icon icon-cartoon"
+          bg="../assets/images/homepage/flex-title-0.jpg"
+        ></section>
+        <section
+          id="softs"
+          nav-name="实用工具"
+          icon-name="icon icon-tool"
+          bg="../assets/images/homepage/flex-title-1.jpg"
+        ></section>
+        <section
+          id="design"
+          nav-name="创作设计"
+          icon-name="icon icon-design"
+          bg="../assets/images/homepage/flex-title-3.jpg"
+        ></section>
+        <section
+          id="pages"
+          nav-name="网页作品"
+          icon-name="icon icon-page"
+          bg="../assets/images/homepage/flex-title-4.jpg"
+        ></section>
+      </template>
+    </section-watcher>
+  </div>
 </template>
 
-
-
 <script>
-// 全局配置
-import global from "../Global";
-//头部轮播组件
-import HeadReplayBanner from "../components/ReplayBanner.vue";
-// 获取FlexTitleAnima组件的接口参数
-import { classEleTop, navbarSubId, barWrapWidth } from "./FlexTitleAnima";
-
+// 滚动条区块监听模块
+import SectionWatcher from "../components/SectionWatcher";
+// 轮播组件
+import Replayer from "../components/Replayer";
 export default {
   name: "HomePage",
-  // 组件私有数据
   data() {
     return {
       // 背景图片
-      background: global.FullPageBg,
-      // 首页轮播图数组
-      replayItems: [
-        {
-          thumbnail: "../assets/images/homepage/advert-bg-1.jpg",
-          en: "New Works",
-          zh: "最新作品",
-          entext: "Here are some of my works.",
-          path: "/designs"
-        },
-        {
-          thumbnail: "../assets/images/homepage/advert-bg-2.jpg",
-          en: "Soft and Tools",
-          zh: "软件工具",
-          entext: "Here are some of soft and tools.",
-          path: "/software"
-        },
-        {
-          thumbnail: "../assets/images/homepage/advert-bg-3.jpg",
-          en: "Code Record",
-          zh: "代码审计",
-          entext: "There are code keynotes.",
-          path: "/code"
-        },
-        {
-          thumbnail: "../assets/images/homepage/advert-bg-4.jpg",
-          en: "Comic",
-          zh: "在线漫画",
-          entext: "Here are some of movie and cartoons.",
-          path: "/Comic"
-        }
-      ],
-      // 响应式滚动标题导航栏命名
-      navName: [
-        { en: "writes", zh: "最新文章" },
-        { en: "tools", zh: "实用软件" },
-        { en: "codes", zh: "代码审计" },
-        { en: "pages", zh: "网页实例" },
-        { en: "designs", zh: "最新设计" }
-      ],
-      // 响应式浮动标题栏active类控制器
-      flexTitleAnimaIsActive: [
-        true,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      // 滚动监听上一个区域名称
-      lastIdName: null,
-      // 导航栏被点击的导航按钮角标
-      navSubId: navbarSubId,
-      //响应式浮动标题导航栏滚动指示器宽度
-      progressBarWidth: [0]
+      bgImg: this.global.FullPageBg,
+      // 头部轮播图片
+      headerImg: this.global.homepageHeaderImg,
+      // 窗口正在显示内容的id值
+      viewId: "header"
     };
   },
   metaInfo() {
     return {
-      title: "拐某人的个人空间"
+      title: "熊博客|首页"
     };
   },
-  // 数据监听
-  watch: {
-    // 导航栏角标数变化执行滚动
-    navSubId: function(oldData, newData) {
-      this.$refs["vuescroll"].scrollTo(
-        {
-          y: classEleTop[this.navName[newData].en].offsetHeadTop
-        },
-        500
-      );
-    }
-  },
-  methods: {
-    //滚动监听方法
-    handleScroll(v, h, e) {
-      var scrollTop = v.scrollTop;
-      // 判断是否滚动到了一个新的区域<=S
-      var idName = this.getId(scrollTop);
-      if (idName != this.lastIdName) {
-        //滚动到一个不同的区域
-        var i = 0;
-        for (i in this.navName) {
-          if (this.navName[i].en == idName) {
-            this.flexTitleAnimaIsActive.splice(i, 1, true);
-          } else {
-            this.flexTitleAnimaIsActive.splice(i, 1, false);
-          }
-        }
-      }
-      this.lastIdName = idName;
-      // 判断是否滚动到了一个新的区域=>E
-
-      // 设置滚动指示器宽度<=S
-      var screenHeight = document.querySelector("body").offsetHeight;
-      var height = 0;
-      var m = 0;
-      height +=
-        classEleTop[this.navName[this.navName.length - 1].en].offsetFootTop;
-      this.progressBarWidth.splice(
-        0,
-        1,
-        ((scrollTop + screenHeight) / height) * barWrapWidth
-      );
-      // 设置滚动指示器宽度=>E
-    },
-    // 接收滚动收缩长度,判断显示区域停在哪个块上,并且返回该块的id
-    getId(scrollTop) {
-      var i = 0;
-      for (i in this.navName) {
-        if (
-          (scrollTop >= classEleTop[this.navName[i].en].offsetHeadTop) &
-          (scrollTop < classEleTop[this.navName[i].en].offsetFootTop)
-        ) {
-          return this.navName[i].en;
-        }
-      }
-    }
-  },
-  // 组件注册
   components: {
-    //轮播组件
-    HeadReplayBanner
+    SectionWatcher,
+    Replayer
   }
 };
 </script>
 
-
-
 <style scoped>
-.background {
-  background-size: cover;
-  background-attachment: fixed;
-}
-.replay-banner-container {
+.container-fluid {
   position: relative;
+  height: 100%;
+  background-size: cover;
+}
+#header {
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+  background-color: #fff;
   height: 100vh;
-  z-index: 10;
+}
+section {
+  min-height: 100vh;
+}
+#header .view-panel > * {
+  background-size: cover;
+}
+#header [control] {
+  cursor: pointer;
+}
+#header [control="pre"],
+#header [control="next"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  height: 100%;
+  width: 10%;
+}
+#header [control="pre"] .icon,
+#header [control="next"] .icon {
+  font-size: 0.76rem;
+}
+#header [control="pre"] span,
+#header [control="next"] span {
+  display: none;
+}
+#header [control="pre"]:hover span,
+#header [control="next"]:hover span {
+  display: block;
+}
+#header [control="pre"] {
+  left: 0;
+}
+#header [control="pre"]:hover {
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.5) 0,
+    rgba(0, 0, 0, 0.0001) 100%
+  );
+}
+#header [control="next"] {
+  right: 0;
+}
+#header [control="next"]:hover {
+  background-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.5) 0,
+    rgba(0, 0, 0, 0.0001) 100%
+  );
+}
+#header .to-bt {
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, -0.2rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 1rem;
+  height: 0.16rem;
+}
+#header .to-bt li {
+  flex: none;
+  width: 0.16rem;
+  background-color: #fff;
+  border-radius: 50%;
+}
+#header .to-bt li.active {
+  background-color: #ffc815;
 }
 </style>
